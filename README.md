@@ -1,6 +1,3 @@
----
-icon: bullseye-arrow
----
 
 # README
 
