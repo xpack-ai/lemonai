@@ -10,7 +10,7 @@ Lemon
 
 &#x20;                                                                               [文档](https://lemon-11.gitbook.io/lemon-docs/)
 
-![README in English](https://img.shields.io/badge/English-d9d9d9)![简体中文版自述文件](https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-d9d9d9)\
+[![README in English](https://img.shields.io/badge/English-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README.md) [![简体中文版自述文件](https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README_CN.md)
 
 
 Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划到成果交付全流程自动化，它通过独立思考和系统规划，在虚拟环境中灵活调用各类工具，如编写并执行代码、智能浏览网页、操作网页应用、命令执行等。Lemon 擅长将复杂任务系统化分解并有序执行，自动分析任务、安排步骤优先级、动态调整计划，并实时跟踪进度。旨在助力用户高效完成各类任务。
