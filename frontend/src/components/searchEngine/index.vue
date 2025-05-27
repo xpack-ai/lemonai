@@ -132,8 +132,8 @@ const step1 = async () => {
         element: '#searchTemplates',
         popover: {
           side: 'bottom',
-          title: t('setting.searchEngine.searchEngine'),
-          description: t('setting.searchEngine.searchEngineTipsOne'),
+          title: t('setting.searchService.searchService'),
+          description: t('setting.searchService.searchEngineTipsOne'),
           onNextClick: async () => {
             nextTick(() => { 
               tourDriver.moveNext();
@@ -145,8 +145,8 @@ const step1 = async () => {
         element: '.search-choose-api-input',
         popover: {
           side: 'bottom',
-          title: t('setting.searchEngine.searchEngine'),
-          description: t('setting.searchEngine.searchEngineTipsTwo'),
+          title: t('setting.searchService.searchService'),
+          description: t('setting.searchService.searchEngineTipsTwo'),
           onNextClick: async () => {
             nextTick(() => { 
               // 设置缓存，结束引导

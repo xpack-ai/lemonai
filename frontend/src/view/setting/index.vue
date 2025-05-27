@@ -89,8 +89,8 @@ const step2 = async () => {
         element: '#search-service',
         popover: {
           side: 'bottom',
-          title: t('setting.searchService'),
-          description: t('setting.searchServiceTipsOne'),
+          title: t('setting.searchService.searchService'),
+          description: t('setting.searchService.searchServiceTipsOne'),
           onNextClick: async () => {
             nextTick(() => { 
               // 设置缓存，结束引导
@@ -118,8 +118,8 @@ const step3 = async () => {
         element: '#default-model-setting',
         popover: {
           side: 'bottom',
-          title: t('setting.defaultModel'),
-          description: t('setting.defaultModelTipsOne'),
+          title: t('setting.defaultModel.defaultModel'),
+          description: t('setting.defaultModel.defaultModelTipsOne'),
           onNextClick: async () => {
             nextTick(() => { 
               // 设置缓存，结束引导
