@@ -1,7 +1,3 @@
----
-icon: record-vinyl
----
-
 # README_CN
 
 Lemon
@@ -27,7 +23,7 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 ### 使用 Lemon
 
-* 使用这个入门指南快速在您的环境中运行 Lemon。 使用我们的文档进行进一步的参考和更深入的说明。
+* 使用这个[入门指南](https://lemon-11.gitbook.io/lemon-docs)快速在您的环境中运行 Lemon。更多参考和详细说明请参阅我们的文档。
 
 ### 运行 Lemon
 
