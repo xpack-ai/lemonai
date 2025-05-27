@@ -1,13 +1,11 @@
 
 services:
   lemon:
-    build:
-      context: ./
-      dockerfile: ./containers/app/Dockerfile
-    image: lemon:latest
+    image: hexdolemonai/lemon:latest
     container_name: lemon-app
     environment:
       - DOCKER_HOST_ADDR=host.docker.internal
+      - ACTUAL_HOST_WORKSPACE_PATH=${WORKSPACE_BASE:-$PWD/workspace}
     ports:
       - "5005:5005"
     extra_hosts:

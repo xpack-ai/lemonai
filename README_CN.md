@@ -6,7 +6,7 @@ icon: record-vinyl
 
 Lemon
 
-<figure><img src="../.gitbook/assets/Lemon_4.png" alt="" width="375"><figcaption></figcaption></figure>
+<figure><img src="./public/img/Lemon_logo.png" alt="" width="375"><figcaption></figcaption></figure>
 
 &#x20;                                                                               [文档](https://lemon-11.gitbook.io/lemon-docs/)
 
@@ -87,14 +87,13 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 #### 贡献
 
-对于那些想要贡献代码的人，请参阅我们的[贡献指南](https://github.com/hexdocom/Lemon/blob/main/CONTRIBUTING.md)。同时，请考虑通过社交媒体、活动和会议来支持 Lemon 的分享。
+对于那些想要贡献代码的人，请参阅我们的[贡献指南](https://github.com/hexdocom/lemon/blob/main/CONTRIBUTING.md)。同时，请考虑通过社交媒体、活动和会议来支持 Lemon 的分享。
 
 ### 社区与支持
 
 我们欢迎您为 Lemon 作出贡献，以帮助改善 Lemon。包括：提交代码、问题、新想法，或分享您基于 Lemon 创建的有趣且有用的 AI 应用程序。同时，我们也欢迎您在不同的活动、会议和社交媒体上分享 Lemon。
 
-* [Github Discussion](https://github.com/hexdocom/Lemon/discussions).👉：分享您的应用程序并与社区交流。
-* [GitHub Issues](https://github.com/hexdocom/Lemon/issues)。👉：使用 Lemon 时遇到的错误和问题，请参阅贡献指南
+* [GitHub Issues](https://github.com/hexdocom/lemon/issues)。👉：使用 Lemon 时遇到的错误和问题，请参阅贡献指南
 * 电子邮件支持👉：关于使用 Lemon的问题。
 * [X(Twitter)](https://x.com/LemonAI_cc)。👉：分享您的应用程序并与社区交流。
 * 商业许可。👉：有关商业用途许可 Lemon的商业咨询。

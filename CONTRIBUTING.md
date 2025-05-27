@@ -10,23 +10,12 @@ We need to be nimble and ship fast given where we are, but we also want to make 
 
 This guide, like Lemon itself, is a constant work in progress. We highly appreciate your understanding if at times it lags behind the actual project, and welcome any feedback for us to improve.
 
-In terms of licensing, please take a minute to read our short License and Contributor Agreement. The community also adheres to the [code of conduct](https://github.com/hexdocom/.github/blob/main/CODE_OF_CONDUCT.md).
-
-## Before you jump in
-
-Looking for something to tackle? Browse our [good first issues](https://github.com/hexdocom/Lemon/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22) and pick one to get started!
-
-Got a cool new model runtime or tool to add? Open a PR in our [plugin repo](https://github.com/hexdocom/Lemon-plugins) and show us what you've built.
-
-Need to update an existing model runtime, tool, or squash some bugs? Head over to our [official plugin repo](https://github.com/hexdocom/Lemon-official-plugins) and make your magic happen!
-
-Join the fun, contribute, and let's build something awesome together! 💡✨
-
-Don't forget to link an existing issue or open a new issue in the PR's description.
+In terms of licensing, please take a minute to read our short License and Contributor Agreement. The community also adheres to the [code of conduct](https://github.com/hexdocom/lemon/blob/main/CODE_OF_CONDUCT.md).
 
 ### Bug reports
 
-> \[!IMPORTANT]> \
+> \[!IMPORTANT]
+> \
 > Please make sure to include the following information when submitting a bug report:
 
 * A clear and descriptive title
@@ -36,17 +25,10 @@ Don't forget to link an existing issue or open a new issue in the PR's descripti
 * **Logs**, if available, for backend issues, this is really important, you can find them in docker-compose logs
 * Screenshots or videos, if applicable
 
-How we prioritize:
-
-| Issue Type                                                                                         | Priority        |
-| -------------------------------------------------------------------------------------------------- | --------------- |
-| Bugs in core functions (cloud service, cannot login, applications not working, security loopholes) | Critical        |
-| Non-critical bugs, performance boosts                                                              | Medium Priority |
-| Minor fixes (typos, confusing but working UI)                                                      | Low Priority    |
-
 ### Feature requests
 
-> \[!NOTE]> \
+> \[!NOTE]
+> \
 > Please make sure to include the following information when submitting a feature request:
 
 * A clear and descriptive title
@@ -54,14 +36,6 @@ How we prioritize:
 * A use case for the feature
 * Any other context or screenshots about the feature request
 
-How we prioritize:
-
-| Feature Type                                                                                                                     | Priority        |
-| -------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| High-Priority Features as being labeled by a team member                                                                         | High Priority   |
-| Popular feature requests from our [community feedback board](https://github.com/hexdocom/Lemon/discussions/categories/feedbacks) | Medium Priority |
-| Non-core features and minor enhancements                                                                                         | Low Priority    |
-| Valuable but not immediate                                                                                                       | Future-Feature  |
 
 ## Submitting your PR
 
@@ -79,11 +53,11 @@ How we prioritize:
 
 #### Frontend
 
-For setting up the frontend service, please refer to our comprehensive [guide](https://github.com/hexdocom/Lemon/blob/main/web/WEB_README.md) in the `web/README.md` file. This document provides detailed instructions to help you set up the frontend environment properly.
+For setting up the frontend service, please refer to our comprehensive [guide](https://github.com/hexdocom/lemon/blob/main/frontend/WEB_README.md) in the `frontend/README.md` file. This document provides detailed instructions to help you set up the frontend environment properly.
 
 #### Backend
 
-For setting up the backend service, kindly refer to our detailed [instructions](https://github.com/hexdocom/Lemon/blob/main/api/API_README.md) in the `api/README.md` file. This document contains step-by-step guidance to help you get the backend up and running smoothly.
+For setting up the backend service, kindly refer to our detailed [instructions](https://github.com/hexdocom/lemon/blob/main/API_README.md) in the `api/README.md` file. This document contains step-by-step guidance to help you get the backend up and running smoothly.
 
 #### Other things to note
 

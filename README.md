@@ -4,7 +4,7 @@ icon: bullseye-arrow
 
 # README
 
-<figure><img src="../.gitbook/assets/Lemon_4.png" alt="" width="375"><figcaption></figcaption></figure>
+<figure><img src="./public/img/Lemon_logo.png" alt="" width="375"><figcaption></figcaption></figure>
 
 &#x20;                                                                               [document](https://lemon-11.gitbook.io/lemonai/)
 
@@ -12,7 +12,7 @@ icon: bullseye-arrow
 
 Lemon is an open-source General AI Agent capable of automating the entire process from requirement planning to result delivery. It can independently think and systematically plan, flexibly invoking various tools in a virtual environment, such as writing and executing code, intelligently browsing the web, operating web applications, and executing commands. Lemon excels at systematically breaking down complex tasks and executing them in an orderly manner, automatically analyzing tasks, prioritizing steps, dynamically adjusting plans, and tracking progress in real time. Its goal is to help users efficiently complete all kinds of tasks.
 
-<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="./public/img/example.png" alt=""><figcaption></figcaption></figure>
 
 ### function and characteristic
 

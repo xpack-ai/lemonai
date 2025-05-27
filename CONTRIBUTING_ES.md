@@ -6,15 +6,7 @@ Necesitamos ser ágiles y enviar rápidamente dado donde estamos, pero también 
 
 Esta guía, como Lemon mismo, es un trabajo en constante progreso. Agradecemos mucho tu comprensión si a veces se queda atrás del proyecto real, y damos la bienvenida a cualquier comentario para que podamos mejorar.
 
-En términos de licencia, por favor tómate un minuto para leer nuestro breve [Acuerdo de Licencia y Colaborador](./LICENSE). La comunidad también se adhiere al [código de conducta](https://github.com/Hexdo/.github/blob/main/CODE_OF_CONDUCT.md).
-
-## Antes de empezar
-
-¿Buscas algo en lo que trabajar? Explora nuestros [buenos primeros issues](https://github.com/Hexdo/Lemon/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22) y elige uno para comenzar.
-
-¿Tienes un nuevo modelo o herramienta genial para añadir? Abre un PR en nuestro [repositorio de plugins](https://github.com/Hexdo/Lemon-plugins) y muéstranos lo que has construido.
-
-¿Necesitas actualizar un modelo existente, herramienta o corregir algunos errores? Dirígete a nuestro [repositorio oficial de plugins](https://github.com/Hexdo/Lemon-official-plugins) y haz tu magia.
+En términos de licencia, por favor tómate un minuto para leer nuestro breve [Acuerdo de Licencia y Colaborador](./LICENSE). La comunidad también se adhiere al [código de conducta](https://github.com/hexdocom/lemon/blob/main/CODE_OF_CONDUCT.md).
 
 ¡Únete a la diversión, contribuye y construyamos algo increíble juntos! 💡✨
 
@@ -49,14 +41,6 @@ Cómo priorizamos:
 - Un caso de uso para la funcionalidad
 - Cualquier otro contexto o capturas de pantalla sobre la solicitud de funcionalidad
 
-Cómo priorizamos:
-
-  | Tipo de Funcionalidad                                        | Prioridad       |
-  | ------------------------------------------------------------ | --------------- |
-  | Funcionalidades de alta prioridad etiquetadas por un miembro del equipo | Prioridad Alta  |
-  | Solicitudes populares de funcionalidades de nuestro [tablero de comentarios de la comunidad](https://github.com/Hexdo/Lemon/discussions/categories/feedbacks) | Prioridad Media |
-  | Funcionalidades no principales y mejoras menores            | Prioridad Baja  |
-  | Valiosas pero no inmediatas                                 | Futura-Funcionalidad |
 ## Enviando tu PR
 
 ### Proceso de Pull Request
@@ -72,11 +56,11 @@ Cómo priorizamos:
 
 #### Frontend
 
-Para configurar el servicio frontend, por favor consulta nuestra [guía completa](https://github.com/Hexdo/Lemon/blob/main/web/README.md) en el archivo `web/README.md`. Este documento proporciona instrucciones detalladas para ayudarte a configurar el entorno frontend correctamente.
+Para configurar el servicio frontend, por favor consulta nuestra [guía completa](https://github.com/hexdocom/lemon/blob/main/frontend/WEB_README.md) en el archivo `frontend/README.md`. Este documento proporciona instrucciones detalladas para ayudarte a configurar el entorno frontend correctamente.
 
 #### Backend
 
-Para configurar el servicio backend, por favor consulta nuestras [instrucciones detalladas](https://github.com/Hexdo/Lemon/blob/main/api/README.md) en el archivo `api/README.md`. Este documento contiene una guía paso a paso para ayudarte a poner en marcha el backend sin problemas.
+Para configurar el servicio backend, por favor consulta nuestras [instrucciones detalladas](https://github.com/hexdocom/lemon/blob/main/API_README.md) en el archivo `API_README.md`. Este documento contiene una guía paso a paso para ayudarte a poner en marcha el backend sin problemas.
 
 #### Otras cosas a tener en cuenta
 

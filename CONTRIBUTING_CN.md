@@ -10,15 +10,7 @@ icon: file-lines
 
 本指南和 Lemon 一样在不断完善中。如果有任何滞后于项目实际情况的地方，恳请谅解，我们也欢迎任何改进建议。
 
-关于许可证，请花一分钟阅读我们简短的许可和贡献者协议。社区同时也遵循[行为准则](https://github.com/hexdocom/.github/blob/main/CODE_OF_CONDUCT.md)。
-
-## 开始之前
-
-想寻找可以着手的任务？浏览我们的[新手友好议题](https://github.com/hexdocom/Lemon/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22good%20first%20issue%22)并选择一个开始！
-
-有酷炫的新模型运行时或工具要添加？在我们的[插件仓库](https://github.com/hexdocom/Lemon-plugins)开启 PR，展示你的作品。
-
-需要更新现有模型运行时、工具或修复 bug？前往我们的[官方插件仓库](https://github.com/hexdocom/Lemon-official-plugins)大展身手！
+关于许可证，请花一分钟阅读我们简短的许可和贡献者协议。社区同时也遵循[行为准则](https://github.com/hexdocom/lemon/blob/main/CODE_OF_CONDUCT.md)。
 
 加入我们，一起贡献，共同打造精彩项目！💡✨
 
@@ -26,7 +18,8 @@ icon: file-lines
 
 ### Bug 报告
 
-> \[!IMPORTANT]> \
+> \[!IMPORTANT]
+> \
 > 提交 bug 报告时请务必包含以下信息：
 
 * 清晰描述性的标题
@@ -45,22 +38,14 @@ icon: file-lines
 
 ### 功能请求
 
-> \[!NOTE]> \
+> \[!NOTE]
+> \
 > 提交功能请求时请务必包含以下信息：
 
 * 清晰描述性的标题
 * 详细的功能描述
 * 功能使用场景
 * 其他相关上下文或截图
-
-优先级划分：
-
-| 功能类型                                                                              | 优先级   |
-| --------------------------------------------------------------------------------- | ----- |
-| 被团队成员标记为高优先级的功能                                                                   | 高优先级  |
-| 来自[社区反馈板](https://github.com/Hexdo/Lemon/discussions/categories/feedbacks)的热门功能请求 | 中等优先级 |
-| 非核心功能和小改进                                                                         | 低优先级  |
-| 有价值但非紧急的功能                                                                        | 未来特性  |
 
 ## 提交 PR
 
@@ -78,11 +63,11 @@ icon: file-lines
 
 #### 前端
 
-关于前端服务的设置，请参考 `web/README.md` 文件中的[详细指南](https://github.com/hexdocom/Lemon/blob/main/web/WEB_README.md)。该文档提供了帮助你正确配置前端环境的详细说明。
+关于前端服务的设置，请参考 `frontend/README.md` 文件中的[详细指南](https://github.com/hexdocom/lemon/blob/main/frontend/WEB_README.md)。该文档提供了帮助你正确配置前端环境的详细说明。
 
 #### 后端
 
-关于后端服务的设置，请参考 `api/README.md` 文件中的[详细说明](https://github.com/hexdocom/Lemon/blob/main/api/API_README.md)。该文档包含了帮助你顺利运行后端的步骤说明。
+关于后端服务的设置，请参考 `API_README.md` 文件中的[详细说明](https://github.com/hexdocom/lemon/blob/main/API_README.md)。该文档包含了帮助你顺利运行后端的步骤说明。
 
 #### 其他注意事项
 
