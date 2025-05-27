@@ -1,0 +1,27 @@
+node_modules
+data/*
+public/files/*
+.env
+*.local
+llm.json
+
+.vscode
+.DS_Store
+
+
+cache/*
+uploads/*
+scripts/*
+
+# agent workspace directory
+workspace/**
+!workspace
+
+src/cache
+
+#jetbrains
+.idea
+
+# complied files
+out
+.vite

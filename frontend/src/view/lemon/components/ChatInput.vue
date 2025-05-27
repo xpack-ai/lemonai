@@ -1,0 +1,355 @@
+<template>
+  <div class="chat-input">
+    <div class="input-wrapper">
+      <div class="input-area">
+        <div style="overflow: auto;width: 100%;min-width: 0;">
+        <div class="upload-fileList">
+            <div class="upload-fileList-item" v-for="(file, index) in fileList" :key="index">
+              <FileSvg class="file-icon"/>
+              <div style="min-width: 0;width: 100%;">
+                <div style="display: flex;width: 100%;    align-items: center;">
+                  <div class="file-name">{{ file.name }}</div>
+                  <div class="delete-button" @click="handleDelete(file)"><deleteFile/></div>
+                </div>
+                <div>
+                  <div class="file-size">{{ formatFileSize(file.size) }}</div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="input-container">
+          <a-textarea class="input-textarea" v-model:value="messageText" :placeholder="placeholder" :auto-size="{ minRows: 1, maxRows: 8 }"
+            @keydown="keydown" />
+          <div class="input-actions">
+            <div class="left-actions">
+              <a-upload v-model:file-list="fileList" :before-upload="beforeUpload" 
+                :show-upload-list="false">
+                <a-button type="text" class="upload-button">
+                  <template #icon>
+                    <PaperClipOutlined />
+                  </template>
+                </a-button>
+              </a-upload>
+            </div>
+            <a-button v-if="!messageStatus" @click="handleSend" class="send-button" :disabled="!messageText">
+              <template #icon>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 16 16" fill="#fff"><path d="M7.91699 15.0642C7.53125 15.0642 7.22119 14.9397 6.98682 14.6907C6.75244 14.4465 6.63525 14.1218 6.63525 13.7166V6.39966L6.77441 3.34546L7.48486 3.89478L5.62451 6.12134L3.99121 7.76196C3.87402 7.87915 3.73975 7.97681 3.58838 8.05493C3.44189 8.13306 3.271 8.17212 3.07568 8.17212C2.73389 8.17212 2.4458 8.05981 2.21143 7.83521C1.98193 7.60571 1.86719 7.3103 1.86719 6.94897C1.86719 6.60229 1.99902 6.29712 2.2627 6.03345L6.97949 1.30933C7.0918 1.19214 7.2334 1.10181 7.4043 1.03833C7.5752 0.969971 7.74609 0.935791 7.91699 0.935791C8.08789 0.935791 8.25879 0.969971 8.42969 1.03833C8.60059 1.10181 8.74463 1.19214 8.86182 1.30933L13.5786 6.03345C13.8423 6.29712 13.9741 6.60229 13.9741 6.94897C13.9741 7.3103 13.8569 7.60571 13.6226 7.83521C13.3931 8.05981 13.1074 8.17212 12.7656 8.17212C12.5703 8.17212 12.397 8.13306 12.2456 8.05493C12.0991 7.97681 11.9673 7.87915 11.8501 7.76196L10.2095 6.12134L8.34912 3.89478L9.05957 3.34546L9.19141 6.39966V13.7166C9.19141 14.1218 9.07422 14.4465 8.83984 14.6907C8.60547 14.9397 8.29785 15.0642 7.91699 15.0642Z" fill="var(--icon-onblack)"></path></svg>
+              </template>
+            </a-button>
+            <!-- 停止按钮 -->
+            <button v-else class="stop-button" @click="handleStop">
+              <div></div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref,onMounted } from 'vue'
+import { PaperClipOutlined, SendOutlined } from '@ant-design/icons-vue'
+import { useChatStore } from '@/store/modules/chat'
+import emitter from '@/utils/emitter'
+import  FileSvg from '@/assets/message/file.svg'
+import deleteFile from "@/assets/message/deleteFile.svg"
+import files from '@/services/files';
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
+const { t } = useI18n()
+
+const chatStore = useChatStore()
+const messageText = ref('')
+const placeholder = ref(t('lemon.welcome.placeholder'))
+const currentMode = ref('text')
+const fileList = ref([])
+
+const emit = defineEmits(['send'])
+const messageStatus  = computed(() => {
+  return chatStore.status == "running" 
+})
+
+onMounted(async () => {
+  emitter.on('changeMessageText', (text) => {
+    messageText.value = text
+  })
+})
+
+
+const handleSend = () => {
+  const text = messageText.value.trim()
+  if (text || fileList.value.length > 0) {
+    emit('send', {
+      text,
+      mode: currentMode.value,
+      files: fileList.value
+    })
+    messageText.value = ''
+    fileList.value = []
+  }
+}
+
+//停止
+const handleStop = () => {
+   chatStore.handleStop();
+}
+
+//转化文件大小
+const formatFileSize = (size) => {
+  if (size < 1024) {
+    return size + ' B';
+  } else if (size < 1024 * 1024) {
+    return (size / 1024).toFixed(2) + ' KB';
+  } else {
+    return (size / (1024 * 1024)).toFixed(2) + ' MB';
+  }
+}
+
+const beforeUpload = async (file) => {
+  console.log('chatStore.chat.conversation_id ', chatStore?.chat?.conversation_id || "" )
+  console.log('file ', file )
+  const options = {
+    conversation_id: chatStore?.chat?.conversation_id || "",
+    files: file,
+  };
+  console.log('file', options)
+  const formData = new FormData();
+    Object.keys(options).map((k) => {
+      formData.append(k, options[k]);
+  });
+
+
+  const result = await files.uploadFile(formData)
+  //获取result data [0].id
+  console.log('result', result)
+  file.id = result[0]?.id
+  file.workspace_dir = result[0]?.workspace_dir
+  fileList.value = [...fileList.value, file]
+  console.log('fileList', fileList.value)
+  return false
+}
+
+const handleDelete = (file) => {
+  fileList.value = fileList.value.filter((f) => f.id !== file.id);
+  files.deleteFile(file.id) 
+};
+
+//输入框键盘事件
+const keydown = (e) => {
+  if (e.shiftKey && e.key === "Enter") {
+    return;
+  }
+  if (e.isComposing && e.key === 'Enter') {
+    e.preventDefault();
+    return;
+  }
+  if (e.key === "Enter") {
+    e.preventDefault();
+    handleSend();
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+
+.upload-button {
+  border-color: #0000000f;
+  border-radius: 9999px;
+}
+
+.send-button {
+  background: #1a1a19; /* 默认背景色 */
+  border: 1px solid rgb(229, 231, 235); /* 边框颜色 */
+  border-radius: 9999px; /* 圆角 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stop-button{
+  background: #1a1a19; /* 默认背景色 */
+  border: 1px solid rgb(229, 231, 235); /* 边框颜色 */
+  border-radius: 9999px; /* 圆角 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+
+  div{
+    width: 10px;
+    height: 10px;
+    background: white;
+  }
+}
+
+/* 禁用状态下的样式 */
+.send-button:disabled,
+.send-button[disabled] {
+  background: #37352f14; /* 浅灰色背景 */
+  border: 0px solid #37352f14; /* 边框颜色 */
+  color: #a8a8a8; /* 文字颜色变浅 */
+  cursor: not-allowed; /* 鼠标悬停时显示禁用状态 */
+
+  svg{
+    fill: #b9b9b7;
+  }
+}
+.input-textarea{
+  //height: 46px!important;
+  //max-height: 240px;
+}
+.input-textarea::-webkit-scrollbar {
+  width: 2px;
+}
+
+.input-textarea::-webkit-scrollbar-thumb {
+  background-color: #d9d9d9;
+  border-radius: 3px;
+}
+
+.input-textarea::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+
+.chat-input {
+  background: #f8f8f7;
+  border-radius:22px;
+  margin-top:  0.75rem;
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 0.75rem;
+}
+
+.input-wrapper {
+  
+  margin: 0 auto;
+  width: 100%;
+}
+
+.input-area {
+  display: flex;
+  gap: 0;
+  background: #fff;
+  align-items: flex-end;
+  border: 1px solid rgb(229, 231, 235);
+  border-radius:22px;
+  padding: .75rem; 
+  transition: border-color 0.3s;
+
+  overflow: hidden;
+    flex-direction: column;
+    align-items: baseline;
+
+  &:hover {
+    border-color: rgb(229, 231, 235);
+  }
+
+  &:focus-within {
+    border-color: rgb(229, 231, 235);
+  }
+  &:focus {
+    border-color: rgb(229, 231, 235);
+  }
+
+  &:active {
+    border-color: rgb(229, 231, 235);
+    border: 1px solid rgb(229, 231, 235);
+  }
+}
+
+.input-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.upload-fileList{
+  display: flex;
+  gap: .75rem;;
+}
+
+.upload-fileList-item{
+  padding: .5rem;
+  border-radius: 10px;
+  gap: .375rem;
+  cursor: pointer;
+  width: 280px;
+  min-width:280px;
+  display: flex;
+  background-color: #37352f0f;
+  font-family: ui-serif;
+
+  .file-icon{
+    min-width: 28px;
+    min-height: 28px;
+  }
+  .file-name{
+    color: #34322d;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .file-size{
+    font-size: .75rem;
+    line-height: 1rem;
+    color:#858481;
+   
+  }
+
+  .delete-button{
+    padding: 2px;
+    background-color: #858481;
+    border-radius: 99999px;
+    color:#fff;
+    width: fit-content;
+    height: fit-content;
+    display: none;
+  }
+
+  &:hover{
+    .delete-button{
+      display: flex;
+    }
+  }
+}
+
+
+:deep(.ant-input) {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 8px;
+
+  &:focus {
+    box-shadow: none !important;
+  }
+}
+
+.input-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.mode-switcher {
+  margin-right: 0;
+  border: none;
+  box-shadow: none;
+}
+</style>

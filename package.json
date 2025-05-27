@@ -1,0 +1,53 @@
+{
+  "name": "open-object",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "node bin/www",
+    "dev": "./node_modules/.bin/nodemon bin/www",
+    "prd": "pm2 start bin/www",
+    "test": "mocha ./test/**/*.test.js"
+  },
+  "dependencies": {
+    "@dqbd/tiktoken": "^1.0.21",
+    "@playwright/test": "^1.52.0",
+    "axios": "^1.9.0",
+    "chai": "^4.3.4",
+    "cheerio": "^1.0.0",
+    "debug": "^4.1.1",
+    "dockerode": "^4.0.6",
+    "dotenv": "^16.5.0",
+    "fast-xml-parser": "^4.5.3",
+    "jsonwebtoken": "^9.0.2",
+    "koa": "^2.7.0",
+    "koa-body": "^6.0.1",
+    "koa-convert": "^1.2.0",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.0",
+    "koa-onerror": "^4.1.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "koa2-swagger-ui": "^5.11.0",
+    "minimist": "^1.2.8",
+    "mocha": "^11.1.0",
+    "module-alias": "^2.2.3",
+    "mysql2": "^3.14.0",
+    "node-xlsx": "^0.24.0",
+    "pino": "^9.6.0",
+    "playwright": "^1.52.0",
+    "sequelize": "^6.37.7",
+    "sinon": "^20.0.0",
+    "sqlite3": "^5.1.7",
+    "supertest": "^7.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.2",
+    "nodemon": "^1.19.1"
+  },
+  "_moduleAliases": {
+    "@src": "src"
+  },
+  "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4"
+}

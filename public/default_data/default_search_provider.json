@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Tavily",
+        "logo_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAB8ElEQVR4Ae2VMUzqUBSG2afiPnSfWADeKyZ9w1PH7nFo1F32RZaiUUy7qmL3iUmjFHMn48hm2bpPXRS1pfz21BQ10BaCl4mT/GEg8H0992+bm2W2dIgbJ+hp156jd7xCbtmz2YQZCqBx40O/DyUYhKXB/x+jQPCxQNeDbr3Xlyaw0YQzIUBhEPnDT3FA4EmBKIwnOy4eEgUo1luNX/FOwDIEKC63QhIwW4DyrvASqIcF7G1OK+G95xrh7Wjw7kHUhUOIUwRU7uCVwEpgJfAbAm/9o/2B3WDPtqYuLtBE7/jWZ/Tw0S1fnuW3A1tDnBdbM1/tw/nfoLIOQalnP++zBKL0NXfw1Jj/BYbyn/1RUXJHJcmBuqtEf95vtGm96dGQEGfmbaD09yAEg4JtFThvuTBN4flJM1IAs4W2MSf8M6Yp+g/VuvewjoXy+I/9XHNZYqjIYir8/KpH34+sPAusPBaIO7wTlE94pSrHsOici5KeBKf1ex2hEHTXzMwkwEfdfBtt4avYQVmqfRNAGnye8k7AO3nHtwR5Ssur7UXgKQJuDPc7a0Z81RNDa/9tOM2wKyh0FNFVJw0qFTEZHsWh1ud4zbC0rqTAxxLcBIJi1UiB8xegez8B7uLiiuGsVeN6BMHOXm181pctM/xUv4D85wOQhOrhYVDW5wAAAABJRU5ErkJggg==",
+        "base_config_schema": {
+            "api_key": ""
+        }
+    },
+    {
+        "name":"Bing",
+        "logo_url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAAKlBMVEVHcEwQbr4Qbr4Qbr8Qbr4Qbr8Qbr4Qbr4Qbr4Qbr4Qbr4Qbr4QcL8Qbr5MVxUvAAAADnRSTlMAPY68zaFk/+FT8XcVLTF2jDkAAACSSURBVHgBY6AyYFR2TUDihpeXV0yA87jKq1aVVyMkSybwaFUIQHm85bYMDNzlMVAuUzlQH495L5TLXAUit9dCuSxg7vRCuOwBkOxaKJetPABonrsNlMvTvvoAw+VyuLumV4VlL6+Cc7nby8vLl3fCnSXUXm6dgXA1z13ZA2ztK1F8OatqAjKXc7kDivQUAaqGKQCR2iWFIziCkQAAAABJRU5ErkJggg==",
+        "base_config_schema":{
+
+        }
+    },
+    {
+        "name":"Baidu",
+        "logo_url":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAb1BMVEX///+7vfNna+fHyPXW1/cAAN4fKeDx8vyQk+wcJ+ApMuEPHuAJGt/IyvX7/P6rrfDs7fwAE98/RuPe3/l/gurV1vdwdOh5femxs/Gcnu63uPJgZOZ0eOmLjuw3PuKFiOvv7/xXXOWvsfGmqPBZXuUVxkiOAAAA2ElEQVR4Ac2PxQHDMBAE17CGk0kUMIb6bzHwMhaQEWsEd/hjgjACojA4cjETpum3iw9klouKIiV5diyLsiwOZFXHDZWuKq3YxHW1kqagbeoG+HaWhVk6qyV3vwd+V1wu2i6k15KcgDN5Bk6JaI8FoniB0yLK4UIlWJJeWwTsjIgO0F5TbGhJZCoRtgdpsuurIexyNw5bNzBChSluiYEbe+OIO6vJX5gOOW8rWRaCnunk258sypVsqB6/x5+/LmeDFb3W4/0uNPfXqHtsqLvOPbx/uK6r8a98AHl4DLrdn11VAAAAAElFTkSuQmCC",
+        "base_config_schema":{
+
+        }
+    }
+]

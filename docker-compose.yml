@@ -1,0 +1,22 @@
+
+services:
+  lemon:
+    build:
+      context: ./
+      dockerfile: ./containers/app/Dockerfile
+    image: lemon:latest
+    container_name: lemon-app
+    environment:
+      - DOCKER_HOST_ADDR=host.docker.internal
+    ports:
+      - "5005:5005"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/.cache:/.cache
+      - ${WORKSPACE_BASE:-$PWD/workspace}:/app/workspace
+      - ${WORKSPACE_BASE:-$PWD/data}:/app/data
+    stdin_open: true
+    tty: true
+    command: make run
