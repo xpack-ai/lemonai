@@ -2,11 +2,13 @@
 icon: record-vinyl
 ---
 
-# README\_CN
+# README_CN
 
 Lemon
 
 <figure><img src="./public/img/Lemon_logo.png" alt="" width="375"><figcaption></figcaption></figure>
+
+Lemon 提供 macOS 和 Windows 桌面应用程序，你可以在官网 [www.lemonai.cc](https://www.lemonai.cc) 进行下载。
 
 &#x20;                                                                               [文档](https://lemon-11.gitbook.io/lemon-docs/)
 
@@ -29,6 +31,8 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 ### 运行 Lemon
 
+---
+
 #### 系统要求 <a href="#system-requirements" id="system-requirements"></a>
 
 * [支持 Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install/#system-requirements)的 MacOS
@@ -41,8 +45,8 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 **Docker 桌面**
 
-1. [在 Mac 上安装 Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install)。
-2. 打开 Docker Desktop，转到`Settings > Advanced`并确保`Allow the default Docker socket to be used`已启用。
+1.  [在 Mac 上安装 Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install)。
+2.  打开 Docker Desktop，转到`Settings > Advanced`并确保`Allow the default Docker socket to be used`已启用。
 
 #### **Linux**
 
@@ -50,22 +54,22 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 **Docker 桌面**
 
-1. [在 Linux 上安装 Docker Desktop](https://docs.docker.com/desktop/setup/install/linux/)。
+1.  [在 Linux 上安装 Docker Desktop](https://docs.docker.com/desktop/setup/install/linux/)。
 
 #### **Windows**
 
 **WSL**
 
-1. [安装 WSL](https://learn.microsoft.com/en-us/windows/wsl/install)。
-2. `wsl --version`在 powershell 中运行并确认`Default Version: 2`。
+1.  [安装 WSL](https://learn.microsoft.com/en-us/windows/wsl/install)。
+2.  `wsl --version`在 powershell 中运行并确认`Default Version: 2`。
 
 **Docker 桌面**
 
-1. [在 Windows 上安装 Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install)。
-2. 打开Docker Desktop，前往`Settings`并确认以下内容：
+1.  [在 Windows 上安装 Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install)。
+2.  打开Docker Desktop，前往`Settings`并确认以下内容：
 
-* 常规：`Use the WSL 2 based engine`已启用。
-* 资源 > WSL 集成：`Enable integration with my default WSL distro`已启用。
+    * 常规：`Use the WSL 2 based engine`已启用。
+    * 资源 > WSL 集成：`Enable integration with my default WSL distro`已启用。
 
 必须在 WSL 终端内运行以下用于启动应用程序的 docker 命令。
 
@@ -87,6 +91,8 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 ### 社区与支持
 
+---
+
 我们欢迎您为 Lemon 作出贡献，以帮助改善 Lemon。包括：提交代码、问题、新想法，或分享您基于 Lemon 创建的有趣且有用的 AI 应用程序。同时，我们也欢迎您在不同的活动、会议和社交媒体上分享 Lemon。
 
 * [GitHub Issues](https://github.com/hexdocom/lemon/issues)。👉：使用 Lemon 时遇到的错误和问题，请参阅贡献指南
@@ -96,8 +102,12 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 ### 安全问题
 
+---
+
 为了保护您的隐私，请避免在 GitHub 上发布安全问题。发送问题至service@hexdo.com我们将为您做更进一步的解答。
 
 ### 执照
+
+---
 
 本仓库遵循Lemon Open Source License 协议开源，该许可证本质上是Apache 2.0，但有一些额外的限制。

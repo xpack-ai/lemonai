@@ -6,6 +6,8 @@ icon: bullseye-arrow
 
 <figure><img src="./public/img/Lemon_logo.png" alt="" width="375"><figcaption></figcaption></figure>
 
+Lemon provides macOS and Windows desktop applications, available for download on our official website: [www.lemonai.cc](https://www.lemonai.cc).
+
 &#x20;                                                                               [document](https://lemon-11.gitbook.io/lemonai/)
 
 [![README in English](https://img.shields.io/badge/English-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README.md) [![简体中文版自述文件](https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README_CN.md)
