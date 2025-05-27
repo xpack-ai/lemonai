@@ -83,7 +83,7 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 #### 贡献
 
-对于那些想要贡献代码的人，请参阅我们的[贡献指南](https://github.com/hexdocom/lemon/blob/main/CONTRIBUTING.md)。同时，请考虑通过社交媒体、活动和会议来支持 Lemon 的分享。
+对于那些想要贡献代码的人，请参阅我们的[贡献指南](https://github.com/hexdocom/lemon/blob/main/CONTRIBUTING_CN.md)。同时，请考虑通过社交媒体、活动和会议来支持 Lemon 的分享。
 
 ### 社区与支持
 

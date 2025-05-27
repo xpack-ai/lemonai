@@ -88,14 +88,14 @@ The easiest way to run Lemon is in Docker.
 
 #### Contributing
 
-For those who'd like to contribute code, see our [Contribution Guide](https://github.com/hexdocom/Lemon/blob/main/CONTRIBUTING.md). At the same time, please consider supporting Lemon by sharing it on social media and at events and conferences.
+For those who'd like to contribute code, see our [Contribution Guide](https://github.com/hexdocom/lemon/blob/main/CONTRIBUTING.md). At the same time, please consider supporting Lemon by sharing it on social media and at events and conferences.
 
 ### Community & contact
 
 We welcome your contribution to lemon to help improve lemon. Include: submit code, questions, new ideas, or share interesting and useful AI applications you have created based on lemon. We also welcome you to share lemon at different events, conferences and social media.
 
 * [Github Discussion](https://github.com/hexdocom/Lemon/discussions).Best for: sharing feedback and asking questions.
-* [GitHub Issues](https://github.com/hexdocom/Lemon/issues).Best for: bugs you encounter using Lemon.AI, and feature proposals. See our [Contribution Guide](https://github.com/hexdocom/Lemon/blob/main/CONTRIBUTING.md).
+* [GitHub Issues](https://github.com/hexdocom/Lemon/issues).Best for: bugs you encounter using Lemon.AI, and feature proposals. See our [Contribution Guide](https://github.com/hexdocom/lemon/blob/main/CONTRIBUTING.md).
 * [X(Twitter)](https://x.com/LemonAI_cc). Best for: sharing your applications and hanging out with the community.
 * \[commercial license]（[service@hexdo.com](mailto:service@hexdo.com)）. Business consulting on commercial use licensing lemon.
 
@@ -105,4 +105,4 @@ To protect your privacy, please avoid posting security issues on GitHub. Instead
 
 ### License
 
-This repository is available under the [Lemon Open Source License](http://gitlab-wuwei.hexpm.com/open-source/Lemon/blob/main/LICENSE), which is essentially Apache 2.0 with a few additional restrictions.
+This repository is available under the [Lemon Open Source License](https://github.com/hexdocom/lemon/blob/main/LICENSE), which is essentially Apache 2.0 with a few additional restrictions.
