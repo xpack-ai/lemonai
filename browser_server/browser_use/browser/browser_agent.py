@@ -8,7 +8,7 @@ from pathlib import Path
 from langchain_openai import ChatOpenAI
 from pyobjtojson import obj_to_json
 from browser_use import Agent
-from browser_use.browser.browser import Browser, BrowserConfig,BrowserContextConfig,BrowserContext
+from browser_use.browser.browser import Browser, BrowserConfig, BrowserContextConfig, BrowserContext
 
 
 class BrowserAgentManager:
@@ -20,8 +20,10 @@ class BrowserAgentManager:
         self.browser_content_config = BrowserContextConfig(
             user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
         )
-        self.browser = Browser(config=BrowserConfig(headless=True, disable_security=False, keep_alive=False))
-        self.browser_content = BrowserContext(browser=self.browser, config=self.browser_content_config)
+        self.browser = Browser(config=BrowserConfig(
+            headless=True, disable_security=False, keep_alive=False))
+        self.browser_content = BrowserContext(
+            browser=self.browser, config=self.browser_content_config)
 
     def get_all_sessions_status(self) -> Dict[str, dict]:
         return self.sessions
@@ -29,12 +31,13 @@ class BrowserAgentManager:
     def new_task(self, task: str, model: str, api_key: str, base_url: str) -> str:
         if not all([task, model, api_key, base_url]):
             raise ValueError("Task, model, api_key, and base_url are required")
-        
+
         uid = str(uuid.uuid4())
         try:
             llm = ChatOpenAI(model=model, api_key=api_key, base_url=base_url)
             # agent = Agent(llm=llm, browser=Browser(config=BrowserConfig(headless=False, disable_security=False, keep_alive=False)), task=task)
-            agent= Agent(llm=llm, browser_context=self.browser_content, task=task)
+            agent = Agent(
+                llm=llm, browser_context=self.browser_content, task=task)
             self.sessions[uid] = {
                 "llm": llm,
                 "agent": agent,
@@ -49,14 +52,15 @@ class BrowserAgentManager:
             print(f"Error during task initialization: {str(e)}")
             raise RuntimeError(f"Failed to initialize task: {str(e)}")
 
-    async def run_task(self, uid: str,save_history: bool = False):
+    async def run_task(self, uid: str, save_history: bool = False):
         session = self.sessions.get(uid)
         if not session or not session.get("agent"):
             raise ValueError(f"No active session or agent for uid {uid}")
         try:
             session["state"] = "running"
             await session["agent"].run(
-                on_step_end=lambda agent_obj: self._record_activity(uid, agent_obj),
+                on_step_end=lambda agent_obj: self._record_activity(
+                    uid, agent_obj),
                 max_steps=self.max_steps
             )
         except Exception as e:
@@ -75,7 +79,8 @@ class BrowserAgentManager:
                 self.save_history(uid, session)
                 self._clear_session(uid)
 
-    async def _record_activity(self, uid: str, agent_obj,save_screenshot=True):
+    async def _record_activity(self, uid: str, agent_obj,
+                               save_screenshot=False):
         if agent_obj.state.stopped:
             return
         session = self.sessions.get(uid)
@@ -86,9 +91,12 @@ class BrowserAgentManager:
         else:
             screenshot = None
         history = agent_obj.state.history
-        model_outputs = obj_to_json(history.model_outputs() if history else [], check_circular=False)
-        extracted_content = obj_to_json(history.extracted_content() if history else [], check_circular=False)
-        urls = obj_to_json(history.urls() if history else [], check_circular=False)
+        model_outputs = obj_to_json(
+            history.model_outputs() if history else [], check_circular=False)
+        extracted_content = obj_to_json(
+            history.extracted_content() if history else [], check_circular=False)
+        urls = obj_to_json(history.urls() if history else [],
+                           check_circular=False)
 
         step_summary = {
             "url": urls[-1] if urls else None,
@@ -102,7 +110,7 @@ class BrowserAgentManager:
         session = self.sessions.get(uid)
         if session:
             return session["state"]
-        
+
         history_path = self.save_path / f"{uid}.json"
         if history_path.exists():
             with history_path.open("r", encoding="utf-8") as f:
@@ -184,5 +192,3 @@ class BrowserAgentManager:
             return True
         else:
             return False
-    
-        

@@ -12,11 +12,11 @@
   </div>
   <!-- 停止 -->
   <div v-else-if="message?.meta?.action_type === 'stop'" class="stop">
-    <Stop/> <span>LemonAI {{ t('stop_task') }}</span>
+    <Stop/> <span>LemonAI {{ $t('stop_task') }}</span>
   </div>
   <!-- 任务异常 完成 -->
   <div v-else-if="message?.meta?.action_type === 'error'" class="error">
-    <Failure/> <span>{{ t('task_error') }}:{{ message?.content }}</span>
+    <Failure/> <span>{{ $t('task_error') }}:{{ message?.content }}</span>
   </div>
   <Markdown v-else :content="content"  />
   <!-- <span>{{ message }}</span> -->

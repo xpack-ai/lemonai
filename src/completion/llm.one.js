@@ -10,7 +10,7 @@ const serviceHash = {
 
 const resolveServiceConfig = require('./resolveServiceConfig');
 const resolvePlatformServiceConfig = async (model_info) => {
-  const config ={
+  const config = {
     channel: 'provider',
     service: model_info.platform_name,
     name: model_info.model_name,
@@ -64,9 +64,6 @@ const createLLMInstance = async (config, onTokenStream, options = {}) => {
   }
   console.log('config', config);
   const { channel, service, model } = config;
-  if (channel === CHANNEL.OFFICIAL) {
-    return createRemoteLLM(model, onTokenStream, options);
-  }
 
   const set = new Set(['chataa', 'chataa-share'])
   if (channel === CHANNEL.PROVIDER && set.has(service)) {
@@ -84,11 +81,6 @@ const createLLMInstance = async (config, onTokenStream, options = {}) => {
     }
     // console.log('llm.options', llm_config.config);
     const llm = new LLM(onTokenStream, model, llm_config.config || {}, options);
-    return llm;
-  }
-
-  if (channel === CHANNEL.PRIVATE && service === 'ollama') {
-    const llm = new LLMOllama(onTokenStream, model, {});
     return llm;
   }
 

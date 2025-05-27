@@ -46,18 +46,18 @@
                         <More @click.stop="toggleDropdown(chat.conversation_id)" class="more-options-icon" />
                       </a-tooltip>
                       <div class="more-options-dropdown" v-if="dropdownVisible === chat.conversation_id">
-                        <div class="more-options-item">
+                        <!-- <div class="more-options-item">
                           <Share />
                           <span class="more-options-item-text">{{ $t('lemon.sidebar.share') }}</span>
-                        </div>
-                        <div class="more-options-item">
+                        </div> -->
+                        <div class="more-options-item" @click.stop="handleEditName(chat)">
                           <Edit />
                           <span class="more-options-item-text">{{ $t('lemon.sidebar.rename') }}</span>
                         </div>
-                        <div class="more-options-item">
+                        <!-- <div class="more-options-item">
                           <Collect />
                           <span class="more-options-item-text">{{ $t('lemon.sidebar.collect') }}</span>
-                        </div>
+                        </div> -->
                         <div class="more-options-item err" @click="showDeleteConfirm(chat)">
                           <Delete />
                           <span class="more-options-item-text">{{ $t('lemon.sidebar.delete') }}</span>
@@ -126,6 +126,25 @@
       </a-modal>
     </div>
   </div>
+
+  <a-modal 
+      v-model:open="open" 
+      :title="$t('lemon.chatHeader.editTitle')" 
+      centered  
+      :width="400" 
+      class="edit-title-modal" 
+      :footer="null"
+    > 
+      <span class="edit-title">{{ $t('lemon.chatHeader.enterNewTitle') }}</span>
+      <a-input v-model:value="titleValue" class="edit-title-input" />
+      <footer>
+        <div class="footer-btn">
+          <div class="cancel-btn" @click="handleCancelEdit">{{ $t('lemon.chatHeader.cancel') }}</div>
+          <div class="confirm-btn" @click="handleOkEdit">{{ $t('lemon.chatHeader.confirm') }}</div>
+        </div>
+      </footer>
+    </a-modal>
+
 </template>
 
 <script setup>
@@ -156,6 +175,9 @@ const chatStore = useChatStore();
 const router = useRouter();
 const route = useRoute();
 const dropdownVisible = ref(null);
+const open = ref(false);
+const titleValue =  ref('');
+
 const props = defineProps({
   chats: {
     type: Array,
@@ -171,6 +193,25 @@ const emit = defineEmits(['update:isCollapsed']);
 
 const searchModalVisible = ref(false);
 const conversationId = computed(() => chatStore.chat?.conversation_id);
+
+//当前编辑的会话
+const editChat = ref(null);
+const handleEditName = (chat) => {
+  editChat.value = chat;
+  open.value = true;
+  titleValue.value = chat.title;
+  dropdownVisible.value = null;
+};
+
+const handleOkEdit = () => {
+  open.value = false
+  chatStore.updateConversationTitleById(titleValue.value,editChat.value.conversation_id);
+  editChat.value = null
+}
+
+const handleCancelEdit = () => {
+  open.value = false
+}
 
 const closeOtherWindows = () => {
   emitter.emit('preview-close', false);
@@ -351,6 +392,55 @@ const handleCancel = () => {
     .footer-actions {
       display: none;
     }
+  }
+}
+
+
+.edit-title {
+  font-size: 13px;
+  font-weight: 400;
+  color: #858481;
+}
+
+.edit-title-input {
+  margin-top: 10px;
+}
+
+.footer-btn {
+  display: flex;
+  padding-top: 1.25rem;
+  gap: .5rem;
+  justify-content: flex-end;
+
+  .cancel-btn {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    color: #535350;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    padding-left: .75rem;
+    padding-right: .75rem;
+    border: 1px solid #0000001f;
+    border-radius: 10px;
+  }
+
+  .confirm-btn {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 400;
+    background: #1a1a19;
+    color: #fff;
+    font-size: .875rem;
+    line-height: 1.25rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    padding-left: .75rem;
+    padding-right: .75rem;
+    border: 1px solid #ffffff33;
+    border-radius: 10px;
   }
 }
 
@@ -663,6 +753,17 @@ const handleCancel = () => {
   }
   .more-options-item:hover {
     background-color: #37352f0f;
+  }
+}
+</style>
+
+<style lang="scss">
+.edit-title-modal {
+  .ant-modal-header {
+    margin-bottom: 5px !important;
+  }
+  .ant-modal-content {
+    border-radius: 20px !important;
   }
 }
 </style>

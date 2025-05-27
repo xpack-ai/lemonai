@@ -194,16 +194,16 @@ const step1 = async () => {
   tourDriver = driver({
     animate: true,
     showProgress: true,
-    prevBtnText: t('setting.defaultModel.prevStep'),
-    nextBtnText: t('setting.defaultModel.nextStep'),
-    doneBtnText: t('setting.defaultModel.doneStep'),
+    prevBtnText: t('setting.prevStep'),
+    nextBtnText: t('setting.nextStep'),
+    doneBtnText: t('setting.doneStep'),
     steps: [
       {
         element: '.assistant-container',
         popover: {
           side: 'bottom',
           title: t('setting.defaultModel.defaultAssistantModel'),
-          description: t('setting.defaultModel.defaultAssistantModelTips'),
+          description: t('setting.defaultModel.assistantModelTips'),
           onNextClick: async () => {
             nextTick(() => { 
               tourDriver.moveNext();
@@ -236,7 +236,7 @@ const step1 = async () => {
 onMounted(async () => {
     // localStorage.setItem('tour', 'true');
     if (localStorage.getItem('tour') === 'true') {
-      step1();
+        step1();
     }
     emitter.on('default-assistant-setting-save', (model_config) => {
         assistant_model.value.config = model_config

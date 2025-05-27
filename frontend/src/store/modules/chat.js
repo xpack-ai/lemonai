@@ -40,7 +40,7 @@ export const useChatStore = defineStore('chat', {
 
       this.list = data;
     },
-    async handleStop(){
+    async handleStop() {
       let res = await chat.stop(this.conversationId)
       console.log('handleStop', res);
       this.status = 'done'
@@ -49,7 +49,7 @@ export const useChatStore = defineStore('chat', {
       // console.log('clearMessages', this.messages);
       this.messages = [];
       this.isScrolledToBottom = true;
-      this.status == "done"; 
+      this.status == "done";
     },
     async initConversation(conversationId) {
       this.messages = [];
@@ -69,33 +69,33 @@ export const useChatStore = defineStore('chat', {
       this.chat = get_res;
       let res = await chat.messageList(conversationId);
       for (let item of res) { // 使用 for...of 循环来遍历数组
-           //延迟时间
-          let  delay = 100;
-          if(!this.stopReplay){
-            await new Promise(resolve => setTimeout(resolve, time)); // 正确使用 await 来等待 Promise 完成
-            delay = 0;
+        //延迟时间
+        let delay = 100;
+        if (!this.stopReplay) {
+          await new Promise(resolve => setTimeout(resolve, time)); // 正确使用 await 来等待 Promise 完成
+          delay = 0;
+        }
+        messageFun.handleMessage(item, this.messages); // 假设 handleMessage 是正确导入或定义的
+        setTimeout(() => {
+          //判断是否打开预览  emitter.emit('preview',{})
+          emitter.emit('preview', { message: item })
+          //finish_summery
+          let meta = JSON.parse(JSON.stringify(item.meta));
+          //json
+          let file = meta?.json[0] || {};
+          console.log('meta.action_type', meta.action_type);
+          if (meta.action_type == "finish_summery" && file) {
+            console.log('file', file);
+            emitter.emit('fullPreviewVisable', file)
           }
-          messageFun.handleMessage(item, this.messages); // 假设 handleMessage 是正确导入或定义的
-          setTimeout(() => {
-            //判断是否打开预览  emitter.emit('preview',{})
-            emitter.emit('preview',{ message: item })
-            //finish_summery
-            let meta = JSON.parse(JSON.stringify(item.meta));
-            //json
-            let file = meta?.json[0] || {};
-            console.log('meta.action_type',meta.action_type);
-            if(meta.action_type == "finish_summery" && file){
-              console.log('file',file);
-              emitter.emit('fullPreviewVisable',file)
-            }
-          }, delay);
-          
-          this.isScrolledToBottom = true;
-          this.scrollToBottom(0);
+        }, delay);
+
+        this.isScrolledToBottom = true;
+        this.scrollToBottom(0);
       }
       this.status = 'done';
     },
-    async toResult(){
+    async toResult() {
       this.status = 'done';
       this.stopReplay = true;
     },
@@ -116,7 +116,11 @@ export const useChatStore = defineStore('chat', {
       const update_res = await chat.update(this.conversationId, title);
       // console.log('update_res', update_res);
       this.chat.title = title;
-      this.list.find(item => item.conversation_id === this.conversationId).title = get_res.title;
+      this.list.find(item => item.conversation_id === this.conversationId).title = update_res.title;
+    },
+    async updateConversationTitleById(title,id) {
+      const update_res = await chat.update(id, title);
+      this.list.find(item => item.conversation_id === id).title = update_res.title;
     },
     onMessageEvent(data) {
       // this.socket.emit('oh_event', data);
@@ -154,15 +158,15 @@ export const useChatStore = defineStore('chat', {
     sendMessage(message) {
     },
     //message
-    handleInitMessage(content,files) {
+    handleInitMessage(content, files) {
       console.log('handleInitMessage', content);
       const message = {
         content: content,
         //meta.json
         //action_type === 'question' 
-        meta:{
-          json:files,
-          action_type:'question'
+        meta: {
+          json: files,
+          action_type: 'question'
         },
         role: 'user',
         //临时标记

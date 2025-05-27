@@ -19,18 +19,26 @@ SAVE_PATH.mkdir(parents=True, exist_ok=True)
 
 MAX_STEPS = os.environ.get("MAX_STEPS", 10)  # 默认值
 app = FastAPI()
-browser_agent_manager = BrowserAgentManager(max_steps=MAX_STEPS, save_path=SAVE_PATH)
+browser_agent_manager = BrowserAgentManager(
+    max_steps=MAX_STEPS, save_path=SAVE_PATH)
 
 # 请求模型
+
+
 class TaskRequest(BaseModel):
     prompt: str = Field(..., min_length=1)
-    llm_config: dict = Field(..., description="包含 model_name, api_key, api_url")
+    llm_config: dict = Field(...,
+                             description="包含 model_name, api_key, api_url")
 
 # 统一响应格式
+
+
 def create_response(code: int, message: str, data: dict) -> dict:
     return {"code": code, "message": message, "data": data}
 
 # 提取公共的请求解析和验证逻辑
+
+
 async def parse_task_request(request: Request) -> TaskRequest:
     try:
         data = await request.json()
@@ -41,6 +49,7 @@ async def parse_task_request(request: Request) -> TaskRequest:
         return task
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid JSON data")
+
 
 @app.post("/api/browser/task")
 async def browser_task(request: Request):
@@ -56,7 +65,7 @@ async def browser_task(request: Request):
             base_url=llm_config["api_url"],
         )
         await browser_agent_manager.run_task(uid)
-        history = browser_agent_manager.get_history(uid,with_screenshot=True)
+        history = browser_agent_manager.get_history(uid, with_screenshot=True)
         browser_agent_manager._clear_session(uid)
         end_time = datetime.datetime.now()
         return create_response(
@@ -71,6 +80,7 @@ async def browser_task(request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.post("/api/browser/task/new")
 async def new_task_run(request: Request):
     task = await parse_task_request(request)
@@ -83,7 +93,8 @@ async def new_task_run(request: Request):
             api_key=llm_config["api_key"],
             base_url=llm_config["api_url"],
         )
-        asyncio.create_task(browser_agent_manager.run_task(uid,save_history=True))
+        asyncio.create_task(
+            browser_agent_manager.run_task(uid, save_history=True))
         return create_response(
             200,
             "Task created successfully",
@@ -96,6 +107,7 @@ async def new_task_run(request: Request):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/api/browser/task/{uid}")
 async def get_task_status(uid: str):
     try:
@@ -105,6 +117,7 @@ async def get_task_status(uid: str):
         return create_response(400, "Task not found", {"error": str(e)})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/api/browser/task/{uid}/history")
 async def get_task_history(uid: str):
@@ -118,6 +131,7 @@ async def get_task_history(uid: str):
         return create_response(400, "Task not found", {"error": str(e)})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/api/browser/task/{uid}/last_history_and_screenshot")
 async def get_task_last_history_and_screenshot(uid: str):
@@ -133,6 +147,7 @@ async def get_task_last_history_and_screenshot(uid: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/api/browser/task/{uid}/stop")
 async def stop_task(uid: str):
     try:
@@ -140,6 +155,7 @@ async def stop_task(uid: str):
         return create_response(200, "Task stopped", {"status": "deleted"})
     except ValueError as e:
         return create_response(400, "Task not found", {"error": str(e)})
+
 
 @app.get("/api/browser/task/all")
 async def get_all_task_status():

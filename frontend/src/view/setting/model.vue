@@ -33,7 +33,8 @@
       <div class="provider-sidebar-mobile">
         <div
           style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-          <div style="color:#213547;font-size: 18px;font-weight: 700;">{{ $t(`setting.modelService.modelPlatform`) }}</div>
+          <div style="color:#213547;font-size: 18px;font-weight: 700;">{{ $t(`setting.modelService.modelPlatform`) }}
+          </div>
           <div class="provider-post" @click="handlePlatformAdd()"> + {{
             $t('setting.modelService.addPlatform') }}
           </div>
@@ -110,7 +111,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch,nextTick } from 'vue'
+import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 import service from '@/services/platforms'
@@ -273,7 +274,7 @@ onMounted(async () => {
   }, 500)
   await init();
   if (localStorage.getItem('tour') === 'true') {
-      step1();
+    step1();
   }
 })
 
@@ -296,7 +297,7 @@ const step1 = async () => {
           title: t('setting.modelService.modelService'),
           description: t('setting.modelService.modelServiceTipsOne'),
           onNextClick: async () => {
-            nextTick(() => { 
+            nextTick(() => {
               // 设置缓存，结束引导
               localStorage.setItem('tour_end', 'true');
               tourDriver.moveNext();
@@ -311,7 +312,7 @@ const step1 = async () => {
           title: t('setting.modelService.modelService'),
           description: t('setting.modelService.modelServiceTipsTwo'),
           onNextClick: async () => {
-            nextTick(() => { 
+            nextTick(() => {
               // 设置缓存，结束引导
               localStorage.setItem('tour_end', 'true');
               tourDriver.moveNext();
@@ -327,7 +328,7 @@ const step1 = async () => {
           title: t('setting.modelService.modelService'),
           description: t('setting.modelService.modelServiceTipsThree'),
           onNextClick: async () => {
-            nextTick(() => { 
+            nextTick(() => {
               // 设置缓存，结束引导
               localStorage.setItem('tour_end', 'true');
               tourDriver.moveNext();
@@ -344,7 +345,10 @@ const step1 = async () => {
 
 function init(id) {
   service.getPlatforms().then((res) => {
-    platforms.value = res.map((platform, index) => ({
+    platforms.value = res.sort((u, v) => {
+      // return u.name.toUpperCase() > v.name.toUpperCase() ? 1 : -1; // 忽略大小写进行排序，确保大写字母在小写字母之前
+      return u.name.localeCompare(v.name); // 使用本地语言环境进行排序，确保正确的字母顺序
+    }).map((platform, index) => ({
       ...platform,
       color: colors[index % colors.length]
     }))
@@ -619,10 +623,12 @@ emitter.on('fresh-pages', (value) => {
   width: 100%;
   font-size: 14px;
 }
-.platform-icon{
+
+.platform-icon {
   padding-left: 6px;
   display: flex;
 }
+
 .platform-list {
   overflow-y: auto;
   height: 80vh;

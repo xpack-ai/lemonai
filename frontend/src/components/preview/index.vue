@@ -43,7 +43,7 @@
           <!-- Terminal展示区 -->
           <Terminal class="terminal" v-if="type === 'terminal_run'" :isPreview="true" v-model:content="fileContent"/>
           <!-- 浏览器展示 -->
-          <BrowserImage v-else-if="type === 'browse'" :content="fileContent"/>
+          <BrowserImage v-else-if="type === 'browser'" :content="browserImageData"/>
           <!-- 文件展示 -->
           <FileContent v-else-if="(type === 'write_code' || type === 'read_file') && fileName" :filePath="fileName"
                        :file-content="fileContent"/>
@@ -132,6 +132,7 @@ const typeDetail = ref('');
 const fileName = ref('');
 const fileContent = ref('');
 const browserContent = ref('');
+const browserImageData = ref('');
 
 const msgQueryIDSuMinus = () => {
   if (msgQueryID.value === 0) {
@@ -194,11 +195,11 @@ async function handleMessageUpdate(newValue) {
   }
   typeDetail.value = result;
   switch (actionType) {
-    case 'browse':
+    case 'browser':
       typeDescription.value = t('lemon.preview.browser');
       typeTitle.value = t('lemon.preview.browsing');
-      fileName.value = newValue.extras?.url || '';
-      fileContent.value = '';
+      // fileName.value = newValue.extras?.url || '';
+      browserImageData.value = newValue.meta.json.browser_history_screenshot || '';
       break;
     case 'write_code':
       typeDescription.value = t('lemon.preview.editor');
@@ -255,6 +256,13 @@ async function handleMessageUpdate(newValue) {
       browserContent.value = newValue.meta.json || [];
       fileContent.value = '';
       break;
+    // case "browser":
+    //   typeDescription.value = t('lemon.preview.search');
+    //   typeTitle.value = t('lemon.preview.searching');
+    //   fileName.value = t('lemon.preview.search');
+    //   browserImage.value = newValue.meta.json.browser_history_screenshot || '';
+    //   console.log('browserImage', newValue.meta.json.browser_history_screenshot );
+    //   break;
     default:
       typeDescription.value = '';
       typeTitle.value = '';

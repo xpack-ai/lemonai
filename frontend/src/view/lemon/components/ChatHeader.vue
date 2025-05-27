@@ -5,10 +5,10 @@
     </div>
 
     <div class="header-right">
-      <div class="share-btn" @click="$emit('share')">
+      <!-- <div class="share-btn" @click="$emit('share')">
         <Share />
         <span style="min-width: max-content;">{{ $t('lemon.chatHeader.share') }}</span>
-      </div>
+      </div> -->
       <div class="search-file-btn btn ">
         <a-tooltip :title="$t('lemon.chatHeader.viewAllFiles')" placement="bottom" :arrow="false">
           <SearchFile @click="handleFileExplorer" />
@@ -105,6 +105,7 @@ const open = ref(false)
 
 const handleEditName = () => {
   open.value = true
+  titleValue.value = chatStore.chat.title;
 }
 
 const handleOk = () => {

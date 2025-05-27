@@ -111,6 +111,13 @@ class LLM {
       data: body,
       responseType: "stream"
     };
+
+    if (config.url && config.url.indexOf('openrouter.ai') !== -1) {
+      Object.assign(config.headers, {
+        "HTTP-Referer": 'https://lemonai.cc',
+        "X-Title": "LemonAI"
+      })
+    }
     // console.log('config', config);
     this.resolveConfigHeaders(config);
     // console.log('config', JSON.stringify(config, null, 2));
