@@ -31,8 +31,7 @@ build-runtime-sandbox:
 	  --platform $(PLATFORMS) \
 	  --tag $(IMAGE_NAME):$(TAG) \
 	  --tag $(IMAGE_NAME):latest \
-	  -f $(DOCKERFILE) \
-	  --push .
+	  -f $(DOCKERFILE) 
 
 build-app:
 	@echo "Building and pushing $(APP_IMAGE_NAME):$(APP_TAG) for platforms [$(PLATFORMS)]"
@@ -40,8 +39,7 @@ build-app:
 	  --platform $(PLATFORMS) \
 	  --tag $(APP_IMAGE_NAME):$(APP_TAG) \
 	  --tag $(APP_IMAGE_NAME):latest \
-	  -f $(APP_DOCKERFILE) \
-	  --push .
+	  -f $(APP_DOCKERFILE) 
 
 # Start backend service
 start-backend:
