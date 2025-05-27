@@ -46,9 +46,7 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 #### **Linux**
 
-{% hint style="info" %}
 使用 Ubuntu 22.04 测试。
-{% endhint %}
 
 **Docker 桌面**
 
@@ -69,9 +67,7 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 * 常规：`Use the WSL 2 based engine`已启用。
 * 资源 > WSL 集成：`Enable integration with my default WSL distro`已启用。
 
-{% hint style="info" %}
 必须在 WSL 终端内运行以下用于启动应用程序的 docker 命令。
-{% endhint %}
 
 ### 启动应用程序 <a href="#start-the-app" id="start-the-app"></a>
 

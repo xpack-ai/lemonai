@@ -8,7 +8,7 @@ icon: bullseye-arrow
 
 &#x20;                                                                               [document](https://lemon-11.gitbook.io/lemonai/)
 
-[![README in English](https://img.shields.io/badge/English-d9d9d9)](http://gitlab-wuwei.hexpm.com/open-source/chataa/blob/main/README.md) [![简体中文版自述文件](https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-d9d9d9)](http://gitlab-wuwei.hexpm.com/open-source/chataa/blob/main/README_CN.md)
+[![README in English](https://img.shields.io/badge/English-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README.md) [![简体中文版自述文件](https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README_CN.md)
 
 Lemon is an open-source General AI Agent capable of automating the entire process from requirement planning to result delivery. It can independently think and systematically plan, flexibly invoking various tools in a virtual environment, such as writing and executing code, intelligently browsing the web, operating web applications, and executing commands. Lemon excels at systematically breaking down complex tasks and executing them in an orderly manner, automatically analyzing tasks, prioritizing steps, dynamically adjusting plans, and tracking progress in real time. Its goal is to help users efficiently complete all kinds of tasks.
 
@@ -28,7 +28,7 @@ self subscription mode: in addition to the default model , supports user-defined
 
 ### Using Lemon
 
-* Quickly get Lemon running in your environment with this starter guide. Use our [documentation](https://docs.lemon.ai/) for further references and more in-depth instructions.
+* Quickly get Lemon running in your environment with this starter guide. Use our [documentation](https://document.lemonai.cc/) for further references and more in-depth instructions.
 
 ### System Requirements[​](https://docs.all-hands.dev/modules/usage/installation#system-requirements) <a href="#system-requirements" id="system-requirements"></a>
 
@@ -49,9 +49,7 @@ A system with a modern processor and a minimum of **4GB RAM** is recommended to 
 
 #### Linux
 
-{% hint style="info" %}
 Tested with Ubuntu 22.04.
-{% endhint %}
 
 **Docker Desktop**
 
