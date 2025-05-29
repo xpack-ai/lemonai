@@ -73,13 +73,23 @@ Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划�
 
 运行Lemon最简单的方法是使用 Docker。
 
-<details>
+```bash
+docker pull hexdolemonai/lemon-runtime-sandbox:latest
 
-<summary>docker pull hexdolemonai/lemon-runtime-sandbox:latest<br>docker run -it --rm --pull=always<br>--name lemon-app<br>--env DOCKER_HOST_ADDR=host.docker.internal<br>--publish 5005:5005<br>--add-host host.docker.internal:host-gateway<br>--volume /var/run/docker.sock:/var/run/docker.sock<br>--volume ~/.cache:/.cache<br>--volume ${WORKSPACE_BASE:-$PWD/workspace}:/app/workspace<br>--interactive<br>--tty<br>hexdolemonai/lemon:latest make run</summary>
-
-
-
-</details>
+docker run -it --rm --pull=always \
+  --name lemon-app \
+  --env DOCKER_HOST_ADDR=host.docker.internal \
+  --env ACTUAL_HOST_WORKSPACE_PATH=${WORKSPACE_BASE:-$PWD/workspace} \
+  --publish 5005:5005 \
+  --add-host host.docker.internal:host-gateway \
+  --volume /var/run/docker.sock:/var/run/docker.sock \
+  --volume ~/.cache:/.cache \
+  --volume ${WORKSPACE_BASE:-$PWD/workspace}:/app/workspace \
+  --volume ${WORKSPACE_BASE:-$PWD/data}:/app/data \
+  --interactive \
+  --tty \
+  hexdolemonai/lemon:latest make run
+```
 
 #### 贡献
 
