@@ -1,6 +1,12 @@
+const resolveThinking = require('@src/utils/thinking.js')
+
 const parseJSON = (content) => {
 
   content = content.trim();
+  if (content.startsWith('<think>')) {
+    const { thinking: _, content: output } = resolveThinking(content);
+    content = output;
+  }
 
   // 检查是否包含 JSON 代码块
   const jsonBlockMatch = content.match(/```json\s*\n?([\s\S]*?)\n?\s*```/);

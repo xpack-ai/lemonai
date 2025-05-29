@@ -16,7 +16,7 @@ const finish_action = async (action, context, task_id) => {
   const memorized_content = await memory.getMemorizedContent();
   const result = {
     status: "success",
-    comments: "Task Success！",
+    comments: "Task Success !",
     content: action.params.message,
     memorized: memorized_content,
     meta: {
@@ -39,7 +39,6 @@ const finish_action = async (action, context, task_id) => {
  * @param {string} errorMessage - Error message (optional)
  * @returns {Object} - Contains whether to continue retrying and error result (if termination is needed)
  */
- 
 const retryHandle = (retryCount, totalRetryAttempts, maxRetries, maxTotalRetries, errorMessage = "") => {
   // check if max consecutive retry times is reached
   if (retryCount >= maxRetries) {
@@ -121,7 +120,7 @@ const completeCodeAct = async (task = {}, context = {}) => {
 
       // 5. Execute action
       const action_result = await context.runtime.execute_action(action, context, task.id);
-      if(!context.generate_files){
+      if (!context.generate_files) {
         context.generate_files = [];
       }
       if (action_result.meta && action_result.meta.filepath) {
@@ -136,6 +135,13 @@ const completeCodeAct = async (task = {}, context = {}) => {
       // 7. Handle execution result
       if (status === "success") {
         retryCount = 0; // reset retryCount
+        const { content } = action_result;
+        const task_tool = task.tools[0];
+        if (action.type === task_tool) {
+          const finish_result = { params: { message: content } }
+          const result = await finish_action(finish_result, context, task.id);
+          return result;
+        }
         continue;
       } else if (status === "failure") {
         // use retryHandle to handle retry logic

@@ -1,8 +1,8 @@
 const resolveThinkingPrompt = require("./thinking.prompt");
+const resolveThinking = require("@src/utils/thinking");
 
 const call = require("@src/utils/llm");
 const DEVELOP_MODEL = 'assistant';
-console.log('DEVELOP_MODEL', DEVELOP_MODEL);
 
 const thinking = async (requirement, context = {}) => {
   const { memory, retryCount } = context;
@@ -11,7 +11,8 @@ const thinking = async (requirement, context = {}) => {
   const messages = await memory.getMessages(summarize);
   if (retryCount > 0) {
     // Retry with user reply
-    messages.pop();
+    console.log('retryCount', retryCount);
+    // messages.pop();
   }
 
   // If last message is assistant, return directly, support quickly playback and run action
@@ -36,6 +37,12 @@ const thinking = async (requirement, context = {}) => {
     await memory.addMessage('user', prompt);
   }
   await memory.addMessage('assistant', content);
+
+  if (content && content.startsWith('<think>')) {
+    const { thinking: _, content: output } = resolveThinking(content);
+    return output;
+  }
+
   return content;
 }
 

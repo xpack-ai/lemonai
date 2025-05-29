@@ -337,14 +337,20 @@ router.post("/query", async ({ request, response }) => {
   return response.success(conversations);
 });
 
+const resolveThinking = require("@src/utils/thinking");
 
 async function auto_generate_title(conversation) {
   console.log(conversation)
   const prompt = await resolveGenerateTitlePrompt(conversation.content);
-  const title = await call(prompt, conversation.conversation_id, planning_model_type, {
+  const content = await call(prompt, conversation.conversation_id, planning_model_type, {
     temperature: 0,
   });
-  return title;
+  // handle thinking model result
+  if (content && content.startsWith('<think>')) {
+    const { thinking: _, content: title } = resolveThinking(content);
+    return title;
+  }
+  return content;
 }
 
 module.exports = exports = router.routes();

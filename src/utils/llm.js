@@ -27,6 +27,12 @@ const call = async (prompt, conversation_id, model_type = DEFAULT_MODEL_TYPE, op
   const llm = await createLLMInstance(model, onTokenStream, { model_info });
   const { response_format, messages = [], ...restOptions } = options;
   const context = { messages };
+
+  // call qwen3 model with no_think
+  if (prompt && model_info.model_name.indexOf('qwen3') > -1) {
+    prompt = '/no_think' + prompt;
+  }
+
   const content = await llm.completion(prompt, context, restOptions);
   const inputPrompt = messages.map(item => item.content).join('\n') + '\n' + prompt;
   const input_tokens = calcToken(inputPrompt)

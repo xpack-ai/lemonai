@@ -22,7 +22,7 @@ Your summary should focus on the accomplishments, expressed in natural and fluen
 
 Please wait for me to provide the goal and the task information.
   
-  gaol:${goal}
+  goal:${goal}
   tasks: ${JSON.stringify(newTasks)}
   `
 

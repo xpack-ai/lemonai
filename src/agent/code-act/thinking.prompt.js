@@ -33,12 +33,14 @@ const resolveThinkingPrompt = async (requirement = '', context = {}) => {
   let app_ports = JSON.stringify([context.runtime.app_port_1, context.runtime.app_port_2])
 
 
-  const prompt = `You are an intelligent assistant, an AI helper capable of guiding users in interacting with computers, writing code, and solving tasks. Based on the <Task Goal> and <Tool List>, as well as the context, plan the execution steps and use the appropriate tools to complete the task.
+  const prompt = `You are an intelligent assistant, an AI helper capable of guiding users in interacting with computers, writing code, and solving tasks. 
+Based on the <Task Goal> and <Tool List>, as well as the context, plan the execution steps and use the appropriate tools to complete the task.
 According to the current situation, **in your single reply, you must and only return one XML formatted execution command**. It is strictly forbidden to include multiple action tags in one reply (for example, do not return two <web_search> commands at the same time). Wait for the user to execute the command you provided and provide feedback on the result before you proceed with the next step based on the feedback.
 
 ==== Current System Environment ===
 - Operating System: ${process.platform}
 - Docker Environment OS (for terminal_run): linux
+- Current Time: ${new Date().toLocaleString()}
 ====
 
 ---
@@ -77,7 +79,6 @@ Please use python3 code with PyPDF2 to read PDF files.
 Please use the terminal tool to execute shell commands to meet user requirements. Keep it as simple as possible. When doing fuzzy matching, do not use overly precise commands to avoid failing to find results.
 Code interpreter: node | python3.12;
 **When calling terminal_run, if the command needs to execute from the current conversation directory (e.g., /workspace/Conversation_057f7d/), you MUST set the 'cwd' parameter to '.'.**
-Deploying services: **For ALL service deployments, you MUST use the 'nohup' command and terminate with '&' to ensure background execution and prevention of terminal blockage.** **When deploying a service that requires a port, you MUST select an unused port from the 'Available Ports for Service Deployment' list.** For example: **nohup python3 -m http.server 8000 &**. **It is CRITICAL that 'nohup' and '&' are ALWAYS included for services that do not self-terminate (e.g., 'python3 -m http.server'). Omitting them will lead to terminal blockage and IMMEDIATE task failure.**
 File searching: Please use 'ls' for searching. You can match by type, but do not fuzzy match filenames to avoid not finding the file.
 ==== Task Completion ====
 - **Host Machine Paths**: For tools like write_code, read_file (when not used with terminal_run related contexts), and for general reference in MEMORY Context, file paths are provided in the context of the host machine (e.g., /Users/mingbi/Project/open-object/workspace/Conversation_057f7d/hello_world.html).
@@ -118,7 +119,7 @@ ${tools}
 </write_code>
 === END ===
 
-Start`
+please response with xml format with action and params`
   return prompt;
 }
 

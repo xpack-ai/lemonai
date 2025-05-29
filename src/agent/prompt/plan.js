@@ -1,7 +1,7 @@
 const resolveToolPrompt = require('@src/agent/prompt/tool');
 const Experience = require('@src/models/Experience')
 const call = require("@src/utils/llm");
-
+const USE_EXPERIENCE = process.env.USE_EXPERIENCE || 'TRUE';
 
 const resolvePlanningPrompt = async (goal, files = [], previousResult = '', conversation_id) => {
 
@@ -13,6 +13,10 @@ const resolvePlanningPrompt = async (goal, files = [], previousResult = '', conv
   const experiencePrompt = await resolveExperiencePrompt(goal, conversation_id)
   const planningPrompt = `Please act as a task planning expert, analyze the <task goal> from a professional perspective, based on the existing tool capabilities, provide a step-by-step task plan to ensure the goal is achieved, return json array format
 **Important Note:** The 'title' and 'description' fields within the JSON output MUST be in the same language as the <task goal>.
+
+==== Current System Environment ===
+- Current Time: ${new Date().toLocaleString()}
+====
 
 === Format Description ===
 {
@@ -92,7 +96,6 @@ ${fileStr}
 2. Understand|Analyze the information required for the final code and write it into the markdown file
 3. The final code uses the write_code tool to create an html/markdown file to generate a web page or report (completed in one go), do not implement it step by step
 --- The web page code should be generated in one file at a time. HTML/js/css should be used to complete the task in as complete and minimal steps as possible. Do not implement it in batches to affect the speed. Please clearly describe the detailed requirements of write_code for the final task to avoid deviations from the original requirements during execution ---
-4. Testing is not currently supported. If you output a web page, finally start the preview
 === END ===
 Start analyzing and planning with required format strictly:`
 
@@ -100,6 +103,11 @@ Start analyzing and planning with required format strictly:`
 }
 
 const resolveExperiencePrompt = async (goal, conversation_id) => {
+
+  if (USE_EXPERIENCE === 'FALSE') {
+    return ''
+  }
+
   let experience = await getExperience(goal, conversation_id)
   const experience_goal = experience.goal
   const experience_todo = experience.content

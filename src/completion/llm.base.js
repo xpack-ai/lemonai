@@ -154,6 +154,7 @@ class LLM {
 
     // 处理流式返回
     let fullContent = "";
+    let reasoning = false;
     const fn = new Promise((resolve, reject) => {
       let content = "";
       response.data.on("data", (chunk) => {
@@ -164,8 +165,17 @@ class LLM {
           const message = content.slice(0, index);
           content = content.slice(index + splitter.length);
           const value = this.messageToValue(message);
-          if (value.type === "text") {
-            const ch = value.text;
+          if (value.type === "text" || value.type === 'reasoning') {
+            let ch = value.text;
+            // 处理 reasoning
+            if (value.type === 'reasoning' && fullContent === '') {
+              ch = '<think>' + ch;
+              reasoning = true;
+            }
+            if (value.type === 'text' && reasoning) {
+              ch = '</think>' + ch;
+              reasoning = false;
+            }
             if (ch) {
               // process.stdout.write(ch);
               fullContent += ch;
@@ -221,8 +231,9 @@ class LLM {
       this.tools = choice.delta.tool_calls;
     }
 
+    // reasoning thinking
     if (choice.delta && choice.delta.reasoning_content) {
-      return { type: "text", text: choice.delta.reasoning_content };
+      return { type: "reasoning", text: choice.delta.reasoning_content };
     }
 
     if (choice.delta && choice.delta.content) {
