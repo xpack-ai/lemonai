@@ -23,7 +23,7 @@
       <div class="search-rule-header header">
         {{ $t('setting.searchService.generalSettings') }}
       </div>
-      <div class="search-include-date header search-bool-item">
+      <!-- <div class="search-include-date header search-bool-item">
         <div>
           <span>{{ $t('setting.searchService.includeDate') }}</span>
         </div>
@@ -38,16 +38,16 @@
         <div>
           <a-switch v-model:checked="selectedConfig.cover_provider_search" />
         </div>
-      </div>
+      </div> -->
 
-      <div class="search-enhancement header search-bool-item">
+      <!-- <div class="search-enhancement header search-bool-item">
         <div>
           <span>{{ $t('setting.searchService.searchEnhancement') }}</span>
         </div>
         <div>
           <a-switch v-model:checked="selectedConfig.enable_enhanced_mode" />
         </div>
-      </div>
+      </div> -->
 
       <div class="search-number header search-slider-item">
         <span>{{ $t('setting.searchService.searchResultCount') }}</span>
@@ -62,7 +62,7 @@
         </div>
       </div>
     </div>
-    <div class="search-backlist search-item">
+    <!-- <div class="search-backlist search-item">
       <div class="search-backlist-header header">
         {{ $t('setting.searchService.blacklist') }}
       </div>
@@ -73,7 +73,7 @@
         <a-textarea v-model:value="selectedConfig.blacklist" :rows="4"
           :placeholder="$t('setting.searchService.blacklistPlaceholder')" style="resize: none;" />
       </div>
-    </div>
+    </div> -->
     <!-- <div class="search-blacklist-button" style="display: flex;justify-content: end;">
       <a-button type="primary" class="search-blacklist-save-button" @click="handleSave">
         {{ $t('setting.searchService.save') }}
@@ -193,7 +193,7 @@ function displayName(name) {
 }
 
 onMounted(async () => {
-  if (localStorage.getItem('tour') === 'true') {
+  if (localStorage.getItem('tour') === 'true' && localStorage.getItem('tour_end') !== 'true') {
       step1();
   }
   try {

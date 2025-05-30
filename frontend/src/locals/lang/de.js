@@ -319,7 +319,7 @@ export default {
       emptymodelTips: "Bitte aktivieren Sie die entsprechende Plattform im Modellservice",
       DefaultModelSetting: "Standardmodelleinstellung",
       defaultAssistantModel: "Standard-Assistentenmodell",
-      assistantModelTips: "Modell, das beim Erstellen eines Assistenten verwendet wird; wenn für den Assistenten kein Modell festgelegt ist, wird dieses Modell verwendet",
+      assistantModelTips: "Modell, das beim Erstellen eines Assistenten verwendet wird",
       topicNamingModel: "Themen-Benennungsmodell",
       topicNamingModelTips: "Modell zur automatischen Benennung neuer Themen",
       translationModel: "Übersetzungsmodell",
@@ -470,12 +470,12 @@ export default {
       saturday: "Samstag",
       earlier: "Früher",
     },
-    thinking: "Denken",
-    task_error: "Aufgabe fehlerhaft beendet",
-    stop_task: "Aufgabe gestoppt",
-    jump_to_result: "Zum Ergebnis springen",
-    replay: "Wiederholung",
-    task_finished: "Aufgabe abgeschlossen",
-    task_playing: "Aufgabe läuft"
-  }
+  },
+  thinking: "Denken",
+  task_error: "Aufgabe fehlerhaft beendet",
+  stop_task: "Aufgabe gestoppt",
+  jump_to_result: "Zum Ergebnis springen",
+  replay: "Wiederholung",
+  task_finished: "Aufgabe abgeschlossen",
+  task_playing: "Aufgabe läuft"
 }

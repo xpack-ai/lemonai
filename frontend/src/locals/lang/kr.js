@@ -319,7 +319,7 @@ export default {
       emptymodelTips: "모델 서비스에서 관련 플랫폼을 활성화해주세요",
       DefaultModelSetting: "기본 모델 설정",
       defaultAssistantModel: "기본 어시스턴트 모델",
-      assistantModelTips: "어시스턴트 생성 시 사용되는 모델. 어시스턴트에 모델이 설정되지 않은 경우 이 모델이 사용됩니다",
+      assistantModelTips: "어시스턴트 생성 시 사용되는 모델",
       topicNamingModel: "토픽 명명 모델",
       topicNamingModelTips: "새 토픽을 자동으로 명명하는 데 사용되는 모델",
       translationModel: "번역 모델",
@@ -470,12 +470,12 @@ export default {
       saturday: "토요일",
       earlier: "이전",
     },
-    thinking: "생각 중",
-    task_error: "작업이 비정상적으로 종료되었습니다",
-    stop_task: "작업이 중지되었습니다",
-    jump_to_result: "결과로 이동",
-    replay: "다시 보기",
-    task_finished: "작업 완료",
-    task_playing: "작업 진행 중"
-  }
+  },
+  thinking: "생각 중",
+  task_error: "작업이 비정상적으로 종료되었습니다",
+  stop_task: "작업이 중지되었습니다",
+  jump_to_result: "결과로 이동",
+  replay: "다시 보기",
+  task_finished: "작업 완료",
+  task_playing: "작업 진행 중"
 }

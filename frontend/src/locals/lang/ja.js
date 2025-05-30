@@ -319,7 +319,7 @@ export default {
       emptymodelTips: "モデルサービスで関連プラットフォームを有効にしてください",
       DefaultModelSetting: "デフォルトモデル設定",
       defaultAssistantModel: "デフォルトアシスタントモデル",
-      assistantModelTips: "アシスタント作成時に使用するモデル。アシスタントにモデルが設定されていない場合、このモデルが使用されます",
+      assistantModelTips: "アシスタント作成時に使用するモデル",
       topicNamingModel: "トピック命名モデル",
       topicNamingModelTips: "新しいトピックを自動命名するためのモデル",
       translationModel: "翻訳モデル",
@@ -470,12 +470,12 @@ export default {
       saturday: "土曜日",
       earlier: "それ以前",
     },
-    thinking: "思考中",
-    task_error: "タスクが異常終了しました",
-    stop_task: "タスクを停止しました",
-    jump_to_result: "結果にジャンプ",
-    replay: "再生",
-    task_finished: "タスクが完了しました",
-    task_playing: "タスク実行中"
-  }
+  },
+  thinking: "思考中",
+  task_error: "タスクが異常終了しました",
+  stop_task: "タスクを停止しました",
+  jump_to_result: "結果にジャンプ",
+  replay: "再生",
+  task_finished: "タスクが完了しました",
+  task_playing: "タスク実行中"
 }

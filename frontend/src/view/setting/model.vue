@@ -87,7 +87,7 @@
                   {{ choose_platform.api_url }}chat/completions
                 </span>
                 <span v-else class="api-address">
-                  {{ choose_platform?.api_url }}/v1/chat/completions
+                  {{ choose_platform?.api_url }}/chat/completions
                 </span>
               </div>
               <div class="api-address">
@@ -273,7 +273,8 @@ onMounted(async () => {
     emitter.emit('closeTour')
   }, 500)
   await init();
-  if (localStorage.getItem('tour') === 'true') {
+  //localStorage.setItem('tour_end', 'true');
+  if (localStorage.getItem('tour') === 'true' && localStorage.getItem('tour_end') !== 'true') {
     step1();
   }
 })
@@ -299,7 +300,6 @@ const step1 = async () => {
           onNextClick: async () => {
             nextTick(() => {
               // 设置缓存，结束引导
-              localStorage.setItem('tour_end', 'true');
               tourDriver.moveNext();
             });
           },
@@ -314,7 +314,6 @@ const step1 = async () => {
           onNextClick: async () => {
             nextTick(() => {
               // 设置缓存，结束引导
-              localStorage.setItem('tour_end', 'true');
               tourDriver.moveNext();
             });
           },

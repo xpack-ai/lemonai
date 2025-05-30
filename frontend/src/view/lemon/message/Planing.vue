@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="loading" style="margin-top: 5px;" v-if="item.is_collapse && item.status && item.status == 'running' && (!item.actions || item.actions.length == 0)">
-                <LoadingOutlined/><span>{{ t('thinking') }}</span>
+                <LoadingOutlined/><span>{{ $t('thinking') }}</span>
             </div>
             <div class="sub_planing" v-if="item.is_collapse && item.actions && item.actions.length > 0">
                 <!-- 垂直虚线 v-if="index !== planing.length - 1" 判断是否有 border-->
@@ -34,7 +34,7 @@
                             <Observation :action="subItem" v-if="subItem.content!=''" />
                         </div>
                         <div class="loading" v-if="subItem.status!='running' && subIndex== item.actions.length-1 && item.status=='running'">
-                            <LoadingOutlined/><span>{{ t('thinking') }}</span>
+                            <LoadingOutlined/><span>{{ $t('thinking') }}</span>
                         </div>
                     </div>
                    

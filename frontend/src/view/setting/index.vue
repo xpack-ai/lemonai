@@ -155,7 +155,7 @@ emitter.on('closeTour', () => {
 
 onMounted(() => {
   nextTick(() => {
-    if (localStorage.getItem('tour') === 'true') {
+    if (localStorage.getItem('tour') === 'true' && localStorage.getItem('tour_end') !== 'true') {
       step1();
     }
   });

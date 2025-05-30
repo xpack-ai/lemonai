@@ -81,6 +81,11 @@ const tour = async () => {
 
 //检查是否配置模型
 async function checkModel() { 
+  //判断有没有 localStorage.setItem('tour_end', 'true');
+  if(localStorage.getItem('tour_end') == 'true'){
+    localStorage.setItem('tour', 'false');
+    return;
+  }
   let res =  await service.checkModel();
   if(res.has_default_platform && res.has_enabled_platform && res.has_search_setting){
     localStorage.setItem('tour', 'false');

@@ -323,7 +323,7 @@ export default {
             emptymodelTips: "Please enable the relevant platform in the model service",
             DefaultModelSetting: "Default Model Setting",
             defaultAssistantModel: "Default Assistant Model",
-            assistantModelTips: "The model used when creating an assistant; if no model is set for the assistant, this model is used",
+            assistantModelTips: "The model used when creating an assistant",
             topicNamingModel: "Topic Naming Model",
             topicNamingModelTips: "The model used for automatically naming new topics",
             translationModel: "Translation Model",

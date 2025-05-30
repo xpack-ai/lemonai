@@ -13,12 +13,13 @@ function handleMessage(message, messages) {
 
     const { action_type } = message.meta;
      console.log("handleMessage",message)
-    if(messageStatus == "stop" && action_type !="question"){
+    if(messageStatus == "stop" && action_type !="question" && action_type !="auto_reply"){
         return 
     }
 
     switch (action_type) {
         case "auto_reply":
+            messageStatus = "running"
             return handleAutoReply(message,messages);
         case "plan":
             return  handlePlan(message,messages);
@@ -28,13 +29,9 @@ function handleMessage(message, messages) {
         case "finish_summery":
             return handleFinishSummaryAddId(message,messages);
         case "stop":
-            messages.push(message);
-            messageStatus = "stop";
-            return handleStop(messages);
+            return handleStop(message,messages);
         case "error":
-            messages.push(message);
-            messageStatus = "stop";
-            return handleStop(messages);
+            return handleStop(message,messages);
         case "finish":
             return
 
@@ -47,7 +44,9 @@ function handleMessage(message, messages) {
     }
 }
 
-function handleStop(messages){
+function handleStop(message,messages){
+    messages.push(message);
+    messageStatus = "stop";
     console.log('handleStop', messages);
     //找到 meta.action_type 是 plan 的
     messages.forEach((message) => {

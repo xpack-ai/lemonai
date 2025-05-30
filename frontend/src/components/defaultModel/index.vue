@@ -235,7 +235,7 @@ const step1 = async () => {
 
 onMounted(async () => {
     // localStorage.setItem('tour', 'true');
-    if (localStorage.getItem('tour') === 'true') {
+    if (localStorage.getItem('tour') === 'true' && localStorage.getItem('tour_end') !== 'true') {
         step1();
     }
     emitter.on('default-assistant-setting-save', (model_config) => {

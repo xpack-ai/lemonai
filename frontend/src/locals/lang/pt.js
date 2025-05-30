@@ -319,7 +319,7 @@ export default {
       emptyModelTips: "Ative a plataforma correspondente no serviço de modelo",
       DefaultModelSetting: "Configuração de modelo padrão",
       defaultAssistantModel: "Modelo de assistente padrão",
-      assistantModelTips: "Modelo usado ao criar assistentes; se nenhum modelo for definido para o assistente, este será usado",
+      assistantModelTips: "Modelo usado ao criar assistentes",
       topicNamingModel: "Modelo de nomeação de tópicos",
       topicNamingModelTips: "Modelo usado para nomear automaticamente novos tópicos",
       translationModel: "Modelo de tradução",
@@ -470,12 +470,12 @@ export default {
       saturday: "Sábado",
       earlier: "Anterior"
     },
-    thinking: "Pensando",
-    task_error: "Tarefa terminada anormalmente",
-    stop_task: "Tarefa interrompida",
-    jump_to_result: "Ir para o resultado",
-    replay: "Reproduzir",
-    task_finished: "Tarefa concluída",
-    task_playing: "Tarefa em andamento"
-  }
+  },
+  thinking: "Pensando",
+  task_error: "Tarefa terminada anormalmente",
+  stop_task: "Tarefa interrompida",
+  jump_to_result: "Ir para o resultado",
+  replay: "Reproduzir",
+  task_finished: "Tarefa concluída",
+  task_playing: "Tarefa em andamento"
 }

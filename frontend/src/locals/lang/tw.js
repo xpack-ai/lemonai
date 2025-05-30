@@ -319,7 +319,7 @@ export default {
       emptymodelTips: "請在模型服務中啟用相關平台",
       DefaultModelSetting: "預設模型設定",
       defaultAssistantModel: "預設助理模型",
-      assistantModelTips: "創建助理時使用的模型；若助理未設定模型，則使用此模型",
+      assistantModelTips: "創建助理時使用的模型",
       topicNamingModel: "主題命名模型",
       topicNamingModelTips: "用於自動命名新主題的模型",
       translationModel: "翻譯模型",
@@ -470,12 +470,12 @@ export default {
       saturday: "星期六",
       earlier: "更早"
     },
-    thinking: "思考中",
-    task_error: "任務異常終止",
-    stop_task: "已停止任務",
-    jump_to_result: "跳轉到結果",
-    replay: "重播",
-    task_finished: "任務完成",
-    task_playing: "任務進行中"
-  }
+  },
+  thinking: "思考中",
+  task_error: "任務異常終止",
+  stop_task: "已停止任務",
+  jump_to_result: "跳轉到結果",
+  replay: "重播",
+  task_finished: "任務完成",
+  task_playing: "任務進行中"
 }

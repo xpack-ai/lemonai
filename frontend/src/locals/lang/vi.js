@@ -162,7 +162,7 @@ export default {
       emptymodelTips: "Vui lòng bật nền tảng liên quan trong Dịch vụ Mô hình",
       DefaultModelSetting: "Cài đặt Mô hình Mặc định",
       defaultAssistantModel: "Mô hình Trợ lý Mặc định",
-      assistantModelTips: "Mô hình được sử dụng khi tạo trợ lý; nếu không có mô hình nào được đặt cho trợ lý, mô hình này sẽ được sử dụng",
+      assistantModelTips: "Mô hình được sử dụng khi tạo trợ lý",
       topicNamingModel: "Mô hình Đặt tên Chủ đề",
       topicNamingModelTips: "Mô hình được sử dụng để tự động đặt tên cho các chủ đề mới",
       translationModel: "Mô hình Dịch thuật",
@@ -259,12 +259,12 @@ export default {
       envPlaceholder: "KEY1=VALUE1\nKEY2=VALUE2",
       mcpServer: "Máy chủ MCP"
     },
-    thinking: "Đang suy nghĩ",
-    task_error: "Lỗi nhiệm vụ",
-    stop_task: "Đã dừng nhiệm vụ",
-    jump_to_result: "Chuyển đến kết quả",
-    replay: "Xem lại",
-    task_finished: "Nhiệm vụ hoàn tất",
-    task_playing: "Đang chạy nhiệm vụ"
-  }
+  },
+  thinking: "Đang suy nghĩ",
+  task_error: "Lỗi nhiệm vụ",
+  stop_task: "Đã dừng nhiệm vụ",
+  jump_to_result: "Chuyển đến kết quả",
+  replay: "Xem lại",
+  task_finished: "Nhiệm vụ hoàn tất",
+  task_playing: "Đang chạy nhiệm vụ"
 }

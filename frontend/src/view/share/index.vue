@@ -12,13 +12,13 @@
                     <div style="display: flex;align-items: center;">
                         <div><img style="width: 20px;height: 20px; margin-right: 5px;" src="@/assets/image/lemon.jpg" alt="" /></div>
                         <span style="color: #34322d;font-size: .875rem;line-height: 1.25rem;">
-                            <div v-if="playStatus!='running'">LemonAI{{ t('task_finished') }}</div>
-                            <div v-else>LemonAI{{ t('task_playing') }}...</div>
+                            <div v-if="playStatus!='running'">LemonAI{{ $t('task_finished') }}</div>
+                            <div v-else>LemonAI{{ $t('task_playing') }}...</div>
                         </span>
                     </div>
                     <div>
-                        <a-button v-if="playStatus!='running'" type="primary" @click="handleRestart">{{ t('replay') }}</a-button>
-                        <a-button v-else type="primary" @click="toResult">{{ t('jump_to_result') }}</a-button>
+                        <a-button v-if="playStatus!='running'" type="primary" @click="handleRestart">{{ $t('replay') }}</a-button>
+                        <a-button v-else type="primary" @click="toResult">{{ $t('jump_to_result') }}</a-button>
                     </div>
                 </div>
             </div>

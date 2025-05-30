@@ -319,7 +319,7 @@ export default {
       emptymodelTips: "Por favor, habilita la plataforma relevante en el servicio de modelo",
       DefaultModelSetting: "Configuración de modelo predeterminado",
       defaultAssistantModel: "Modelo de asistente predeterminado",
-      assistantModelTips: "Modelo utilizado al crear un asistente; si el asistente no tiene un modelo configurado, se utilizará este modelo",
+      assistantModelTips: "Modelo utilizado al crear un asistente",
       topicNamingModel: "Modelo de nombramiento de temas",
       topicNamingModelTips: "Modelo utilizado para nombrar automáticamente nuevos temas",
       translationModel: "Modelo de traducción",
@@ -470,12 +470,12 @@ export default {
       saturday: "Sábado",
       earlier: "Antes",
     },
-    thinking: "Pensando",
-    task_error: "Tarea terminada con error",
-    stop_task: "Tarea detenida",
-    jump_to_result: "Ir al resultado",
-    replay: "Reproducir",
-    task_finished: "Tarea completada",
-    task_playing: "Tarea en progreso"
-  }
+  },
+  thinking: "Pensando",
+  task_error: "Tarea terminada con error",
+  stop_task: "Tarea detenida",
+  jump_to_result: "Ir al resultado",
+  replay: "Reproducir",
+  task_finished: "Tarea completada",
+  task_playing: "Tarea en progreso"
 }

@@ -53,7 +53,6 @@ const handleMenuClick = (item) => {
 .menu-side {
   width: 200px;
   padding: 16px 0;
-  background: white;
 }
 .menu-item {
   display: flex;
