@@ -6,6 +6,7 @@ const CHANNEL = {
 
 const serviceHash = {
   'azure': require('./llm.azure.openai'),
+  'gemini': require('./llm.gemini'),
 }
 
 const resolveServiceConfig = require('./resolveServiceConfig');
@@ -65,22 +66,15 @@ const createLLMInstance = async (config, onTokenStream, options = {}) => {
   console.log('config', config);
   const { channel, service, model } = config;
 
-  const set = new Set(['chataa', 'chataa-share'])
-  if (channel === CHANNEL.PROVIDER && set.has(service)) {
-    const LLM = serviceHash[service];
-    const llm = new LLM(onTokenStream, options);
-    return llm;
-  }
-
   if (channel === CHANNEL.PROVIDER) {
-    const LLM = serviceHash[service];
+    const LLM = serviceHash[service.toLowerCase()];
     console.log('options:', options);
     const llm_config = await resolvePlatformServiceConfig(options.model_info)
     if (!LLM) {
       return resolveLLMStandard(llm_config, model, onTokenStream);
     }
-    // console.log('llm.options', llm_config.config);
-    const llm = new LLM(onTokenStream, model, llm_config.config || {}, options);
+    // console.log("llm_config", llm_config);
+    const llm = new LLM(onTokenStream, model, llm_config || {});
     return llm;
   }
 
