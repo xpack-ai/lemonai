@@ -111,7 +111,7 @@ RUN if [ -z "${RELEASE_TAG}" ]; then \
     cp ${OPENVSCODE_SERVER_ROOT}/bin/remote-cli/openvscode-server ${OPENVSCODE_SERVER_ROOT}/bin/remote-cli/code && \
     rm -f ${RELEASE_TAG}-linux-${arch}.tar.gz
 
-
+ENV SKIP_LLM_API_KEY_VERIFICATION=true
 
 # ================================================================
 # END: Build from versioned image
