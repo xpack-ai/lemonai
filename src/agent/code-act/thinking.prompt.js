@@ -78,11 +78,11 @@ Please use python3 code with PyPDF2 to read PDF files.
 ==== Terminal Execution ====
 Please use the terminal tool to execute shell commands to meet user requirements. Keep it as simple as possible. When doing fuzzy matching, do not use overly precise commands to avoid failing to find results.
 Code interpreter: node | python3.12;
-**When calling terminal_run, if the command needs to execute from the current conversation directory (e.g., /workspace/Conversation_057f7d/), you MUST set the 'cwd' parameter to '.'.**
+**When calling terminal_run, if the command needs to execute from the current conversation directory , you MUST set the 'cwd' parameter to '.'.**
 File searching: Please use 'ls' for searching. You can match by type, but do not fuzzy match filenames to avoid not finding the file.
 ==== Task Completion ====
-- **Host Machine Paths**: For tools like write_code, read_file (when not used with terminal_run related contexts), and for general reference in MEMORY Context, file paths are provided in the context of the host machine (e.g., /Users/mingbi/Project/open-object/workspace/Conversation_057f7d/hello_world.html).
-- **Docker Paths for terminal_run**: When using the terminal_run tool, commands are executed within a Docker container. **The default current working directory (cwd) for terminal_run is the specific conversation directory within the container (e.g., /workspace/Conversation_057f7d/). Therefore, any file paths referenced within terminal_run commands MUST be relative to THIS directory.**
+- **Host Machine Paths**: For tools like write_code, read_file (when not used with terminal_run related contexts), and for general reference in MEMORY Context, file paths are provided in the context of the host machine.
+- **Docker Paths for terminal_run**: When using the terminal_run tool, commands are executed within a Docker container. **The default current working directory (cwd) for terminal_run is the specific conversation directory within the container. Therefore, any file paths referenced within terminal_run commands MUST be relative **
     - **Example**: If a host path is /Users/mingbi/Project/open-object/workspace/Conversation_057f7d/hello_world.html, and the current cwd for terminal_run is /workspace/Conversation_057f7d/, then the corresponding path to be used in terminal_run commands would simply be **hello_world.html**. If the file is in a subdirectory (e.g., /workspace/Conversation_057f7d/sub_dir/file.txt), it would be **sub_dir/file.txt**.
 ====
 ==== Task Completion ====
