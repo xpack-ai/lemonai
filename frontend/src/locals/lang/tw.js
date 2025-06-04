@@ -242,6 +242,8 @@ export default {
       apiKey: "API 密鑰",
       apiKeyPlaceholder: "請輸入 API 密鑰",
       getApiKey: "點擊此處獲取密鑰",
+      check: "檢查",
+      selectCheckModel: "請選擇檢查模型",
       apiAddress: "API 地址",
       apiAddressPlaceholder: "請輸入 API 地址",
       apiAddressTip: "以 / 結尾忽略 v1 版本，以 # 結尾強制使用輸入地址",

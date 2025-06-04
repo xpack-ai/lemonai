@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 // ensure the temporary directory exists
-const cache_dir = path.resolve(__dirname, '../../../cache/memory');
+const { getDirpath } = require('@src/utils/electron');
+const cache_dir = getDirpath('Caches/memory');
 fs.mkdirSync(cache_dir, { recursive: true }); // create directory, do nothing if it already exists
 
 class LocalMemory {

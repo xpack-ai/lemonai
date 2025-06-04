@@ -1,6 +1,7 @@
 const path = require('path');
 
-const WORKSPACE_DIR = path.join(__dirname, '../../', process.env.WORKSPACE_DIR || 'workspace');
+const { getDirpath } = require('@src/utils/electron');
+const WORKSPACE_DIR = getDirpath(process.env.WORKSPACE_DIR || 'workspace');
 const resolveWorkspaceDir = async () => {
   return WORKSPACE_DIR;
 }

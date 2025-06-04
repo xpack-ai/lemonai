@@ -10,7 +10,8 @@ const browser = require('./browser')
 const path = require('path');
 const { run: vscode_init } = require('./plugins/vscode/index');
 const { run: browser_init } = require('./plugins/browser/index');
-
+const { getDirpath } = require('@src/utils/electron');
+const WORKSPACE_DIR = getDirpath(process.env.WORKSPACE_DIR || 'workspace');
 
 // Create Koa application instance
 const app = new Koa();
@@ -29,7 +30,7 @@ app.use(async ctx => {
     let result
     switch (action.type) {
       case 'terminal_run':
-        action.params.cwd = path.resolve(__dirname, '../../../workspace', action.params.cwd || '.');
+        action.params.cwd = path.resolve(__dirname, WORKSPACE_DIR, action.params.cwd || '.');
         result = await terminal_run(action, uuid);
         break;
       case 'browser':

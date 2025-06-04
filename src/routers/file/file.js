@@ -3,7 +3,8 @@ const router = require("koa-router")();
 const path = require('path');
 const fs = require('fs');
 const File = require("@src/models/File");
-const WORKSPACE_DIR = path.join(__dirname, '../../../', process.env.WORKSPACE_DIR || 'workspace');
+const { getDirpath } = require('@src/utils/electron');
+const WORKSPACE_DIR = getDirpath(process.env.WORKSPACE_DIR || 'workspace');
 
 /**
  * @swagger

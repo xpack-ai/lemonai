@@ -3,7 +3,8 @@ const path = require('path');
 
 const Task = require('@src/models/Task');
 // 确保临时目录存在
-const cache_dir = path.resolve(__dirname, '../../cache/task');
+const { getDirpath } = require('@src/utils/electron');
+const cache_dir = getDirpath('Caches/task');
 fs.mkdirSync(cache_dir, { recursive: true }); // 创建目录，如果已存在则不做任何操作
 
 class TaskManager {

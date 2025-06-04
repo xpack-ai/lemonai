@@ -242,6 +242,8 @@ export default {
       apiKey: "API-Schlüssel",
       apiKeyPlaceholder: "Bitte API-Schlüssel eingeben",
       getApiKey: "Hier klicken, um Schlüssel zu erhalten",
+      check:  "Prüfen",
+      selectCheckModel:"Bitte wählen Sie das Prüfmodell aus",
       apiAddress: "API-Adresse",
       apiAddressPlaceholder: "Bitte API-Adresse eingeben",
       apiAddressTip: "Ignoriere v1-Version, wenn mit / endet, erzwinge die Verwendung der eingegebenen Adresse, wenn mit # endet",

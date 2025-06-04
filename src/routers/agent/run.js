@@ -9,8 +9,8 @@ const Message = require("@src/utils/message");
 const File = require('@src/models/File')
 const path = require('path')
 const fs = require('fs').promises
-const WORKSPACE_DIR = path.join(__dirname, '../../../', process.env.WORKSPACE_DIR || 'workspace');
-
+const { getDirpath } = require('@src/utils/electron');
+const WORKSPACE_DIR = getDirpath(process.env.WORKSPACE_DIR || 'workspace');
 const activeAgents = new Map();
 
 /**

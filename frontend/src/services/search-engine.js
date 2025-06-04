@@ -21,7 +21,13 @@ const service = {
         const url = "/api/search_provider_setting/"
         const response = await http.put(url, config)
         return response.data || {}
-    }
+    },
+    async checkSearchProvider(config) {
+        const url = "/api/search_provider_setting/check_search_provider"
+        const response = await http.post(url, config)
+        return response || {}
+    },
+    //<span>/api<wbr>/search_provider_setting<wbr>/check_search_provider</span>
 }
 
 export default service;

@@ -14,8 +14,8 @@ const { write_code } = require('@src/runtime/utils/tools');
 const { v4: uuidv4 } = require("uuid");
 const fs = require('fs').promises;
 const path = require('path')
-const WORKSPACE_DIR = path.join(__dirname, '../../', process.env.WORKSPACE_DIR || 'workspace');
-
+const { getDirpath } = require('@src/utils/electron');
+const WORKSPACE_DIR = getDirpath(process.env.WORKSPACE_DIR || 'workspace');
 
 const LocalRuntime = require("@src/runtime/LocalRuntime")
 const DockerRuntime = require("@src/runtime/DockerRuntime");

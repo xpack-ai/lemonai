@@ -34,8 +34,14 @@ async function sendMessage(question, conversationId, files) {
     const messages = chatStore.messages;
     chatStore.status = 'running';
     chatStore.handleInitMessage(question, files);
-
-    const uri = '/api/agent/run';
+    let baseURL = ""
+    //判断是不是开发环境
+    if(import.meta.env.DEV){
+      baseURL = ""
+    }else{
+      baseURL = import.meta.env.VITE_SERVICE_URL || 'http://localhost:3000';
+    }
+    const uri = `${baseURL}/api/agent/run`;
     const options = {
         question: question,
         conversation_id: conversationId,

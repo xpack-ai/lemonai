@@ -51,7 +51,8 @@ class DockerRuntime {
    */
   constructor(options) {
 
-    let workspace_dir = path.join(__dirname, '../../', process.env.WORKSPACE_DIR || 'workspace');
+    const { getDirpath } = require('@src/utils/electron');
+    let workspace_dir = getDirpath(process.env.WORKSPACE_DIR || 'workspace');
     if (DOCKER_HOST_ADDR) {
       workspace_dir = process.env.ACTUAL_HOST_WORKSPACE_PATH;
     }

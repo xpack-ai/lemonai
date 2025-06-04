@@ -5,7 +5,7 @@
         {{ $t('setting.searchService.searchProvider') }}
       </div>
       <div class="search-choose-list">
-        <a-select v-model:value="selectedTemplate" :loading="loading"  id="searchTemplates">
+        <a-select v-model:value="selectedTemplate" :loading="loading" style="width:100%"  id="searchTemplates">
           <a-select-option v-for="item in searchTemplates" :key="item.id" :value="item.name">
             <img :src="item.logo_url" alt="" class="logo" />
             <span>{{ displayName(item.name) }}</span>
@@ -16,7 +16,11 @@
           <a-input-password v-model:value="selectedConfig.base_config.api_key" class="search-choose-api-input" 
             :placeholder="$t('setting.searchService.apiKeyPlaceholder')" :disabled="loading" @blur="handleSave"/>
         </div>
+        <a-button class="save-button" @click="handleCheckApiKey" :loading="checkLoading" >{{
+                $t('setting.modelService.check') }}</a-button>
       </div>
+      <a v-if="selectedConfig.provider_name== 'Tavily'" href="https://app.tavily.com/" target="_blank"
+      class="get-api-link">{{ $t('setting.modelService.getApiKey') }}</a>
     </div>
 
     <div class="search-rule search-item">
@@ -116,9 +120,31 @@ const showApiConfig = computed(() => {
   return selectedTemplate.value === 'Tavily'
 })
 
-
+const checkLoading =  ref(false)
 
 let tourDriver = null; // 提升作用域，并初始化为空
+
+const handleCheckApiKey = async () => { 
+  let config = {
+  }
+  //checkSearchProvider
+  if(selectedConfig.value.provider_name == "Tavily"){
+    config.type =  "tavily"
+    config.api_key =  selectedConfig.value.base_config.api_key;
+  }else{
+    config.type =  "local"
+    config.engine =  selectedConfig.value.provider_name;
+  }
+  console.log(selectedConfig.value)
+  checkLoading.value = true
+  let res =  await searchEngineService.checkSearchProvider(config)
+  checkLoading.value = false
+  if(res.status!="fail"){
+    message.success (res.message)
+  }else{
+    message.error (res.message)
+  }
+}
 
 const step1 = async () => {
   tourDriver = driver({
@@ -312,13 +338,10 @@ const handleSave = async () => {
   display: flex;
   flex-direction: row;
   gap: 16px;
+  align-items: center;
 
-  div:first-child {
-    width: 20%;
-  }
-
-  div:last-child {
-    width: 80%;
+  #searchTemplates{
+    width: 100%;
   }
 }
 
@@ -328,6 +351,14 @@ const handleSave = async () => {
   align-items: center;
   flex-direction: row;
   gap: 10px;
+  width: 100%;
+}
+
+.get-api-link {
+  margin-left: 5px;
+  margin-top: 5px;
+  font-size: 11px;
+  color: #1890ff;
 }
 
 .search-choose-api-input {

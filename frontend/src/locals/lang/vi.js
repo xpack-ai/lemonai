@@ -102,6 +102,8 @@ export default {
       apiKey: "Khóa API",
       apiKeyPlaceholder: "Vui lòng nhập khóa API",
       getApiKey: "Nhấp vào đây để lấy khóa",
+      check: "Kiểm tra",
+      selectCheckModel: "Vui lòng chọn mô hình kiểm tra",
       apiAddress: "Địa chỉ API",
       apiAddressPlaceholder: "Vui lòng nhập địa chỉ API",
       apiAddressTip: "/ ở cuối bỏ qua phiên bản v1, # ở cuối buộc sử dụng địa chỉ đã nhập",

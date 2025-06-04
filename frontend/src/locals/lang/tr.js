@@ -242,6 +242,8 @@ export default {
       apiKey: "API Anahtarı",
       apiKeyPlaceholder: "API anahtarını girin",
       getApiKey: "Anahtarı almak için buraya tıklayın",
+      check: "Kontrol Et",
+selectCheckModel: "Lütfen kontrol modelini seçin",
       apiAddress: "API Adresi",
       apiAddressPlaceholder: "API adresini girin",
       apiAddressTip: "/ ile bitiyorsa v1 sürümü yoksayılır, # ile bitiyorsa girilen adres zorunlu kullanılır",

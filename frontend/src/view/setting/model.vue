@@ -71,8 +71,12 @@
         <div class="info-content">
           <div class="info-platform">
             <span class="api-key">{{ $t('setting.modelService.apiKey') }}</span>
-            <a-input-password id="api-key-value" v-model:value="choose_platform.api_key"
+            <div style="    display: flex;align-items: center;">
+              <a-input-password id="api-key-value" v-model:value="choose_platform.api_key"
               :placeholder="$t('setting.modelService.apiKeyPlaceholder')" class="api-input" />
+              <a-button class="save-button" @click="handleCheckApiKey" :loading="checkLoading" >{{
+                $t('setting.modelService.check') }}</a-button>
+            </div>
             <a v-if="choose_platform.key_obtain_url" :href="choose_platform.key_obtain_url" target="_blank"
               class="get-api-link">{{ $t('setting.modelService.getApiKey') }}</a>
             <span class="api-address-title">{{ $t('setting.modelService.apiAddress') }}</span>
@@ -108,6 +112,14 @@
     <add-platform ref="addPlatformRef" @add-platform="handleAddPlatform" />
     <setting-platform ref="settingPlatformRef" @update-platform="handleUpdatePlatform" />
   </div>
+  <!-- 选择模型弹窗 -->
+  <a-modal  :cancelText=" $t('setting.modelService.cancel')" :okText="$t('setting.modelService.confirm')" v-model:open="modelVisible" centered   :title="$t('setting.modelService.selectCheckModel')" width="400px" @ok="handleOk">
+      <a-select v-model:value="selectedModel" style="width: 100%">
+        <a-select-option v-for="model in models" :key="model.id" :value="model.model_id">
+          {{ model.model_name }}
+        </a-select-option>
+      </a-select>
+  </a-modal> 
 </template>
 
 <script setup>
@@ -136,6 +148,37 @@ const originalInfo = ref({})
 const isInfoChanged = ref(false)
 const showInfoPlatform = ref(true)
 const defaultSubscriptionModels = ref([])
+const modelVisible  = ref(false)
+const selectedModel = ref(null)
+const checkLoading = ref(false)
+
+//handleCheckApiKey
+const  handleCheckApiKey = async () => { 
+  modelVisible.value = true;
+}
+
+const handleOk =  async () => {
+  if (!selectedModel.value) {
+    //setting.modelService.selectCheckModel
+    message.error(t('setting.modelService.selectCheckModel'))
+  }
+  //checkApiAvailability
+
+  modelVisible.value = false;
+  checkLoading.value = true
+  let res = await service.checkApiAvailability({
+    "base_url": choose_platform.value.api_url,
+    "api_key": choose_platform.value.api_key,
+    "model": selectedModel.value
+  })
+  checkLoading.value = false
+  if(res.status){
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
+}
+
 // i18 support
 function getPlatformDisplayName(name) {
   const key = `setting.modelService.platforms.${name.replace(' ', '')}`;

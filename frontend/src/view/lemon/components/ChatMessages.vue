@@ -151,6 +151,7 @@ const copyMessage = (message) => {
   }
 
   &.user {
+    width: 100%;
     align-self: flex-end;
     // flex-direction: row-reverse;
 

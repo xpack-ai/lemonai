@@ -243,6 +243,8 @@ export default {
       apiKey: "API密钥",
       apiKeyPlaceholder: "请输入API密钥",
       getApiKey: "点击此处获取密钥",
+      check:  "检查",
+      selectCheckModel:"请选择检查的模型",
       apiAddress: "API地址",
       apiAddressPlaceholder: "请输入API地址",
       apiAddressTip: "以/结尾忽略v1版本，以#结尾强制使用输入地址",

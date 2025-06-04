@@ -58,6 +58,12 @@ const service = {
     const response = await http.put(uri, modelData)
     return response.data || {}
   },
+  //<span>/api<wbr>/platform<wbr>/check_api_availability</span>
+  async checkApiAvailability(params) {
+    const uri = `/api/platform/check_api_availability`
+    const response = await http.post(uri, params)
+    return response || {}
+  },
 
 }
 

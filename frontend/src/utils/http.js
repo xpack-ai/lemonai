@@ -11,7 +11,7 @@ console.log("环境变量", import.meta.env);
 // 创建 axios 实例, 请求超时时间为 10 秒 baseURL: import.meta.env.BASE_URL,
 const instance = axios.create({
   
-  baseURL: import.meta.env.BASE_URL,
+  baseURL: import.meta.env.VITE_SERVICE_URL,
   timeout: 100000,
 });
 

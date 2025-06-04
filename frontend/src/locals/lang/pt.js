@@ -242,6 +242,8 @@ export default {
       apiKey: "Chave API",
       apiKeyPlaceholder: "Insira a chave API",
       getApiKey: "Clique aqui para obter a chave",
+      check: "Verificar",
+selectCheckModel: "Por favor, selecione o modelo de verificação",
       apiAddress: "Endereço API",
       apiAddressPlaceholder: "Insira o endereço API",
       apiAddressTip: "Terminando com / ignora a versão v1, terminando com # força o uso do endereço inserido",
