@@ -10,6 +10,12 @@ console.log(env);
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  root: __dirname,
+  base: './',
+  build: {
+    outDir: '../.vite/renderer/main_window', // 输出到 Electron Forge 期望的目录
+    emptyOutDir: false
+  },
   plugins: [
     vue(),
     svgLoader(),
