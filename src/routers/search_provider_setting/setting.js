@@ -3,6 +3,8 @@ const router = require("koa-router")();
 const UserProviderConfig = require("@src/models/UserProviderConfig");
 const UserSearchSetting = require("@src/models/UserSearchSetting");
 const SearchProviderTable = require("@src/models/SearchProvider");
+const TalivySearch = require("@src/tools/impl/web_search/TalivySearch");
+const LocalSearch = require("@src/tools/impl/web_search/LocalSearch");
 // upsert user provider config
 /**
  * @swagger
@@ -73,7 +75,7 @@ router.put("/", async (ctx) => {
         ctx.body = { code: 404, msg: "Provider not found" };
         return;
     }
-    
+
     // 检查用户提供者配置表中是否存在记录
     const userConfig = await UserSearchSetting.findOne({
         where: { id: 1 } // if create user provider config, there be only one record
@@ -231,5 +233,61 @@ router.get("/templates", async (ctx) => {
     const providers = await SearchProviderTable.findAll();
     ctx.body = { code: 200, data: providers, msg: "Successfully retrieved provider templates" };
 });
+
+
+/**
+ * @swagger
+ * /api/search_provider_setting/check_search_provider:
+ *   post:
+ *     summary: Check search provider
+ *     tags:
+ *       - SearchProviderSetting
+ *     description: This endpoint checks the search provider.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 description: Search provider type
+ *               api_key:
+ *                 type: string
+ *                 description: Search provider api key
+ *               engine:
+ *                 type: string
+ *                 description: Search provider engine
+ *     responses:
+ *       200:
+ *         description: Successfully checked search provider
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     status:
+ *                       type: boolean
+ *                       description: Status
+ *                     message:
+ *                       type: string
+ *                       description: Message
+ */
+router.post("/check_search_provider", async ({ request, response }) => {
+    const { type, api_key = "", engine = "" } = request.body;
+    if (type === 'tavily') {
+        const talivy = new TalivySearch({ key: api_key });
+        const res = await talivy.check()
+        response.success(res)
+    } else if (type === 'local') {
+        const local = new LocalSearch();
+        const res = await local.check(engine)
+        response.success(res)
+    }
+})
 
 module.exports = exports = router.routes();

@@ -7,7 +7,7 @@ const LocalSearchServer  = require('./LocalSearch');
     // const result = await LocalSearchServer.search('Travel to Japan in April',{ uid: 'user1',max_results: 3 , engine : 'bing'});
     // 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
     const tools = new LocalSearchServer()
-    const result = await tools.search('北京今日天气',{ uid: 'user1',max_results: 3 , engine : 'baidu'});
+    const result = await tools.search('DeepSeek对比Grok',{ uid: 'user1',max_results: 10 , engine : 'baidu'});
     let r = await tools.formatContent()
     console.log(r)
     /**
@@ -28,7 +28,9 @@ const LocalSearchServer  = require('./LocalSearch');
      
      */
     //console.log('结果', result);
-    // // 保存 HTML 到文件
+    // // 保存 HTML 到文件temp.html
+
+
     console.log('\n\n\n-------------------------------------------------------------------------------------------------------------------------------------');
     console.log('Closed user1 context.');
     // 清理所有资源

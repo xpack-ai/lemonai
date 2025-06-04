@@ -2,6 +2,7 @@ const router = require("koa-router")();
 
 const Platform = require("@src/models/Platform");
 const Model = require("@src/models/Model");
+const checkLlmApiAvailability = require("@src/utils/check_llm_api_availability");
 
 // Create a new platform
 /**
@@ -192,5 +193,60 @@ router.delete("/:platform_id", async ({ params, response }) => {
 
   return response.success();
 });
+
+/**
+ * @swagger
+ * /api/platform/check_api_availability:
+ *   post:
+ *     summary: Check API availability
+ *     tags:  
+ *       - Platform
+ *     description: This endpoint checks the availability of the API.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               base_url:
+ *                 type: string
+ *                 description: Base URL
+ *               api_key:
+ *                 type: string
+ *                 description: API key
+ *               model:
+ *                 type: string
+ *                 description: Model
+ *     responses:
+ *       200:
+ *         description: Successfully checked the API availability
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     status:
+ *                       type: boolean
+ *                       description: Status
+ *                     message:
+ *                       type: string
+ *                       description: Message
+ *                 code:
+ *                   type: integer
+ *                   description: Status code
+ *                 msg:
+ *                   type: string
+ *                   description: Message
+ */
+router.post("/check_api_availability", async ({ request, response }) => {
+  const body = request.body || {};
+  const { base_url, api_key, model } = body
+  const res = await checkLlmApiAvailability(base_url, api_key, model)
+  return response.success(res)
+})
 
 module.exports = exports = router.routes();
