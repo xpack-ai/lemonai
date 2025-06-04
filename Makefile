@@ -2,13 +2,13 @@
 
 # Configurable variables for easy modification
 IMAGE_NAME   := hexdolemonai/lemon-runtime-sandbox
-TAG          := v0.0.3
+TAG          := v0.0.5
 DOCKERFILE   := containers/runtime/Dockerfile
 PLATFORMS    := linux/amd64,linux/arm64
 FRONTEND_DIR := frontend  # Frontend directory variable
 
 APP_IMAGE_NAME   := hexdolemonai/lemon
-APP_TAG          := v0.0.12
+APP_TAG          := v0.0.15
 APP_DOCKERFILE   := containers/app/Dockerfile
 
 # ANSI color codes
@@ -31,7 +31,8 @@ build-runtime-sandbox:
 	  --platform $(PLATFORMS) \
 	  --tag $(IMAGE_NAME):$(TAG) \
 	  --tag $(IMAGE_NAME):latest \
-	  -f $(DOCKERFILE) 
+	  -f $(DOCKERFILE) \
+	  --push .
 
 build-app:
 	@echo "Building and pushing $(APP_IMAGE_NAME):$(APP_TAG) for platforms [$(PLATFORMS)]"
@@ -39,7 +40,8 @@ build-app:
 	  --platform $(PLATFORMS) \
 	  --tag $(APP_IMAGE_NAME):$(APP_TAG) \
 	  --tag $(APP_IMAGE_NAME):latest \
-	  -f $(APP_DOCKERFILE) 
+	  -f $(APP_DOCKERFILE) \
+	  --push .
 
 # Start backend service
 start-backend:
