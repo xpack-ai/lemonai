@@ -49,6 +49,12 @@ function handleStop(message,messages){
     messageStatus = "stop";
     console.log('handleStop', messages);
     //找到 meta.action_type 是 plan 的
+    //删除 action_type : "update_status"
+    for (let i = messages.length - 1; i >= 0; i--) {
+        if (messages[i].meta?.action_type === "update_status") {
+            messages.splice(i, 1); // 原地删除元素
+        }
+    }
     messages.forEach((message) => {
         if (message.meta?.action_type === 'plan') {
             // // 确保 meta.json 存在且是数组
