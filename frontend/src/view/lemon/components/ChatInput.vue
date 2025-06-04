@@ -69,7 +69,12 @@ const fileList = ref([])
 
 const emit = defineEmits(['send'])
 const messageStatus  = computed(() => {
-  return chatStore.status == "running" 
+  //根据会话ID 找到 当前会话的状态
+  if(!chatStore.chat){
+    return false
+  }
+  console.log('chatStore.chat', chatStore.chat)
+  return chatStore.chat?.status == "running" 
 })
 
 onMounted(async () => {

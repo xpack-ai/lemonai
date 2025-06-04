@@ -60,7 +60,7 @@ function handleStop(message,messages){
                     }
 
                     let actions = jsonItem.actions;
-                    if(actions.length > 0){
+                    if(actions?.length > 0){
                         actions.forEach(action => {
                             if(action.status == "running"){
                                 action.status = "success"

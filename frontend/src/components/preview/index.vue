@@ -324,7 +324,7 @@ const OpenVsCode = async () => {
     message.error('无法打开 VSCode，请检查 runtime_type 并稍后重试。');
   }
 };
-watch(() => chatStore.status, (newValue) => {
+watch(() => chatStore.list.find((c) => c.conversation_id == chatStore.chat?.conversation_id)?.status, (newValue) => {
   isRealTime.value = newValue === 'running';
 });
 
@@ -333,7 +333,7 @@ const minTime = computed(() => {
 });
 const currentTime = ref(-1);
 const maxTime = computed(() => {
-  isRealTime.value = chatStore.status === 'running';
+  isRealTime.value = chatStore.list.find((c) => c.conversation_id == chatStore.chat?.conversation_id)?.status  == 'running';
   if (isRealTime.value && messageQueue.value.length > 0) {
     currentTime.value = Math.floor(new Date(messageQueue.value[messageQueue.value.length - 1].timestamp).getTime());
     msgQueryID.value = messageQueue.value.length - 1;

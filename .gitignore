@@ -18,6 +18,7 @@ workspace/**
 !workspace
 
 src/cache
+src/Caches
 
 #jetbrains
 .idea

@@ -48,7 +48,7 @@ const isCollapsed = ref(false);
 
 const currentChat = computed(() => chatStore.chat)
 const messages = computed(() => chatStore.messages)
-const playStatus = computed(() => chatStore.status)
+const playStatus = computed(() => chatStore.list.find((c) => c.conversation_id == route.params.id)?.status)
 
 import { useI18n } from 'vue-i18n';
 

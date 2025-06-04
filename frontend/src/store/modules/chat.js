@@ -43,6 +43,8 @@ export const useChatStore = defineStore('chat', {
     async handleStop() {
       let res = await chat.stop(this.conversationId)
       console.log('handleStop', res);
+      this.list.find(item => item.conversation_id === this.conversationId).status = 'done';
+      this.chat.status = 'done'
       this.status = 'done'
     },
     clearMessages() {
@@ -107,9 +109,13 @@ export const useChatStore = defineStore('chat', {
         //调用get 获取最新的会话
         const get_res = await chat.get(this.conversationId);
         this.chat.title = get_res.title;
+        this.chat.status = 'running';
         //修改 list
         this.list.find(item => item.conversation_id === this.conversationId).title = get_res.title;
+        this.list.find(item => item.conversation_id === this.conversationId).status = 'running';
+        console.log('this.list', this.list);
         this.updateTitle = false;
+        this.status = 'running';
       }
     },
     async updateConversationTitle(title) {
@@ -162,6 +168,7 @@ export const useChatStore = defineStore('chat', {
       console.log('handleInitMessage', content);
       const message = {
         content: content,
+        timestamp: new Date().getTime(),
         //meta.json
         //action_type === 'question' 
         meta: {

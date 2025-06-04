@@ -32,7 +32,8 @@ async function sendMessage(question, conversationId, files) {
     }
     //从会话中获取 message
     const messages = chatStore.messages;
-    chatStore.status = 'running';
+    //给当前chatStore 添加 一个状态
+    // chatStore.list.find((c) => c.conversation_id == conversationId).status = 'running';
     chatStore.handleInitMessage(question, files);
     let baseURL = ""
     //判断是不是开发环境
@@ -65,10 +66,10 @@ async function sendMessage(question, conversationId, files) {
     };
     const abortController = new AbortController();
     sse(uri, options, onTokenStream, onOpenStream, answer, throttledScrollToBottom, abortController).then((res) => {
-        chatStore.status = 'done';
+        chatStore.list.find((c) => c.conversation_id == conversationId).status = 'done';
         return res;
     }).catch((error) => {
-        chatStore.status = 'done';
+        chatStore.list.find((c) => c.conversation_id == conversationId).status = 'done';
         console.error(error);
         return '';
     });

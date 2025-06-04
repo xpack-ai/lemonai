@@ -28,7 +28,7 @@
           <div class="sidebar-content">
             <div class="chat-list">
               <div
-                v-for="chat in chatStore.list"
+                v-for="chat in chatList"
                 :key="chat.conversation_id"
                 class="chat-item"
                 @click="setActiveChat(chat)"
@@ -112,6 +112,7 @@
             @click="setActiveChat(chat)"
             :class="{ 'active': chat.conversation_id === conversationId }"
           >
+           
             <div class="chat-details">
               <div class="chat-header">
                 <div class="chat-title">{{ chat.title }}</div>
@@ -194,6 +195,10 @@ const emit = defineEmits(['update:isCollapsed']);
 const searchModalVisible = ref(false);
 const conversationId = computed(() => chatStore.chat?.conversation_id);
 
+const chatList = computed(() => { 
+  return chatStore.list;
+});
+
 //当前编辑的会话
 const editChat = ref(null);
 const handleEditName = (chat) => {
@@ -262,8 +267,8 @@ const setActiveChat = (chat) => {
   closeSidebar();
   closeOtherWindows();
   chatStore.conversationId = chat.conversation_id;
-  chatStore.status == "done" 
   chatStore.chat = chat;
+  console.log('setActiveChat', chat);
   if (route.params.id != chat.conversation_id) {
     chatStore.clearMessages();
     chatStore.initConversation(chat.conversation_id);
