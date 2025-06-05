@@ -1,8 +1,9 @@
 
 # README
 
-<figure><img src="./public/img/Lemon_logo.png" alt="" width="375"><figcaption></figcaption></figure>
-
+<div align=center>
+  <img src="./public/img/Lemon_logo.png" width="1200" height="600">
+</div>
 Lemon provides macOS and Windows desktop applications, available for download on our official website: [www.lemonai.cc](https://www.lemonai.cc).
 
 <p align="center">
@@ -11,8 +12,10 @@ Lemon provides macOS and Windows desktop applications, available for download on
   <a href="https://lemon-11.gitbook.io/lemonai/">Documentation</a> ·
 </p>
 
-
-[![README in English](https://img.shields.io/badge/English-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README.md) [![简体中文版自述文件](https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README_CN.md)
+<p align="center">
+  <a href="./README.md"><img alt="README in English" src="https://img.shields.io/badge/English-d9d9d9"></a>
+  <a href="./README_CN.md"><img alt="简体中文版自述文件" src="https://img.shields.io/badge/简体中文-d9d9d9"></a>
+</p>
 
 Lemon is an open-source General AI Agent capable of automating the entire process from requirement planning to result delivery. It can independently think and systematically plan, flexibly invoking various tools in a virtual environment, such as writing and executing code, intelligently browsing the web, operating web applications, and executing commands. Lemon excels at systematically breaking down complex tasks and executing them in an orderly manner, automatically analyzing tasks, prioritizing steps, dynamically adjusting plans, and tracking progress in real time. Its goal is to help users efficiently complete all kinds of tasks.
 
