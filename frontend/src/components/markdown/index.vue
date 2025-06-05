@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted,nextTick } from "vue";
 
 // API 文档: https://markdown-it.github.io/markdown-it
 import markdownIt from "markdown-it";
@@ -36,7 +36,7 @@ const md = markdownIt({
 
 // md.use(markdownItGraphviz);
 // md.use(markdownItCodeCopy);
-// md.use(markdownItPrism);
+md.use(markdownItPrism);
 // md.use(markdownItMarkmap);
 
 // import markdownItThink from "./markdown-it-think.js";
@@ -56,13 +56,18 @@ const renderHTML = ref("");
 watch(
   () => props.content,
   (val) => {
-    renderHTML.value = md.render(val);
+    nextTick(() => {
+      renderHTML.value = md.render(val);
+    })
   }
 );
 
 // console.log("props", props.content);
 onMounted(() => {
-  renderHTML.value = md.render(props.content || "");
+  nextTick(() => {
+    renderHTML.value = md.render(props.content || "");
+  })
+ 
 });
 </script>
 
@@ -78,6 +83,8 @@ onMounted(() => {
     box-sizing: border-box !important;
     white-space: pre-wrap;
     font-size: 14px;
+    color: #213547 !important;
+    text-shadow:unset!important;
   }
 }
 

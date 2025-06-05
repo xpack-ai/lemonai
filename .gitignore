@@ -26,3 +26,4 @@ src/Caches
 # complied files
 out
 .vite
+Caches

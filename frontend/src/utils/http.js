@@ -9,9 +9,11 @@ axios.defaults.withCredentials = false;
 
 console.log("环境变量", import.meta.env);
 // 创建 axios 实例, 请求超时时间为 10 秒 baseURL: import.meta.env.BASE_URL,
+
+const isDev = import.meta.env.MODE === 'development';
+
 const instance = axios.create({
-  
-  baseURL: import.meta.env.VITE_SERVICE_URL,
+  baseURL: isDev ? undefined : import.meta.env.VITE_SERVICE_URL,  // 开发环境不设置 baseURL
   timeout: 100000,
 });
 
