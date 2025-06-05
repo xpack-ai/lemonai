@@ -110,9 +110,12 @@
           </a-tooltip>
         </div>
       </div>
+
+
       <div class="content">
-        <!-- loading display-->
-        <div v-if="content === `loading...`" style="height: 100%;display: flex;justify-content: center;align-items: center">
+        <!-- Loading-->
+        <div v-if="contentLoading"
+             style="height: 100%;display: flex;justify-content: center;align-items: center">
           <a-spin tip="loading ..." style="color: #8b8b8b"/>
         </div>
         <!-- Markdown rendering -->
@@ -121,7 +124,8 @@
         <iframe v-else-if="rendering && canBeHtml" :srcdoc="content" class="html-render-iframe"
                 sandbox="allow-scripts" frameborder="0"></iframe>
         <!-- Source code rendering -->
-        <FileViewer v-else-if="!canNotPreview" :file-path="file.filepath" :file-content="content"/>
+        <CodeViewer v-else-if="canCodePreview" :file-path="file.filepath" :file-content="content"/>
+        <!--  TODO office 文件预览 PDF Excel DOC DOCX-->
         <!-- 无法预览的格式 -->
         <div v-else class="no-preview">
           <div class="detail">
@@ -166,14 +170,14 @@ import rightSvg from '@/assets/filePreview/right.svg'
 import moreOptionsSvg from '@/assets/filePreview/moreOptions.svg'
 import closeSvg from '@/assets/filePreview/close.svg'
 import downloadSvgDown from '@/assets/fileClass/download.svg'
-import googleDriverSvg from '@/assets/fileClass/googleDriver.svg'
+// import googleDriverSvg from '@/assets/fileClass/googleDriver.svg'
 import pdfExportSvg from '@/assets/filePreview/pdfExport.svg'
 import copySvg from '@/assets/filePreview/copy.svg'
 import codeSvg from '@/assets/filePreview/code.svg'
 import eyeSvg from '@/assets/filePreview/eye.svg'
 // Import content rendering components
 import MarkDown from '@/components/markdown/index.vue'
-import FileViewer from '@/components/file/index.vue'
+import CodeViewer from '@/components/file/index.vue'
 import workspaceService from '@/services/workspace'
 import {useChatStore} from '@/store/modules/chat'
 import {storeToRefs} from 'pinia';
@@ -192,47 +196,59 @@ const {t} = useI18n()
 const fullPreviewVisable = ref(false)
 const file = ref({})
 const rendering = ref(true)
-const content = ref(`loading...`)
+const content = ref()
+const contentLoading = ref(true)
 const isFullPreview = ref(false)
 const moreOptionsTooltipVisible = ref(false)
 const downloadTooltipVisible = ref(false)
-const notPreviewType = ref(['ppt', 'pptx', 'pdf', 'doc', 'docx', 'xlsx', 'zip', 'sqlite'])
-
+const canBeMd = ref(false)
+const canBeHtml = ref(false)
+const codePreviewType = ref(['js', 'ts', 'py', 'json', 'html', 'htm', 'css', 'md', 'xml', 'java', 'c', 'cpp', 'cc', 'cxx', 'h', 'rb', 'go', 'sql', 'yaml', 'yml', 'php', 'sh', 'bash', 'cs', 'rs', 'kt', 'scala', 'pl', 'swift', 'r', 'm', 'dart', 'lua']);
+const officePreviewType = ref(['pdf','excel','doc','docx'])
 // Local file list
 const fileList = ref([])
 
 watch(() => messages.value, (newValue) => {
       fileList.value = viewList.viewLocal(newValue, true)
-      // console.log("当前本地可预览文件",fileList.value)
     }, {immediate: true}
 )
 
 
 const currentIndex = ref(-1)
+
 watch(currentIndex, (newValue) => {
-  if (currentIndex.value === -1){
+  if (currentIndex.value === -1) {
     return
   }
   file.value = fileList.value[newValue]
 })
 // file name
 const fileName = ref('')
-// 
+//
 watch(file, (newValue) => {
-  console.log(newValue)
+  //content is loading
+  contentLoading.value = true
+  canBeMd.value = file.value.filepath?.split('.').pop() === 'md'
+  canBeHtml.value = file.value.filepath?.split('.').pop() === 'html'
+  // update fileName
   fileName.value = newValue.filename?.endsWith('.md') ? newValue.filename.split('.')[0] : newValue.filename
-  if (!canNotPreview.value) {
+  fileName.value = fileName.value.split('\\').pop()
+
+  if (canCodePreview.value || canOfficePreview.value) {
     workspaceService.getFile(newValue.filepath).then((res) => {
       //将res 转为str
       let resString = typeof res === 'string' ? res : JSON.stringify(res);
-      content.value = handlemdFile(resString)
-      console.log('content', content)
+      content.value = handleFileContent(resString)
     })
   }
   rendering.value = newValue.filepath.split('.').pop() === 'md' || newValue.filepath.split('.').pop() === 'html'
+
+  // loaded
+  contentLoading.value = false
 })
 
-function handlemdFile(content) {
+// file content process
+function handleFileContent(content) {
   //this function is process differ file content,The output content format may not be correct
   // markdown file process
   if (content.startsWith('```')) {
@@ -243,20 +259,15 @@ function handlemdFile(content) {
   return content
 }
 
-// Check if file is Markdown
-const canBeMd = computed(() => {
-  // console.log(file)
-  return file.value.filepath?.split('.').pop() === 'md'
+// Check if file can be code format previewed
+const canCodePreview = computed(() => {
+  return codePreviewType.value.includes(file.value.filepath?.split('.').pop())
 })
-// Check if file is Html
-const canBeHtml = computed(() => {
-  return file.value.filepath?.split('.').pop() === 'html'
+//
+const canOfficePreview = computed(() => {
+  return officePreviewType.value.includes(file.value.filepath?.split('.').pop())
 })
 
-// Check if file cannot be previewed
-const canNotPreview = computed(() => {
-  return notPreviewType.value.includes(file.value.filepath?.split('.').pop())
-})
 
 // Copy content
 function handleCopyContent(content) {
@@ -350,18 +361,17 @@ function handleExportPDF() {
 
 // Listen for external file events
 emitter.on('fullPreviewVisable', (val) => {
-    emitter.emit('preview-close')
-    fileList.value = viewList.viewLocal(messages.value, true) // 又加载一遍，不合理
-    // 用户上传文件无法预览？，这里需要过滤 
-    currentIndex.value = fileList.value.findIndex((item) => item.id === val.id)
-    console.log('fileList.value', fileList.value)
-    fullPreviewVisable.value = true
+  emitter.emit('preview-close')
+  fileList.value = viewList.viewLocal(messages.value, true) // loading again TODO:
+  currentIndex.value = fileList.value.findIndex((item) => item.id === val.id)
+  console.log('fileList.value', fileList.value)
+  fullPreviewVisable.value = true
 })
 emitter.on('fullPreviewVisable-close', () => {
   fullPreviewVisable.value = false
   fileList.value = []
   currentIndex.value = -1
-  content.value = 'loading...'
+  contentLoading.value = true
 })
 
 </script>
