@@ -10,6 +10,8 @@ llm.json
 
 
 cache/*
+Caches/*
+local_cache/*
 uploads/*
 scripts/*
 
