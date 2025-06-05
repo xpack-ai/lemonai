@@ -39,7 +39,7 @@
                                         <div class="fileNameContainer">
                                             <div class="fileNameDiv">
                                                 <span class="fileNameSpan">{{ file.filename.split('/').pop().endsWith('md') ?
-                                                    file.filename.split('/').pop().split('.')[0] : file.filename.split('/').pop()
+                                                    file.filename.split('/').pop().split('.')[0].split('\\').pop() : file.filename.split('/').pop().split('\\').pop()
                                                     }}</span>
                                             </div>
                                             <span class="time">{{ formatTimestamp(file.timestamp) }}</span>

@@ -8,7 +8,7 @@ PLATFORMS    := linux/amd64,linux/arm64
 FRONTEND_DIR := frontend  # Frontend directory variable
 
 APP_IMAGE_NAME   := hexdolemonai/lemon
-APP_TAG          := v0.0.15
+APP_TAG          := v0.0.16
 APP_DOCKERFILE   := containers/app/Dockerfile
 
 # ANSI color codes
@@ -70,7 +70,7 @@ install-frontend-dependencies:
 install-backend-dependencies:
 	@echo "$(YELLOW)Setting up backend environment...$(RESET)"
 	echo "$(BLUE)Installing backend dependencies with npm...$(RESET)"
-	@npm install
+	@npm install --production
 	@echo "$(GREEN)Backend dependencies installed successfully.$(RESET)"
 
 init:

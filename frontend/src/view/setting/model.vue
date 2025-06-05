@@ -5,16 +5,17 @@
       <div class="provider-sidebar">
         <div class="provider-search" style="justify-content: center; align-items: center;">
           <a-input v-model:value="searchQuery" :placeholder="$t('setting.modelService.searchPlaceholder')" prefix-icon
-            style="font-size: 14px; height: 36px; margin-bottom: 16px;">
+                   style="font-size: 14px; height: 36px; margin-bottom: 16px;">
             <template #prefix>
-              <SearchOutlined />
+              <SearchOutlined/>
             </template>
           </a-input>
         </div>
 
         <div class="platform-list">
           <div v-for="platform in filteredPlatforms" :key="platform.id" class="platform-item"
-            :class="{ 'platform-item-active': choose_platform.id === platform.id }" @click="handlePlatform(platform)">
+               :class="{ 'platform-item-active': choose_platform.id === platform.id }"
+               @click="handlePlatform(platform)">
             <div v-if="platform.logo_url" class="platform-logo">
               <img :src="platform.logo_url" alt="logo" class="logo">
             </div>
@@ -27,21 +28,23 @@
         </div>
 
         <div class="provider-post platform-item" @click="handlePlatformAdd()"> + {{
-          $t('setting.modelService.addPlatform') }}
+            $t('setting.modelService.addPlatform')
+          }}
         </div>
       </div>
       <div class="provider-sidebar-mobile">
         <div
-          style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; margin-bottom: 8px;">
           <div style="color:#213547;font-size: 18px;font-weight: 700;">{{ $t(`setting.modelService.modelPlatform`) }}
           </div>
           <div class="provider-post" @click="handlePlatformAdd()"> + {{
-            $t('setting.modelService.addPlatform') }}
+              $t('setting.modelService.addPlatform')
+            }}
           </div>
         </div>
         <a-select style="width: 100%;" v-model:value="choose_platform.id">
           <a-select-option v-for="platform in filteredPlatforms" :key="platform.id" :value="platform.id"
-            @click="handlePlatform(platform)">
+                           @click="handlePlatform(platform)">
             <div class="platform-item">
               <div v-if="platform.logo_url" class="platform-logo">
                 <img :src="platform.logo_url" alt="logo" class="logo">
@@ -59,10 +62,10 @@
         <div class="info-header">
           <span class="info-model-header">{{ getPlatformDisplayName(choose_platform.name) }} </span>
           <span v-if="choose_platform.source_type === 'user'" class="platform-icon">
-            <setting-outlined class="platform-setting" @click.stop="handlePlatformSetting" />
+            <setting-outlined class="platform-setting" @click.stop="handlePlatformSetting"/>
           </span>
           <span class="platform-status">
-            <a-switch v-model:checked="choose_platform.is_enabled" class="custom-switch" @change="handleSaveChanges" />
+            <a-switch v-model:checked="choose_platform.is_enabled" class="custom-switch" @change="handleSaveChanges"/>
           </span>
           <!-- <a-button :disabled="!isInfoChanged" type="primary" class="save-button" @click="handleSaveChanges">{{
             $t('setting.modelService.save') }}</a-button> -->
@@ -70,18 +73,29 @@
 
         <div class="info-content">
           <div class="info-platform">
-            <span class="api-key">{{ $t('setting.modelService.apiKey') }}</span>
-            <div style="    display: flex;align-items: center;">
-              <a-input-password id="api-key-value" v-model:value="choose_platform.api_key"
-              :placeholder="$t('setting.modelService.apiKeyPlaceholder')" class="api-input" />
-              <a-button class="save-button" @click="handleCheckApiKey" :loading="checkLoading" >{{
-                $t('setting.modelService.check') }}</a-button>
+            <!--      provider info DIY      -->
+            <div class="api">
+              <div v-if="choose_platform.name===`Cloudsway`">
+              <span class="api-key">{{ $t('setting.modelService.ak') }}</span>
+              <a-input-password v-if="choose_platform.name===`Cloudsway`" id="api-key-value"
+                                v-model:value="choose_platform.api_key"
+                                :placeholder="$t('setting.modelService.akPlaceholder')" class="api-input"/>
             </div>
+              <div v-else>
+              <span class="api-key">{{ $t('setting.modelService.apiKey') }}</span>
+              <a-input-password id="api-key-value" v-model:value="choose_platform.api_key"
+                                :placeholder="$t('setting.modelService.apiKeyPlaceholder')" class="api-input"/>
+            </div>
+            </div>
+
+
+
             <a v-if="choose_platform.key_obtain_url" :href="choose_platform.key_obtain_url" target="_blank"
-              class="get-api-link">{{ $t('setting.modelService.getApiKey') }}</a>
+               class="get-api-link">{{ $t('setting.modelService.getApiKey') }}</a>
+
             <span class="api-address-title">{{ $t('setting.modelService.apiAddress') }}</span>
             <a-input v-model:value="choose_platform.api_url"
-              :placeholder="$t('setting.modelService.apiAddressPlaceholder')" class="api-input" />
+                     :placeholder="$t('setting.modelService.apiAddressPlaceholder')" class="api-input"/>
             <div class="show-api-tips">
               <div>
                 <span v-if="choose_platform?.api_url?.endsWith('#')" class="api-address">
@@ -103,38 +117,41 @@
           <div class="info-model">
             <div>
               <models-list :models="models" :platform_id="choose_platform.id" @setting="" @delete="handleModelDelete"
-                @add-model="handleModelAdd" @update-model="handleModelUpdate" />
+                           @add-model="handleModelAdd" @update-model="handleModelUpdate"/>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <add-platform ref="addPlatformRef" @add-platform="handleAddPlatform" />
-    <setting-platform ref="settingPlatformRef" @update-platform="handleUpdatePlatform" />
+    <add-platform ref="addPlatformRef" @add-platform="handleAddPlatform"/>
+    <setting-platform ref="settingPlatformRef" @update-platform="handleUpdatePlatform"/>
   </div>
-  <!-- 选择模型弹窗 -->
-  <a-modal  :cancelText=" $t('setting.modelService.cancel')" :okText="$t('setting.modelService.confirm')" v-model:open="modelVisible" centered   :title="$t('setting.modelService.selectCheckModel')" width="400px" @ok="handleOk">
-      <a-select v-model:value="selectedModel" style="width: 100%">
-        <a-select-option v-for="model in models" :key="model.id" :value="model.model_id">
-          {{ model.model_name }}
-        </a-select-option>
-      </a-select>
-  </a-modal> 
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch, nextTick } from 'vue'
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import {ref, onMounted, computed, watch, nextTick} from 'vue'
+import {useI18n} from 'vue-i18n'
+
+const {t} = useI18n()
 import service from '@/services/platforms'
-import { SettingOutlined, SearchOutlined, DownOutlined, RightOutlined, SnippetsOutlined, ToolOutlined, GlobalOutlined, BranchesOutlined, CameraOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import {
+  SettingOutlined,
+  SearchOutlined,
+  DownOutlined,
+  RightOutlined,
+  SnippetsOutlined,
+  ToolOutlined,
+  GlobalOutlined,
+  BranchesOutlined,
+  CameraOutlined
+} from '@ant-design/icons-vue'
+import {message} from 'ant-design-vue'
 import AddPlatform from '@/components/platforms/addPlatform.vue'
 import SettingPlatform from '@/components/platforms/settingPlatform.vue'
 import ModelsList from '@/components/platforms/modelsList.vue'
 import emitter from '@/utils/emitter'
 
-import { driver } from "driver.js";
+import {driver} from "driver.js";
 import "driver.js/dist/driver.css";
 
 const platforms = ref({})
@@ -148,36 +165,6 @@ const originalInfo = ref({})
 const isInfoChanged = ref(false)
 const showInfoPlatform = ref(true)
 const defaultSubscriptionModels = ref([])
-const modelVisible  = ref(false)
-const selectedModel = ref(null)
-const checkLoading = ref(false)
-
-//handleCheckApiKey
-const  handleCheckApiKey = async () => { 
-  modelVisible.value = true;
-}
-
-const handleOk =  async () => {
-  if (!selectedModel.value) {
-    //setting.modelService.selectCheckModel
-    message.error(t('setting.modelService.selectCheckModel'))
-  }
-  //checkApiAvailability
-
-  modelVisible.value = false;
-  checkLoading.value = true
-  let res = await service.checkApiAvailability({
-    "base_url": choose_platform.value.api_url,
-    "api_key": choose_platform.value.api_key,
-    "model": selectedModel.value
-  })
-  checkLoading.value = false
-  if(res.status){
-    message.success(res.message)
-  }else{
-    message.error(res.message)
-  }
-}
 
 // i18 support
 function getPlatformDisplayName(name) {
@@ -186,6 +173,7 @@ function getPlatformDisplayName(name) {
   // 如果翻译结果等于键名，说明翻译不存在，回退到原始 name
   return translation === key ? name : translation;
 }
+
 emitter.on('fresh-models', (value) => {
   service.getModels(choose_platform.value.id).then((res) => {
     models.value = res
@@ -232,14 +220,14 @@ const handlePlatform = (platform) => {
 }
 
 watch([() => choose_platform.value.api_key, () => choose_platform.value.api_url, () => choose_platform.value.is_enabled],
-  () => {
-    if (!originalInfo.value) return
-    isInfoChanged.value =
-      choose_platform.value.api_key !== originalInfo.value.api_key ||
-      choose_platform.value.api_url !== originalInfo.value.api_url ||
-      choose_platform.value.is_enabled !== originalInfo.value.is_enabled
-  },
-  { deep: true }
+    () => {
+      if (!originalInfo.value) return
+      isInfoChanged.value =
+          choose_platform.value.api_key !== originalInfo.value.api_key ||
+          choose_platform.value.api_url !== originalInfo.value.api_url ||
+          choose_platform.value.is_enabled !== originalInfo.value.is_enabled
+    },
+    {deep: true}
 )
 
 const handleSaveChanges = async () => {
@@ -278,7 +266,6 @@ const handlePlatformSetting = () => {
 }
 
 
-
 const handleModelDelete = (model) => {
   models.value = models.value.filter(m => m.id !== model.id)
 };
@@ -300,7 +287,7 @@ const handleAddPlatform = (platformData) => {
 const handleUpdatePlatform = (updatedPlatform) => {
   const index = platforms.value.findIndex(p => p.id === updatedPlatform.id)
   if (index !== -1) {
-    platforms.value[index] = { ...updatedPlatform, color: platforms.value[index].color }
+    platforms.value[index] = {...updatedPlatform, color: platforms.value[index].color}
     if (choose_platform.value.id === updatedPlatform.id) {
       choose_platform.value = platforms.value[index]
     }
@@ -321,7 +308,6 @@ onMounted(async () => {
     step1();
   }
 })
-
 
 
 let tourDriver = null; // 提升作用域，并初始化为空
@@ -414,7 +400,7 @@ const filteredPlatforms = computed(() => {
   if (!searchQuery.value) return platforms.value
   const query = searchQuery.value.toLowerCase()
   return platforms.value.filter(platform =>
-    platform.name.toLowerCase().includes(query)
+      platform.name.toLowerCase().includes(query)
   )
 })
 
@@ -529,8 +515,6 @@ emitter.on('fresh-pages', (value) => {
 .platform-item-active {
   background-color: #f0f0f0;
 }
-
-
 
 
 .platform-logo {

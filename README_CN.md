@@ -6,7 +6,11 @@ Lemon
 
 Lemon 提供 macOS 和 Windows 桌面应用程序，你可以在官网 [www.lemonai.cc](https://www.lemonai.cc) 进行下载。
 
-&#x20;                                                                               [文档](https://lemon-11.gitbook.io/lemon-docs/)
+<p align="center">
+  <a href="https://lemon-11.gitbook.io/lemon-docs">快速了解 Lemon AI</a> ·
+  <a href="https://lemon-11.gitbook.io/lemon-docs/kai-fa-bu-shu-zhi-nan/docker-kuai-su-bu-shu">Docker快速部署</a> ·
+  <a href="https://lemon-11.gitbook.io/lemon-docs">文档</a> ·
+</p>
 
 [![README in English](https://img.shields.io/badge/English-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README.md) [![简体中文版自述文件](https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README_CN.md)
 

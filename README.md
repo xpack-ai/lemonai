@@ -5,7 +5,12 @@
 
 Lemon provides macOS and Windows desktop applications, available for download on our official website: [www.lemonai.cc](https://www.lemonai.cc).
 
-&#x20;                                                                               [document](https://lemon-11.gitbook.io/lemonai/)
+<p align="center">
+  <a href="https://lemon-11.gitbook.io/lemonai">Get to know Lemon AI quickly</a> ·
+  <a href="https://lemon-11.gitbook.io/lemonai/development-deployment-guidelines/docker-quick-deployment">Docker Quick Deployment</a> ·
+  <a href="https://lemon-11.gitbook.io/lemonai/">Documentation</a> ·
+</p>
+
 
 [![README in English](https://img.shields.io/badge/English-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README.md) [![简体中文版自述文件](https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-d9d9d9)](https://github.com/hexdocom/lemon/blob/main/README_CN.md)
 
@@ -15,15 +20,20 @@ Lemon is an open-source General AI Agent capable of automating the entire proces
 
 ### function and characteristic
 
-complex task solving: lemon can solve various complex and changeable tasks, including but not limited to market research, document processing, travel planning and data analysis. Through independent thinking and system planning, it can flexibly call various tools in the virtual environment, such as writing and executing code, intelligently browsing web pages, operating web applications, etc.
+#### Complex Task Solving
+Lemon is capable of solving a wide range of complex and dynamic tasks, including but not limited to market research, document processing, travel planning, and data analysis. Through independent thinking and systematic planning, it can flexibly utilize various tools in the virtual environment—such as writing and executing code, intelligently browsing web pages, and operating web applications.
 
-autonomy and goal orientation: lemon has a high degree of autonomy and can complete tasks independently without human intervention. It can perceive, reason, make decisions and act according to the preset goals.
+#### Autonomy and Goal Orientation
+Lemon possesses a high degree of autonomy and can complete tasks independently without human intervention. It is able to perceive, reason, make decisions, and act based on predefined objectives.
 
-&#x20;real time task monitoring : users can view the execution status of tasks in real time through the page side
+#### Real-Time Task Monitoring
+Users can monitor the execution status of tasks in real time through the page sidebar.
 
-&#x20;multi scenario coverage : complex task processing in the fields of market research, financial analysis, data analysis, code programming, life planning, etc.
+#### Multi-Scenario Coverage
+Lemon is designed to handle complex tasks across multiple domains, including market research, financial analysis, data analysis, code programming, life planning, and more.
 
-self subscription mode: in addition to the default model , supports user-defined model access and online model access, which can be used through the configuration model API.
+#### Self-Subscription Mode
+In addition to the default model, Lemon supports user-defined model integration and online model access. These models can be used by configuring the model API.
 
 ### Using Lemon
 

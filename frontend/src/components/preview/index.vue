@@ -37,7 +37,7 @@
     <div class="preview-content">
       <div class="main-content">
         <div class="title">
-          <span>{{ fileName }}</span>
+          <span>{{ fileName.split('\\').pop() }}</span>
         </div>
         <div class="main-content-main">
           <!-- Terminal展示区 -->

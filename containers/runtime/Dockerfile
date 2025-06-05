@@ -77,7 +77,7 @@ COPY ./src/runtime /chataa/code/chataa
 RUN chmod a+rwx /chataa/code/chataa/action_execution_server.js
 
 COPY ./package.json ./package-lock.json /chataa/code/
-RUN npm i
+RUN npm i --production
 
 COPY ./browser_server /chataa/code/browser_server
 
