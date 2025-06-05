@@ -77,7 +77,6 @@ jobs:
             --platform ${{ env.PLATFORMS }} \
             --tag ${{ env.IMAGE_NAME }}:$RUNTIME_TAG \
             --tag ${{ env.IMAGE_NAME }}:latest \
-            --tag ${{ env.IMAGE_NAME }}:${{ steps.date.outputs.DATE }} \
             -f ${{ env.DOCKERFILE }} \
             --push .
         # 只有成功读取到版本号才执行构建
@@ -133,7 +132,6 @@ jobs:
             --platform ${{ env.PLATFORMS }} \
             --tag ${{ env.APP_IMAGE_NAME }}:$APP_TAG \
             --tag ${{ env.APP_IMAGE_NAME }}:latest \
-            --tag ${{ env.APP_IMAGE_NAME }}:${{ steps.date.outputs.DATE }} \
             -f ${{ env.APP_DOCKERFILE }} \
             --push .
         if: ${{ success() && steps.get_app_version.outputs.APP_VERSION != '' }}
