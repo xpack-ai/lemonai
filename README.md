@@ -4,6 +4,7 @@
 <div align=center>
   <img src="./public/img/Lemon_logo.png" width="1200" height="600">
 </div>
+
 Lemon provides macOS and Windows desktop applications, available for download on our official website: [www.lemonai.cc](https://www.lemonai.cc).
 
 <p align="center">
