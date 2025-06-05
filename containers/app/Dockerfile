@@ -24,7 +24,7 @@ RUN apt-get update && \
 # Copy package.json and Makefile. If you have a lock file (package-lock.json or yarn.lock),
 # copy it here as well. This is crucial for caching dependency installation.
 COPY ./package.json ./
-RUN npm install
+RUN npm install --production
 
 # COPY ./package-lock.json ./  # Or yarn.lock - uncomment and use if you have one!
 COPY ./Makefile ./
