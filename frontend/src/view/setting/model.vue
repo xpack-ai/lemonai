@@ -74,29 +74,43 @@
         <div class="info-content">
           <div class="info-platform">
             <!--      provider info DIY      -->
-            <div class="api-msg-container">
-              <div v-if="choose_platform.name===`Cloudsway`">
-                <span class="api-key">{{ $t('setting.modelService.ak') }}</span>
-                <a-input-password v-if="choose_platform.name===`Cloudsway`" id="api-key-value"
-                                  v-model:value="choose_platform.api_key"
-                                  :placeholder="$t('setting.modelService.akPlaceholder')" class="api-input" @blur="handleSaveChanges"/>
-              </div>
-              <div v-else-if="choose_platform.name.toLocaleString() === 'Ollama'">
+            <div class="api-msg-container" >
+<!--              <div v-if="choose_platform.name===`Cloudsway`">-->
+<!--                <span class="api-key">{{ $t('setting.modelService.ak') }}</span>-->
+<!--                <a-input-password v-if="choose_platform.name===`Cloudsway`" id="api-key-value"-->
+<!--                                  v-model:value="choose_platform.api_key"-->
+<!--                                  :placeholder="$t('setting.modelService.akPlaceholder')" class="api-input" @blur="handleSaveChanges"/>-->
+<!--              </div>-->
+              <div v-if="choose_platform.name.toLocaleString() === 'Ollama'">
                       <!--       ollama do not have apikey           -->
               </div>
               <div v-else>
-                <span class="api-key">{{ $t('setting.modelService.apiKey') }}</span>
-                <a-input-password id="api-key-value" v-model:value="choose_platform.api_key"
-                                  :placeholder="$t('setting.modelService.apiKeyPlaceholder')" class="api-input" @blur="handleSaveChanges"/>
+                <span class="api-key">{{handleApiTitle }}</span>
+                  <a-input-password id="api-key-value" v-model:value="choose_platform.api_key"
+                                  :placeholder="handleApiPlaceholder"  @blur="handleSaveChanges">
+                     <template #addonAfter>
+                        <a-button class="no-button" @click="handleCheckApiKey" :loading="checkLoading" >{{
+               $t('setting.modelService.check') }}</a-button>
+                     </template>
+                  </a-input-password>
+
+
               </div>
+
             </div>
 
             <a v-if="choose_platform.key_obtain_url" :href="choose_platform.key_obtain_url" target="_blank"
-               class="get-api-link">{{ $t('setting.modelService.getApiKey') }}</a>
+               class="get-api-link">{{ $t('setting.modelService.getApiKey')  }}</a>
 
             <span class="api-address-title">{{ $t('setting.modelService.apiAddress') }}</span>
+
             <a-input v-model:value="choose_platform.api_url"
-                     :placeholder="$t('setting.modelService.apiAddressPlaceholder')" class="api-input" @blur="handleSaveChanges"/>
+                     :placeholder="$t('setting.modelService.apiAddressPlaceholder')" class="api-input" @blur="handleSaveChanges">
+              <template #addonAfter v-if="handleShowCheckButton">
+                        <a-button class="no-button" @click="handleCheckApiKey" :loading="checkLoading" >{{
+               $t('setting.modelService.check') }}</a-button>
+                     </template>
+            </a-input>
             <div class="show-api-tips">
               <div>
                 <span v-if="choose_platform?.api_url?.endsWith('#')" class="api-address">
@@ -127,6 +141,15 @@
     <add-platform ref="addPlatformRef" @add-platform="handleAddPlatform"/>
     <setting-platform ref="settingPlatformRef" @update-platform="handleUpdatePlatform"/>
   </div>
+    <!-- 选择模型弹窗 -->
+  <a-modal  :cancelText=" $t('setting.modelService.cancel')" :okText="$t('setting.modelService.confirm')" v-model:open="modelVisible" centered   :title="$t('setting.modelService.selectCheckModel')" width="400px" @ok="handleOk">
+      <a-select v-model:value="selectedModel" style="width: 100%">
+        <a-select-option v-for="model in models" :key="model.id" :value="model.model_id">
+          {{ model.model_name }}
+        </a-select-option>
+      </a-select>
+  </a-modal>
+
 </template>
 
 <script setup>
@@ -166,6 +189,38 @@ const originalInfo = ref({})
 const isInfoChanged = ref(false)
 const showInfoPlatform = ref(true)
 
+const modelVisible  = ref(false)
+const selectedModel = ref(null)
+const checkLoading = ref(false)
+
+//handleCheckApiKey
+const  handleCheckApiKey = async () => {
+  modelVisible.value = true;
+}
+
+const handleOk =  async () => {
+  if (!selectedModel.value) {
+    //setting.modelService.selectCheckModel
+    message.error(t('setting.modelService.selectCheckModel'))
+  }
+  //checkApiAvailability
+
+  modelVisible.value = false;
+  checkLoading.value = true
+  let res = await service.checkApiAvailability({
+    "base_url": choose_platform.value.api_url,
+    "api_key": choose_platform.value.api_key,
+    "model": selectedModel.value
+  })
+  checkLoading.value = false
+  if(res.status){
+    message.success(res.message)
+  }else{
+    message.error(res.message)
+  }
+}
+
+
 // i18 support
 function getPlatformDisplayName(name) {
   const key = `setting.modelService.platforms.${name.replace(' ', '')}`;
@@ -175,14 +230,25 @@ function getPlatformDisplayName(name) {
 }
 
 emitter.on('fresh-models', (value) => {
-  service.getModels(choose_platform.value.id).then((res) => {
-    models.value = res
-  })
+  handleGetModels(choose_platform.value.id)
 })
 
-
-
-
+const handleShowCheckButton = computed(() => {
+  return choose_platform.value.name.toLocaleString() === 'Ollama'
+})
+const handleApiTitle = computed(() => {
+  console.log(choose_platform.value.name)
+  if (choose_platform.value.name === 'Cloudsway') {
+    return t('setting.modelService.ak')
+  }
+  return t('setting.modelService.apiKey')
+})
+const handleApiPlaceholder = computed(() => {
+  if (choose_platform.value.name === 'Cloudsway') {
+    return t('setting.modelService.akPlaceholder')
+  }
+  return t('setting.modelService.apiAddressPlaceholder')
+})
 const handlePlatform = (platform) => {
 
   choose_platform.value = JSON.parse(JSON.stringify(platform))
@@ -191,10 +257,8 @@ const handlePlatform = (platform) => {
     api_url: platform.api_url,
     is_enabled: platform.is_enabled
   }
-  service.getModels(choose_platform.value.id).then((res) => {
-    console.log(res)
-    models.value = res
-  })
+  handleGetModels(choose_platform.value.id)
+
   showInfoPlatform.value = true
 }
 
@@ -258,9 +322,7 @@ const handleAddPlatform = (platformData) => {
   }
   platforms.value = [...platforms.value, newPlatform]
   choose_platform.value = newPlatform
-  service.getModels(choose_platform.value.id).then((res) => {
-    models.value = res
-  })
+  handleGetModels(choose_platform.value.id)
 }
 
 const handleUpdatePlatform = (updatedPlatform) => {
@@ -361,19 +423,21 @@ function init(id) {
     }))
     if (id) {
       choose_platform.value = platforms.value.find(p => p.id === id)
-      service.getModels(choose_platform.value.id).then((res) => {
-        models.value = res
-      })
+      handleGetModels(choose_platform.value.id)
     } else {
       choose_platform.value = platforms.value[0]
-      service.getModels(choose_platform.value.id).then((res) => {
-        models.value = res
-      })
+      handleGetModels(choose_platform.value.id)
     }
 
   })
 }
 
+const handleGetModels = ( id) => {
+       service.getModels(id).then((res) => {
+        models.value = res
+        selectedModel.value = res[0]?.model_id
+      })
+}
 
 const filteredPlatforms = computed(() => {
   if (!searchQuery.value) return platforms.value
@@ -397,15 +461,11 @@ const filteredPlatforms = computed(() => {
 
 const handleModelAdd = async (model) => {
   // console.log(model)
-  service.getModels(choose_platform.value.id).then((res) => {
-    models.value = res
-  })
+ handleGetModels(choose_platform.value.id)
 }
 
 const handleModelUpdate = async (model) => {
-  service.getModels(choose_platform.value.id).then((res) => {
-    models.value = res
-  })
+  handleGetModels(choose_platform.value.id)
 }
 
 
@@ -814,8 +874,14 @@ emitter.on('fresh-pages', (value) => {
 
 .api-key {
   font-weight: bold;
+
 }
 
+.no-button{
+  border: unset !important;
+    background-color: unset!important;
+    height: unset!important;
+}
 .info-model-header {
   display: flex;
   font-weight: bold;

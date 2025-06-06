@@ -242,6 +242,8 @@ export default {
       defaultPlatformDescription: "默认平台模型由系统提供，无需配置",
       apiKey: "API密钥",
       apiKeyPlaceholder: "请输入API密钥",
+      ak: "Access Key",
+      akPlaceholder: "请输入 Access Key",
       getApiKey: "点击此处获取密钥",
       check:  "检查",
       selectCheckModel:"请选择检查的模型",
