@@ -74,28 +74,29 @@
         <div class="info-content">
           <div class="info-platform">
             <!--      provider info DIY      -->
-            <div class="api">
+            <div class="api-msg-container">
               <div v-if="choose_platform.name===`Cloudsway`">
-              <span class="api-key">{{ $t('setting.modelService.ak') }}</span>
-              <a-input-password v-if="choose_platform.name===`Cloudsway`" id="api-key-value"
-                                v-model:value="choose_platform.api_key"
-                                :placeholder="$t('setting.modelService.akPlaceholder')" class="api-input"/>
-            </div>
+                <span class="api-key">{{ $t('setting.modelService.ak') }}</span>
+                <a-input-password v-if="choose_platform.name===`Cloudsway`" id="api-key-value"
+                                  v-model:value="choose_platform.api_key"
+                                  :placeholder="$t('setting.modelService.akPlaceholder')" class="api-input" @blur="handleSaveChanges"/>
+              </div>
+              <div v-else-if="choose_platform.name.toLocaleString() === 'Ollama'">
+                      <!--       ollama do not have apikey           -->
+              </div>
               <div v-else>
-              <span class="api-key">{{ $t('setting.modelService.apiKey') }}</span>
-              <a-input-password id="api-key-value" v-model:value="choose_platform.api_key"
-                                :placeholder="$t('setting.modelService.apiKeyPlaceholder')" class="api-input"/>
+                <span class="api-key">{{ $t('setting.modelService.apiKey') }}</span>
+                <a-input-password id="api-key-value" v-model:value="choose_platform.api_key"
+                                  :placeholder="$t('setting.modelService.apiKeyPlaceholder')" class="api-input" @blur="handleSaveChanges"/>
+              </div>
             </div>
-            </div>
-
-
 
             <a v-if="choose_platform.key_obtain_url" :href="choose_platform.key_obtain_url" target="_blank"
                class="get-api-link">{{ $t('setting.modelService.getApiKey') }}</a>
 
             <span class="api-address-title">{{ $t('setting.modelService.apiAddress') }}</span>
             <a-input v-model:value="choose_platform.api_url"
-                     :placeholder="$t('setting.modelService.apiAddressPlaceholder')" class="api-input"/>
+                     :placeholder="$t('setting.modelService.apiAddressPlaceholder')" class="api-input" @blur="handleSaveChanges"/>
             <div class="show-api-tips">
               <div>
                 <span v-if="choose_platform?.api_url?.endsWith('#')" class="api-address">
@@ -164,7 +165,6 @@ const models = ref([])
 const originalInfo = ref({})
 const isInfoChanged = ref(false)
 const showInfoPlatform = ref(true)
-const defaultSubscriptionModels = ref([])
 
 // i18 support
 function getPlatformDisplayName(name) {
@@ -180,28 +180,7 @@ emitter.on('fresh-models', (value) => {
   })
 })
 
-const typeIconMap = {
-  [t('setting.modelService.typeTool')]: {
-    component: ToolOutlined,
-    class: 'type-tool'
-  },
-  [t('setting.modelService.typeNetwork')]: {
-    component: GlobalOutlined,
-    class: 'type-network'
-  },
-  [t('setting.modelService.typeEmbed')]: {
-    component: () => h('div', {}, $t('setting.modelService.typeEmbed')),
-    class: 'type-embed'
-  },
-  [t('setting.modelService.typeReasoning')]: {
-    component: BranchesOutlined,
-    class: 'type-reasoning'
-  },
-  [t('setting.modelService.typeVision')]: {
-    component: CameraOutlined,
-    class: 'type-vision'
-  }
-};
+
 
 
 const handlePlatform = (platform) => {
@@ -249,7 +228,7 @@ const handleSaveChanges = async () => {
     }
     isInfoChanged.value = false
   } catch (error) {
-
+    return
   }
   init(choose_platform.value.id)
 }

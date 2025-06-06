@@ -27,22 +27,33 @@
           <a-input v-model:value="formData.group_name" :placeholder="$t('setting.modelService.groupNamePlaceholder')" />
         </a-form-item>
 
-        <a-form-item :label="$t('setting.modelService.modelTypes')" name="model_types">
-          <a-checkbox-group v-model:value="formData.model_types" class="model_type_group">
-            <a-checkbox class="checkbox-item" :value="t('setting.modelService.typeVision')">
+        <div class="more-options">
+          <a @click="toggleModelTypes" class="toggle-link">
+            {{ showModelTypes ? $t('setting.modelService.hideOptions') : $t('setting.modelService.showMoreOptions') }}
+          </a>
+        </div>
+
+        <a-form-item
+          v-if="showModelTypes"
+          :label="$t('setting.modelService.modelTypes')"
+          name="model_types"
+          class="model-types-item"
+        >
+          <a-checkbox-group v-model:value="formData.model_types" class="model-type-group">
+            <a-checkbox class="checkbox-item" value="vision">
               {{ $t('setting.modelService.typeVision') }}
             </a-checkbox>
-            <a-checkbox class="checkbox-item" :value="t('setting.modelService.typeNetwork')">
+            <a-checkbox class="checkbox-item" value="network">
               {{ $t('setting.modelService.typeNetwork') }}
             </a-checkbox>
-            <a-checkbox class="checkbox-item" :value="t('setting.modelService.typeEmbed')">
+            <a-checkbox class="checkbox-item" value="embed">
               {{ $t('setting.modelService.typeEmbed') }}
             </a-checkbox>
-            <a-checkbox class="checkbox-item" :value="t('setting.modelService.typeReasoning')">
-              {{ $t('setting.modelService.typeReasoning') }}
-            </a-checkbox>
-            <a-checkbox class="checkbox-item" :value="t('setting.modelService.typeTool')">
+            <a-checkbox class="checkbox-item" value="tool">
               {{ $t('setting.modelService.typeTool') }}
+            </a-checkbox>
+            <a-checkbox class="checkbox-item" value="reasoning">
+              {{ $t('setting.modelService.typeReasoning') }}
             </a-checkbox>
           </a-checkbox-group>
         </a-form-item>
@@ -52,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, defineEmits, defineProps } from 'vue'
+import { ref, defineProps } from 'vue'
 import { useI18n } from 'vue-i18n'
 import service from '@/services/platforms'
 import { message } from 'ant-design-vue'
@@ -62,6 +73,7 @@ const { t } = useI18n()
 const visible = ref(false)
 const formRef = ref(null)
 const isEdit = ref(false)
+const showModelTypes = ref(false) // 控制 model_types 显示/隐藏
 
 const props = defineProps({
   platform_id: {
@@ -84,30 +96,37 @@ const rules = {
     { required: true, message: t('setting.modelService.enterModelId'), trigger: 'blur' }
   ],
   model_name: [
-    { required: true, message: t('setting.modelService.enterModelName'), trigger: 'blur' }
+    { required: false, message: t('setting.modelService.enterModelName'), trigger: 'blur' }
   ],
   group_name: [
-    { required: true, message: t('setting.modelService.enterGroupName'), trigger: 'blur' }
+    { required: false, message: t('setting.modelService.enterGroupName'), trigger: 'blur' }
   ],
   model_types: [
-    { required: true, type: 'array', message: t('setting.modelService.selectModelType'), trigger: 'change' }
+    {
+      required: false,
+      type: 'array',
+      message: t('setting.modelService.selectModelType'),
+      trigger: 'change',
+      validator: (_, value) => {
+        if (!showModelTypes.value) return Promise.resolve(); // 跳过隐藏时的验证
+        return value && value.length > 0 ? Promise.resolve() : Promise.reject();
+      }
+    }
   ]
 }
 
 const handleOk = async () => {
   try {
-    // await formRef.value.validate()
+    await formRef.value.validate()
     if (isEdit.value) {
-      service.updateModel(formData.value).then((res) => {
-        emitter.emit('fresh-models', true)
-        message.success(t('setting.modelService.updateModelSuccess'))
-      })
+      await service.updateModel(formData.value)
+      emitter.emit('fresh-models', true)
+      message.success(t('setting.modelService.updateModelSuccess'))
     } else {
       formData.value.platform_id = props.platform_id
-      service.insertModel(formData.value).then((res) => {
-        emitter.emit('fresh-models', res)
-        message.success(t('setting.modelService.addModelSuccess'))
-      })
+      const res = await service.insertModel(formData.value)
+      emitter.emit('fresh-models', res)
+      message.success(t('setting.modelService.addModelSuccess'))
     }
     visible.value = false
     resetForm()
@@ -131,6 +150,7 @@ const resetForm = () => {
     platform_id: props.platform_id,
     logo_url: ''
   }
+  showModelTypes.value = false // 重置时隐藏 model_types
   formRef.value?.resetFields()
 }
 
@@ -150,6 +170,10 @@ const showModal = (model = null) => {
   visible.value = true
 }
 
+const toggleModelTypes = () => {
+  showModelTypes.value = !showModelTypes.value
+}
+
 defineExpose({
   showModal
 })
@@ -157,32 +181,57 @@ defineExpose({
 
 <style scoped>
 .model-form {
-  padding: 20px;
+  padding: 6px;
 }
 
 :deep(.ant-form-item) {
   margin-bottom: 16px;
 }
 
-:deep(.ant-checkbox-group) {
-  display: flex;
-  gap: 16px;
-}
-
-.model_type_group {
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  /* flex-wrap: nowrap; */
+.model-type-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 8px; /* 间距缩小 */
+  width: 100%;
 }
 
 .checkbox-item {
-  margin: 0px;
-  width: 20%;
+  display: flex;
+  align-items: center;
+  padding: 4px 2px; /* 减小内边距 */
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
-.model_types{
-  width: 100%;
+
+.checkbox-item:hover {
+  background-color: #f5f5f5;
+}
+
+:deep(.ant-checkbox-wrapper) {
+  margin: 0;
+}
+
+:deep(.ant-checkbox-checked .ant-checkbox-inner) {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.model-types-item {
   align-items: start;
+}
+
+.more-options {
+  margin-bottom: 16px;
+}
+
+.toggle-link {
+  color: #9f9f9f;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.2s;
+}
+
+.toggle-link:hover {
+  color: #40a9ff;
 }
 </style>

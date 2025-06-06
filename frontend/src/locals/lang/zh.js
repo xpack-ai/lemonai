@@ -313,7 +313,9 @@ export default {
         OpenRouter: "OpenRouter",
         LMStudio: "LM Studio",
 
-      }
+      },
+      showMoreOptions: " 更多选项",
+      hideOptions:  "更多选项",
 
     },
     defaultModel: {
@@ -325,8 +327,6 @@ export default {
       DefaultModelSetting: "默认模型设置",
       defaultAssistantModel: "默认助手模型",
       assistantModelTips: "创建助手时使用的模型",
-      topicNamingModel: "主题命名模型",
-      topicNamingModelTips: "用于自动命名新主题的模型",
       translationModel: "翻译模型",
       translationModelTips: "用于翻译服务的模型",
       browserUseModel: "浏览器服务模型",

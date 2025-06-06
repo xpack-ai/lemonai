@@ -1,4 +1,3 @@
-
 <template>
   <div class="platform-model-container">
     <div class="model-header">
@@ -8,8 +7,8 @@
       <div v-for="group in groupedModels" :key="group.name" class="model-group">
         <div class="group-header" @click="toggleGroup(group.name)">
           <span class="group-toggle">
-            <DownOutlined v-if="groupStates[group.name]" />
-            <RightOutlined v-else />
+            <DownOutlined v-if="groupStates[group.name]"/>
+            <RightOutlined v-else/>
           </span>
           <span class="group-name">{{ group.name }}</span>
         </div>
@@ -26,12 +25,15 @@
             <div class="model-info">
               <a-popover>
                 <template #content>
-                  <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px;">
-                    <span style="display: flex; justify-content: center; align-content: center;">{{ model.model_name }}</span>
+                  <div
+                      style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px;">
+                    <span style="display: flex; justify-content: center; align-content: center;">{{
+                        model.model_name
+                      }}</span>
                     <component
-                      :is="copyState[model.model_id]?.isCopied ? CheckOutlined : SnippetsOutlined"
-                      style="align-items: center;"
-                      @click="copyModelName(model.model_id, model.model_name)"
+                        :is="copyState[model.model_id]?.isCopied ? CheckOutlined : SnippetsOutlined"
+                        style="align-items: center;"
+                        @click="copyModelName(model.model_id, model.model_name)"
                     />
                   </div>
                 </template>
@@ -46,17 +48,17 @@
                     </div>
                   </template>
                   <component
-                    :is="typeIconMap[type]?.component"
-                    v-if="typeIconMap[type]"
-                    :class="typeIconMap[type]?.class"
-                    class="type-icon"
+                      :is="typeIconMap[type]?.component"
+                      v-if="typeIconMap[type]"
+                      :class="typeIconMap[type]?.class"
+                      class="type-icon"
                   />
                 </a-popover>
               </div>
             </div>
             <div class="model-actions">
-              <setting-outlined class="action-icon" @click.stop="handleModelSetting(model)" />
-              <minus-outlined class="action-icon" @click.stop="handleModelDelete(model)" />
+              <setting-outlined class="action-icon" @click.stop="handleModelSetting(model)"/>
+              <minus-outlined class="action-icon" @click.stop="handleModelDelete(model)"/>
             </div>
           </div>
         </div>
@@ -68,25 +70,38 @@
     </div>
     <div>
       <a-button type="primary" class="addmodel" @click="handleModelSetting()">
-        <PlusOutlined />{{ $t('setting.modelService.add') }}
+        <PlusOutlined/>
+        {{ $t('setting.modelService.add') }}
       </a-button>
     </div>
 
     <!-- 集成 ModelInfo 组件 -->
-    <model-info :platform_id="props.platform_id" ref="modelInfoRef" />
+    <model-info :platform_id="props.platform_id" ref="modelInfoRef"/>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, h, onMounted } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { SettingOutlined, MinusOutlined, PlusOutlined, DownOutlined, RightOutlined, SnippetsOutlined, CheckOutlined, ToolOutlined, GlobalOutlined, BranchesOutlined, CameraOutlined } from '@ant-design/icons-vue';
-import { message } from 'ant-design-vue';
+import {computed, ref, h, onMounted} from 'vue';
+import {useI18n} from 'vue-i18n';
+import {
+  SettingOutlined,
+  MinusOutlined,
+  PlusOutlined,
+  DownOutlined,
+  RightOutlined,
+  SnippetsOutlined,
+  CheckOutlined,
+  ToolOutlined,
+  GlobalOutlined,
+  BranchesOutlined,
+  CameraOutlined
+} from '@ant-design/icons-vue';
+import {message} from 'ant-design-vue';
 import ModelInfo from '@/components/platforms/modelinfo.vue';
 import service from '@/services/platforms';
 import emitter from '@/utils/emitter';
 
-const { t } = useI18n();
+const {t} = useI18n();
 
 const props = defineProps({
   models: {
@@ -154,10 +169,7 @@ const handleModelDelete = async (model) => {
   }
 };
 
-const typeIconMap = ref({});
-
-onMounted(() => {
-  typeIconMap.value = {
+const typeIconMap = {
     ['tool']: {
       component: ToolOutlined,
       class: 'type-tool'
@@ -167,7 +179,7 @@ onMounted(() => {
       class: 'type-network'
     },
     ['embed']: {
-      component: () => h('div', {}, t('setting.modelService.typeEmbed')),
+      component: () => h('div', {}, 'em'),
       class: 'type-embed'
     },
     ['reasoning']: {
@@ -179,6 +191,8 @@ onMounted(() => {
       class: 'type-vision'
     }
   };
+
+onMounted(() => {
 });
 
 const handleAddModel = (response) => {
@@ -193,10 +207,10 @@ const handleUpdateModel = (response) => {
 
 const copyModelName = (modelId, modelName) => {
   navigator.clipboard.writeText(modelName).then(() => {
-    copyState.value[modelId] = { isCopied: true };
+    copyState.value[modelId] = {isCopied: true};
     message.success(t('setting.modelService.copySuccess'));
     setTimeout(() => {
-      copyState.value[modelId] = { isCopied: false };
+      copyState.value[modelId] = {isCopied: false};
     }, 2000);
   }).catch((err) => {
     console.error('Failed to copy:', err);

@@ -316,7 +316,12 @@ export default {
                 Bailian: "Bailian",
                 OpenRouter: "OpenRouter",
                 LMStudio: "LM Studio",
-            }
+                Cloudsway: "Cloudsway",
+            },
+            showMoreOptions: " More Options",
+            hideOptions:  " More Options",
+
+
         },
         //默认模型
         defaultModel: {

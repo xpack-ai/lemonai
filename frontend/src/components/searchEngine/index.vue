@@ -123,7 +123,10 @@ const selectedTemplate = ref('')
 const selectedConfig = ref({
   provider_id: -1,
   provider_name: '',
-  base_config: {},
+  base_config: {
+    api_key: "",
+    endpoint: ""
+  },
   include_date: true,
   cover_provider_search: true,
   enable_enhanced_mode: true,
@@ -137,6 +140,7 @@ const checkLoading = ref(false)
 let tourDriver = null; // 提升作用域，并初始化为空
 
 const handleCheckApiKey = async () => {
+  console.log("checkApiKeydasdsa")
   let config = {}
   //checkSearchProvider
   if (selectedConfig.value.provider_name == "Tavily") {
@@ -265,10 +269,17 @@ onMounted(async () => {
           ...userConfig
         }
         if (userConfig.provider_name === 'Tavily') {
-          selectedConfig.value.base_config.api_key = userConfig.base_config.api_key || "";
+          selectedConfig.value.base_config = {
+            api_key: ""
+          }
+          selectedConfig.value.base_config.api_key = userConfig?.base_config?.api_key || "";
         } else if (userConfig.provider_name === 'Cloudsway') {
-          selectedConfig.value.base_config.api_key = userConfig.base_config.api_key || "";
-          selectedConfig.value.base_config.endpoint = userConfig.base_config.endpoint || "";
+          selectedConfig.value.base_config = {
+            api_key: "",
+            endpoint: ""
+          }
+          selectedConfig.value.base_config.api_key = userConfig?.base_config?.api_key || "";
+          selectedConfig.value.base_config.endpoint = userConfig?.base_config?.endpoint || "";
         } else {
           selectedConfig.value.base_config = {}
         }
