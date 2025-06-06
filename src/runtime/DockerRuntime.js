@@ -183,7 +183,7 @@ class DockerRuntime {
     if (result.status === 'success') {
       console.log('DockerRuntime.handle_memory.memory logging user prompt');
       const memorized = memorized_type.has(type)
-      await memory.addMessage('user', result.content, action.type, memorized);
+      await memory.addMessage('user', result.content||result.stderr, action.type, memorized);
     }
     return memory;
   }
