@@ -121,9 +121,11 @@ const handleSend = async () => {
     if(!res.has_default_platform){
       //请前往设置默认模型
       handleNotification("/setting/default-model-setting",t("setting.defaultModel.defaultModel"),t("click_here_to_go_to_settings"))
+      return
     }
     if(!res.has_search_setting){
       handleNotification("/setting/search-service",t("setting.searchService.searchService"),t("click_here_to_go_to_settings"))
+      return
     }
     emit('send', {
       text,
