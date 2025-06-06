@@ -479,5 +479,6 @@ selectCheckModel: "Por favor, selecione o modelo de verificação",
   jump_to_result: "Ir para o resultado",
   replay: "Reproduzir",
   task_finished: "Tarefa concluída",
-  task_playing: "Tarefa em andamento"
+  task_playing: "Tarefa em andamento",
+  click_here_to_go_to_settings:  "Clique aqui para ir para as configurações",
 }

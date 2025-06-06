@@ -479,5 +479,6 @@ export default {
   jump_to_result: "跳轉到結果",
   replay: "重播",
   task_finished: "任務完成",
-  task_playing: "任務進行中"
+  task_playing: "任務進行中",
+  click_here_to_go_to_settings:  "點擊這裡進入設定",
 }

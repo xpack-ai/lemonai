@@ -268,5 +268,6 @@ export default {
   jump_to_result: "Chuyển đến kết quả",
   replay: "Xem lại",
   task_finished: "Nhiệm vụ hoàn tất",
-  task_playing: "Đang chạy nhiệm vụ"
+  task_playing: "Đang chạy nhiệm vụ",
+  click_here_to_go_to_settings: "Nhấn vào đây để chuyển đến cài đặt"
 }

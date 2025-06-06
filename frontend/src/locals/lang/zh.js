@@ -482,5 +482,7 @@ export default {
   jump_to_result: "跳转到结果",
   replay: "重看",
   task_finished: "任务完成",
-  task_playing: "任务进行中"
+  task_playing: "任务进行中",
+  //点击此处跳转到设置页面
+  click_here_to_go_to_settings: "点击此处跳转到设置页面",
 }

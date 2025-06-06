@@ -479,5 +479,6 @@ export default {
   jump_to_result: "Aller au résultat",
   replay: "Rejouer",
   task_finished: "Tâche terminée",
-  task_playing: "Tâche en cours"
+  task_playing: "Tâche en cours",
+  click_here_to_go_to_settings:  "Cliquez ici pour accéder aux paramètres",
 }
