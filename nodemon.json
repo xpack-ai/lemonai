@@ -4,6 +4,8 @@
     "public/",
     "temp/",
     "cache/",
+    "lemon_cache/",
+    "Caches/",
     "data/",
     "node_modules/",
     "*.test.js",

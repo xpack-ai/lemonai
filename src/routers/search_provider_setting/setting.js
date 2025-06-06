@@ -27,6 +27,9 @@ const LocalSearch = require("@src/tools/impl/web_search/LocalSearch");
  *               api_key:
  *                 type: string
  *                 description: Search provider api key
+ *               endpoint:
+ *                 type: string
+ *                 description: Search provider endpoint
  *               include_date:
  *                 type: boolean
  *                 description: Include date in search
@@ -61,7 +64,7 @@ const LocalSearch = require("@src/tools/impl/web_search/LocalSearch");
  * 
  */
 router.put("/", async (ctx) => {
-    const { provider_id, api_key, include_date, cover_provider_search, enable_enhanced_mode, result_count, blacklist } = ctx.request.body;
+    const { provider_id, api_key, endpoint, include_date, cover_provider_search, enable_enhanced_mode, result_count, blacklist } = ctx.request.body;
 
     // Validate input
     if (!provider_id) {
@@ -111,12 +114,15 @@ router.put("/", async (ctx) => {
             base_config: { "api_key": api_key },
         }
     });
-    // update api_key
-    if (api_key !== undefined && api_key !== "") {
+    // update api_key 通过provider_id 更新。如果endpoint不为空，则也更新endpoint
+    if (endpoint !== undefined && endpoint !== "") {
+        await userProviderConfig.update({
+            base_config: { api_key, endpoint }
+        }, { where: { provider_id: provider_id } })
+    } else {
         await userProviderConfig.update({
             base_config: { api_key }
-        })
-
+        }, { where: { provider_id: provider_id } })
     }
 
     const requestBody = Object.assign({ provider_id: provider_id, base_config: userProviderConfig.base_config, provider_name: provider.name, logo_url: provider.logo_url }, config.dataValues)
