@@ -1,5 +1,6 @@
 const router = require("koa-router")();
 const DefaultModelSetting = require("@src/models/DefaultModelSetting");
+const Model = require('@src/models/Model')
 const { updateDefaultModel } = require('@src/utils/default_model')
 const Platform = require('@src/models/Platform')
 const UserSearchSetting = require('@src/models/UserSearchSetting')
@@ -144,6 +145,13 @@ router.get("/check", async ({ response }) => {
     let defaultModelSetting = await DefaultModelSetting.findOne({ where: { setting_type: 'assistant' } })
     if (!defaultModelSetting) {
         check_map.has_default_platform = false
+    } else {
+        const model = await Model.findOne({ where: { id: defaultModelSetting.model_id } })
+
+        const platform = await Platform.findOne({ where: { id: model.platform_id } })
+        if (!platform || !platform.is_enabled) {
+            check_map.has_default_platform = false
+        }
     }
 
     // 检查是否有搜索配置
