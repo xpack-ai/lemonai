@@ -122,6 +122,19 @@ const dataUpdate = async () => {
     }));
     await Model.bulkCreate(modelsData);
   }
+
+  // v0.1.1 => v0.1.2
+  const defaultSearchProviderData = require('../../public/default_data/default_search_provider.json');
+  const CloudswaySearchProvider = defaultSearchProviderData.find(item => item.name === 'Cloudsway');
+  const searchProvider = await SearchProviderTable.findOne({ where: { name: CloudswaySearchProvider.name } });
+  if (!searchProvider) {
+    const searchProviderData = {
+      name: CloudswaySearchProvider.name,
+      logo_url: CloudswaySearchProvider.logo_url,
+      base_config_schema: CloudswaySearchProvider.base_config_schema,
+    };
+    await SearchProviderTable.create(searchProviderData);
+  }
 }
 
 const sync = async () => {
