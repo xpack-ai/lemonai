@@ -7,6 +7,7 @@ const resolveResultPrompt = require('@src/agent/prompt/generate_result.js');
 const call = require('@src/utils/llm.js');
 const Message = require('@src/utils/message.js');
 const MessageTable = require('@src/models/Message')
+const Conversation = require('@src/models/Conversation')
 const { Op, literal } = require("sequelize"); // 确保导入 literal
 const File = require('@src/models/File')
 const { getTodoMd } = require('@src/utils/planning.js');
@@ -126,11 +127,12 @@ class AgenticAgent {
       const msg = Message.format({ status: 'success', action_type: 'finish_summery', content: result, json: newFiles });
       this.onTokenStream(msg);
       await Message.saveToDB(msg, this.context.conversation_id);
-
+      await Conversation.update({ status: 'done' }, { where: { conversation_id: this.context.conversation_id } });
       return finalResult;
     } catch (error) {
       // Errors from plan or execute will be caught here
       this.logger.error(`Agent run failed: ${error.message}`);
+      await Conversation.update({ status: 'done' }, { where: { conversation_id: this.context.conversation_id } });
       // Optionally update task manager log for overall failure if needed
       throw error;
       return {

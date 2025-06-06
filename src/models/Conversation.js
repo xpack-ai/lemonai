@@ -61,6 +61,12 @@ const fields = {
     defaultValue: false,
     comment: 'Is Favorite'
   },
+  status: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: 'done',
+    comment: 'Status'
+  }
 };
 
 ConversationTable.init(fields, {

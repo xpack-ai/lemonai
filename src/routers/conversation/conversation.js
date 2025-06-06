@@ -57,6 +57,7 @@ router.post("/", async ({ request, response }) => {
     conversation_id: conversation_id,
     content: content,
     title: title,
+    status: 'running'
   });
 
   return response.success(newConversation);

@@ -107,6 +107,7 @@ router.post("/run", async (ctx, next) => {
       conversation_id: conversation_id,
       content: question,
       title: title,
+      status: 'running'
     });
   }
 
@@ -208,6 +209,7 @@ router.post("/stop", async ({ request, response }) => {
 
   const agent = activeAgents.get(conversation_id);
 
+  await Conversation.update({ status: 'done' }, { where: { conversation_id: conversation_id } });
   if (agent) {
     try {
       if (typeof agent.stop === 'function') {
