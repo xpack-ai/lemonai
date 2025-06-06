@@ -22,6 +22,7 @@ async function checkLlmApiAvailability(baseUrl, apiKey, model) {
           content: "hello" // A simple request content for testing
         }],
         max_tokens: 5, // Send a very small request to minimize resource usage and response time
+        enable_thinking:false
       }),
       signal: controller.signal
     });
