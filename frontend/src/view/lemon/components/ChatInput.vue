@@ -50,16 +50,20 @@
 </template>
 
 <script setup>
-import { ref,onMounted } from 'vue'
+import { ref,onMounted,h } from 'vue'
 import { PaperClipOutlined, SendOutlined } from '@ant-design/icons-vue'
 import { useChatStore } from '@/store/modules/chat'
 import emitter from '@/utils/emitter'
 import  FileSvg from '@/assets/message/file.svg'
 import deleteFile from "@/assets/message/deleteFile.svg"
 import files from '@/services/files';
+import modelService from '@/services/default-model-setting'
+import { notification } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 const { t } = useI18n()
+import { useRoute, useRouter } from 'vue-router'
+const router = useRouter();
 
 const chatStore = useChatStore()
 const messageText = ref('')
@@ -83,10 +87,44 @@ onMounted(async () => {
   })
 })
 
+//检查模型和搜索服务的配置情况   
+// let res =  await modelService.checkModel();
+// if(res.has_default_platform && res.has_enabled_platform && res.has_search_setting){
+const checkModel = async () => {
+  let res = await modelService.checkModel()
+   return res
+}
 
-const handleSend = () => {
+const handleNotification = async (path,message,toMessage) => {
+  const key = `jump-notification-${Date.now()}`; // 通知唯一 key
+  notification.warning({
+    message: message,
+    key,
+    description: h(
+      'span',
+      {
+        style: { textDecoration: 'underline', cursor: 'pointer', color: '#1677ff' },
+      },
+      toMessage,
+    ),
+    duration: 2,
+    onClick: () => {
+      notification.close(key); 
+      router.push(path);
+    },
+  });
+}
+const handleSend = async () => {
   const text = messageText.value.trim()
   if (text || fileList.value.length > 0) {
+    let res = await checkModel()
+    if(!res.has_default_platform){
+      //请前往设置默认模型
+      handleNotification("/setting/default-model-setting",t("setting.defaultModel.defaultModel"),t("click_here_to_go_to_settings"))
+    }
+    if(!res.has_search_setting){
+      handleNotification("/setting/search-service",t("setting.searchService.searchService"),t("click_here_to_go_to_settings"))
+    }
     emit('send', {
       text,
       mode: currentMode.value,

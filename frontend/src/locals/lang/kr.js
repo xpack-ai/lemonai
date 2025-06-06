@@ -479,5 +479,6 @@ export default {
   jump_to_result: "결과로 이동",
   replay: "다시 보기",
   task_finished: "작업 완료",
-  task_playing: "작업 진행 중"
+  task_playing: "작업 진행 중",
+  click_here_to_go_to_settings: "설정으로 이동하려면 여기를 클릭하세요",
 }

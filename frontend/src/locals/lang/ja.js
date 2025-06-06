@@ -479,5 +479,6 @@ export default {
   jump_to_result: "結果にジャンプ",
   replay: "再生",
   task_finished: "タスクが完了しました",
-  task_playing: "タスク実行中"
+  task_playing: "タスク実行中",
+  click_here_to_go_to_settings:  "設定画面に移動するにはここをクリックしてください",
 }

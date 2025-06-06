@@ -479,5 +479,6 @@ it: "Araç",
   jump_to_result: "Sonuca git",
   replay: "Tekrar oynat",
   task_finished: "Görev tamamlandı",
-  task_playing: "Görev devam ediyor"
+  task_playing: "Görev devam ediyor",
+  click_here_to_go_to_settings: "Ayarlara gitmek için buraya tıkla",
 }

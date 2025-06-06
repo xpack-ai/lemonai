@@ -489,5 +489,6 @@ export default {
     jump_to_result: "Jump to Result",
     replay: "Replay",
     task_finished: "Task Finished",
-    task_playing: "Task Playing"
+    task_playing: "Task Playing",
+    click_here_to_go_to_settings:"Click here to go to settings"
 }
