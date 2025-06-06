@@ -52,7 +52,7 @@ router.post("/", async ({ request, response }) => {
   const { content } = body
 
   const conversation_id = uuid.v4();
-  const title = 'Conversation' + conversation_id.slice(0, 6);
+  const title = content.slice(0, 20);
   const newConversation = await Conversation.create({
     conversation_id: conversation_id,
     content: content,
@@ -223,6 +223,9 @@ router.put("/:id", async ({ params, request, response }) => {
 
     if (!title || title === "") {
       title = await auto_generate_title(conversation)
+      if (title = 'ERR_BAD_REQUEST') {
+        return response.fail("llm api ERR_BAD_REQUEST");
+      }
     }
     conversation.title = title;
     await conversation.save();
