@@ -127,8 +127,8 @@ onMounted(() => {
 
   terminal.open(terminalRef.value)
   if(props.isPreview){
-    terminal.write("\x1b[32mubuntu@sandbox:~ $ \x1b[0m" + props.content);
-    terminal.write("\r\n");
+    terminal.write("\x1b[32mubuntu@sandbox:~ $ \x1b[0m" + props.content[0]);
+    terminal.write("\r\n" + props.content[1]);
     terminal.write("\r\n\x1b[32mubuntu@sandbox:~ $ \x1b[0m");
   }else{
     terminal.write('Welcome to the terminal!\r\n$ ')

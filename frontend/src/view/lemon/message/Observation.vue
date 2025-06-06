@@ -59,6 +59,9 @@ const command = computed(() => {
 });
 
 const information = computed(() => {
+  if (props.action.meta.action_type == 'terminal_run'){
+    return props.action.content[0]
+  }
   return props.action.content
 });
 

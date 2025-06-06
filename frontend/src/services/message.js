@@ -181,6 +181,10 @@ function updateAction(message,messages){
     const task_id = message.meta.task_id;
     const uuid = message.uuid;
 
+     if (message.meta.action_type === 'terminal_run'){
+         message.content = [message.content]
+    }
+
     //第一步 找到 plan_message 
     let plan_message_index = messages.findLastIndex(messageInfo => messageInfo.meta && messageInfo.meta.action_type === 'plan');
     //获取 plan 的 actions
@@ -209,6 +213,10 @@ function updateAction(message,messages){
     if(action_index !== -1){
         actions[action_index].status = message.status;
         actions[action_index].meta = message.meta;
+        console.log('message.action_type',message.meta.action_type)
+        if (message.meta.action_type === 'terminal_run'){
+            actions[action_index].content = [actions[action_index].content[0],message.content[0]] ;
+        }
     }else{
         actions.push(message);
     }

@@ -193,7 +193,12 @@ async function handleMessageUpdate(newValue) {
   if (result && result.length > maxLength) {
     result = result.slice(0, maxLength) + '...';
   }
-  typeDetail.value = result;
+  if (newValue.meta.action_type === 'terminal_run'){
+    typeDetail.value = result[0];
+  }else {
+    typeDetail.value = result;
+  }
+
   switch (actionType) {
     case 'browser':
       typeDescription.value = t('lemon.preview.browser');
