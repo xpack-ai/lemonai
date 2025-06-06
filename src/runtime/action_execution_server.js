@@ -10,7 +10,7 @@ const browser = require('./browser')
 const path = require('path');
 const { run: vscode_init } = require('./plugins/vscode/index');
 const { run: browser_init } = require('./plugins/browser/index');
-const { getDirpath } = require('@src/utils/electron');
+const { getDirpath } = require('./utils/electron');
 const WORKSPACE_DIR = getDirpath(process.env.WORKSPACE_DIR || 'workspace');
 
 // Create Koa application instance
