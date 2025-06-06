@@ -403,6 +403,11 @@ export default {
             tavilyName: "Tavily (Key)",
             baiduName: "Baidu (Free)",
             bingName: "Bing (Free)",
+            couldswayName: "Cloudsway (Key)",
+            accessKey:  "Access Key",
+            endPoint: "EndPoint",
+            endpointPlaceholder: "Enter your EndPoint",
+            accessKeyPlaceholder: "Enter your Access Key",
             saveBlacklistSuccess: "Blacklist saved successfully",
             saveBlacklistFailed: "Failed to save blacklist"
         },

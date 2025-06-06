@@ -1,33 +1,8 @@
 const {chromium} = require('playwright');
 const cheerio = require('cheerio');
 
-/**
- * 本地搜索服务，基于 Playwright 爬取 Bing 或 Baidu 搜索结果。
- * 全局共享 browser：
- * 使用单一的 this.browser 实例，服务所有任务。
- * 通过 initializeBrowser 方法延迟初始化，并在需要时复用。
- * 监听 disconnected 事件，确保浏览器关闭时清理状态。
- * 按 uid 复用 BrowserContext：
- * 为每个 uid 创建一个独立的 BrowserContext，存储在 this.contexts 中。
- * BrowserContext 提供会话隔离（如 cookie、缓存），但共享同一 browser，显著降低资源占用。
- * 监听 close 事件，自动清理 contexts。
- * 临时创建和关闭 page：
- * 在内部方法中创建临时 page，加载 URL 后立即关闭，避免长期占用内存。
- * 使用 try-finally 确保 page 始终关闭。
- * 并发控制：
- * 引入 maxConcurrentPages（默认 10），限制同时打开的页面数。
- * 使用 waitForPageSlot 和 releasePageSlot 管理并发，防止资源耗尽。
- * 搜索接口：
- * 提供 search 方法，接受查询和选项，支持 Bing 和 Baidu 搜索引擎。
- * 支持 formatContent 和 formatJSON 格式化结果。
- * 清理方法：
- * cleanup 方法关闭所有 context 和 browser。
- *
- * Generate by grok3, adapted for Bing and Baidu search
- */
 class LocalSearchServer {
     constructor() {
-
     }
 
     static instance = null;

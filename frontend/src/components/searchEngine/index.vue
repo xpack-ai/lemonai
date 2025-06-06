@@ -5,22 +5,41 @@
         {{ $t('setting.searchService.searchProvider') }}
       </div>
       <div class="search-choose-list">
-        <a-select v-model:value="selectedTemplate" :loading="loading" style="width:100%"  id="searchTemplates">
+        <a-select v-model:value="selectedTemplate" :loading="loading" style="width:100%;height: 100%"
+                  id="searchTemplates" @change="handleTemplateChange">
           <a-select-option v-for="item in searchTemplates" :key="item.id" :value="item.name">
-            <img :src="item.logo_url" alt="" class="logo" />
+            <img :src="item.logo_url" alt="" class="logo"/>
             <span>{{ displayName(item.name) }}</span>
           </a-select-option>
         </a-select>
-        <div class="search-choose-api-config" v-if="showApiConfig">
+        <div class="search-choose-api-config" v-if="selectedTemplate === 'Tavily'">
           <span style="white-space: nowrap">{{ $t('setting.searchService.apiTips') }}</span>
-          <a-input-password v-model:value="selectedConfig.base_config.api_key" class="search-choose-api-input" 
-            :placeholder="$t('setting.searchService.apiKeyPlaceholder')" :disabled="loading" @blur="handleSave"/>
+          <a-input-password v-model:value="selectedConfig.base_config.api_key" class="search-choose-api-input"
+                            :placeholder="$t('setting.searchService.apiKeyPlaceholder')" :disabled="loading"
+                            @blur="handleSave"/>
         </div>
-        <a-button class="save-button" @click="handleCheckApiKey" :loading="checkLoading" >{{
-                $t('setting.modelService.check') }}</a-button>
+        <div class="search-choose-api-config" v-if="selectedTemplate === 'Cloudsway'">
+          <span style="white-space: nowrap">{{ $t('setting.searchService.accessKey') }}</span>
+          <a-input-password v-model:value="selectedConfig.base_config.api_key" class="search-choose-api-input"
+                            :placeholder="$t('setting.searchService.accessKeyPlaceholder')" :disabled="loading"
+                            @blur="handleSave"/>
+          <span style="white-space: nowrap">{{ $t('setting.searchService.endPoint') }}</span>
+          <a-input-password v-model:value="selectedConfig.base_config.endpoint" class="search-choose-api-input"
+                            :placeholder="$t('setting.searchService.endpointPlaceholder')" :disabled="loading"
+                            @blur="handleSave"/>
+        </div>
+        <a-button class="save-button" @click="handleCheckApiKey" :loading="checkLoading">{{
+            $t('setting.modelService.check')
+          }}
+        </a-button>
       </div>
-      <a v-if="selectedConfig.provider_name== 'Tavily'" href="https://app.tavily.com/" target="_blank"
-      class="get-api-link">{{ $t('setting.modelService.getApiKey') }}</a>
+
+      <!--  Tavily link-->
+      <a v-if="selectedConfig.provider_name=== 'Tavily'" href="https://app.tavily.com/" target="_blank"
+         class="get-api-link">{{ $t('setting.modelService.getApiKey') }}</a>
+      <!--  Cloudsway link-->
+      <a v-else-if="selectedConfig.provider_name=== 'Cloudsway'" href="https://console.cloudsway.net/" target="_blank"
+         class="get-api-link">{{ $t('setting.modelService.getApiKey') }}</a>
     </div>
 
     <div class="search-rule search-item">
@@ -61,7 +80,7 @@
               1: '1',
               5: $t('setting.searchService.default'),
               20: '20'
-            }" />
+            }"/>
           </a-form-item>
         </div>
       </div>
@@ -87,26 +106,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed, onUnmounted,nextTick } from 'vue'
-import { useI18n } from 'vue-i18n'
+import {ref, onMounted, watch, computed, onUnmounted, nextTick} from 'vue'
+import {useI18n} from 'vue-i18n'
 import searchEngineService from '@/services/search-engine'
-import { message } from 'ant-design-vue'
+import {message} from 'ant-design-vue'
 import emitter from '@/utils/emitter'
 
-import { driver } from "driver.js";
+import {driver} from "driver.js";
 import "driver.js/dist/driver.css";
 
-const { t } = useI18n()
+const {t} = useI18n()
 
 const searchTemplates = ref([])
 const loading = ref(true)
-const selectedTemplate = ref('Tavily')
+const selectedTemplate = ref('')
 const selectedConfig = ref({
-  provider_id: 1,
-  provider_name: 'Tavily',
-  base_config: {
-    api_key: ''
-  },
+  provider_id: -1,
+  provider_name: '',
+  base_config: {},
   include_date: true,
   cover_provider_search: true,
   enable_enhanced_mode: true,
@@ -114,35 +131,33 @@ const selectedConfig = ref({
   blacklist: null
 })
 
-const api_type = ref('')
 
-const showApiConfig = computed(() => {
-  return selectedTemplate.value === 'Tavily'
-})
-
-const checkLoading =  ref(false)
+const checkLoading = ref(false)
 
 let tourDriver = null; // 提升作用域，并初始化为空
 
-const handleCheckApiKey = async () => { 
-  let config = {
-  }
+const handleCheckApiKey = async () => {
+  let config = {}
   //checkSearchProvider
-  if(selectedConfig.value.provider_name == "Tavily"){
-    config.type =  "tavily"
-    config.api_key =  selectedConfig.value.base_config.api_key;
-  }else{
-    config.type =  "local"
-    config.engine =  selectedConfig.value.provider_name;
+  if (selectedConfig.value.provider_name == "Tavily") {
+    config.type = "tavily"
+    config.api_key = selectedConfig.value.base_config.api_key;
+  } else if (selectedConfig.value.provider_name == "Cloudsway"){
+    config.type = "cloudsway"
+    config.api_key = selectedConfig.value.base_config.api_key;
+    config.endpoint = selectedConfig.value.base_config.endpoint;
+  }else {
+    config.type = "local"
+    config.engine = selectedConfig.value.provider_name;
   }
   console.log(selectedConfig.value)
   checkLoading.value = true
-  let res =  await searchEngineService.checkSearchProvider(config)
+  let res = await searchEngineService.checkSearchProvider(config)
   checkLoading.value = false
-  if(res.status!="fail"){
-    message.success (res.message)
-  }else{
-    message.error (res.message)
+  if (res.status != "fail") {
+    message.success(res.message)
+  } else {
+    message.error(res.message)
   }
 }
 
@@ -161,7 +176,7 @@ const step1 = async () => {
           title: t('setting.searchService.searchService'),
           description: t('setting.searchService.searchEngineTipsOne'),
           onNextClick: async () => {
-            nextTick(() => { 
+            nextTick(() => {
               tourDriver.moveNext();
             });
           },
@@ -174,7 +189,7 @@ const step1 = async () => {
           title: t('setting.searchService.searchService'),
           description: t('setting.searchService.searchEngineTipsTwo'),
           onNextClick: async () => {
-            nextTick(() => { 
+            nextTick(() => {
               // 设置缓存，结束引导
               localStorage.setItem('tour_end', 'true');
               tourDriver.moveNext();
@@ -189,24 +204,36 @@ const step1 = async () => {
   tourDriver.drive();
 };
 
-
-watch(selectedTemplate, async (newValue) => {
-  api_type.value = newValue
-  const template = searchTemplates.value.find(item => item.name === newValue)
-  if (template) {
-    selectedConfig.value.provider_id = template.id
-    selectedConfig.value.provider_name = template.name
-    try {
-      const configs = await searchEngineService.getSearchEngineConfigs()
-      const config = configs.find(c => c.provider_id === template.id)
-      selectedConfig.value.base_config.api_key = config?.base_config?.api_key || ''
-    } catch (error) {
-      console.error('Failed to fetch configs:', error)
-      selectedConfig.value.base_config.api_key = ''
-    }
+async function handleTemplateChange(name) {
+  //1.find the id of name
+  const provider_id = searchTemplates.value.find(item => item.name === name).id
+  //2.update the id of user selected
+  try {
+    await searchEngineService.updateSearchEngineConfig(
+        {
+          provider_id: provider_id,
+          // api_key: selectedConfig.value.base_config.api_key,
+          include_date: selectedConfig.value.include_date,
+          cover_provider_search: selectedConfig.value.cover_provider_search,
+          enable_enhanced_mode: selectedConfig.value.enable_enhanced_mode,
+          result_count: selectedConfig.value.result_count,
+          blacklist: selectedConfig.value.blacklist
+        }
+    )
+  }catch (e){
+    message.error(t('update platform failed'))
+    return
   }
-})
+  //3.find the config of the id
+  const configs = await searchEngineService.getSearchEngineConfigs()
+  const config = configs.find(item => item.provider_id === provider_id)
+  //4.update status
+  selectedConfig.value.base_config = config.base_config || {api_key: '',endpoint: ''}
+  selectedConfig.value.provider_id = provider_id || -1
+  selectedConfig.value.provider_name = name || ''
+}
 
+//  display name function
 function displayName(name) {
   if (name === 'Tavily') {
     return t('setting.searchService.tavilyName')
@@ -214,13 +241,16 @@ function displayName(name) {
     return t('setting.searchService.baiduName')
   } else if (name === 'Bing') {
     return t('setting.searchService.bingName')
+  } else if (name === 'Cloudsway') {
+    return t('setting.searchService.couldswayName')
   }
   return name
 }
 
+
 onMounted(async () => {
   if (localStorage.getItem('tour') === 'true' && localStorage.getItem('tour_end') !== 'true') {
-      step1();
+    step1();
   }
   try {
     searchTemplates.value = await searchEngineService.getSearchEngineTemplates()
@@ -232,13 +262,16 @@ onMounted(async () => {
       if (userConfig.provider_name) {
         selectedTemplate.value = userConfig.provider_name
         selectedConfig.value = {
-          ...userConfig,
-          base_config: {
-            api_key: userConfig.base_config?.api_key || ''
-          }
+          ...userConfig
         }
-        api_type.value = userConfig.provider_name
-
+        if (userConfig.provider_name === 'Tavily') {
+          selectedConfig.value.base_config.api_key = userConfig.base_config.api_key || "";
+        } else if (userConfig.provider_name === 'Cloudsway') {
+          selectedConfig.value.base_config.api_key = userConfig.base_config.api_key || "";
+          selectedConfig.value.base_config.endpoint = userConfig.base_config.endpoint || "";
+        } else {
+          selectedConfig.value.base_config = {}
+        }
       } else {
         selectedTemplate.value = 'Tavily'
       }
@@ -253,32 +286,51 @@ onMounted(async () => {
 })
 
 
-
 onUnmounted(() => {
   handleSave()
 })
+// save function
 const handleSave = async () => {
   try {
-    if (selectedConfig.value.provider_name !== 'Tavily') {
-      selectedConfig.value.base_config.api_key = ''
+    //判断当前的搜索服务
+    console.log("当前保存", selectedConfig.value)
+    if (selectedConfig.value.provider_name === "Tavily") {
+      await searchEngineService.updateSearchEngineConfig({
+        provider_id: selectedConfig.value.provider_id,
+        api_key: selectedConfig.value.base_config.api_key,
+        include_date: selectedConfig.value.include_date,
+        cover_provider_search: selectedConfig.value.cover_provider_search,
+        enable_enhanced_mode: selectedConfig.value.enable_enhanced_mode,
+        result_count: selectedConfig.value.result_count,
+        blacklist: selectedConfig.value.blacklist
+      })
+    } else if (selectedConfig.value.provider_name === 'Cloudsway') {
+      await searchEngineService.updateSearchEngineConfig({
+        provider_id: selectedConfig.value.provider_id,
+        api_key: selectedConfig.value.base_config.api_key,
+        endpoint: selectedConfig.value.base_config.endpoint,
+        include_date: selectedConfig.value.include_date,
+        cover_provider_search: selectedConfig.value.cover_provider_search,
+        enable_enhanced_mode: selectedConfig.value.enable_enhanced_mode,
+        result_count: selectedConfig.value.result_count,
+        blacklist: selectedConfig.value.blacklist
+      })
+    } else {
+      await searchEngineService.updateSearchEngineConfig({
+        provider_id: selectedConfig.value.provider_id,
+        include_date: selectedConfig.value.include_date,
+        cover_provider_search: selectedConfig.value.cover_provider_search,
+        enable_enhanced_mode: selectedConfig.value.enable_enhanced_mode,
+        result_count: selectedConfig.value.result_count,
+        blacklist: selectedConfig.value.blacklist
+      })
     }
-    await searchEngineService.updateSearchEngineConfig({
-      provider_id: selectedConfig.value.provider_id,
-      api_key: selectedConfig.value.base_config.api_key,
-      include_date: selectedConfig.value.include_date,
-      cover_provider_search: selectedConfig.value.cover_provider_search,
-      enable_enhanced_mode: selectedConfig.value.enable_enhanced_mode,
-      result_count: selectedConfig.value.result_count,
-      blacklist: selectedConfig.value.blacklist
-    })
     // message.success(t('setting.searchService.saveBlacklistSuccess'))
   } catch (error) {
-    // console.error('Failed to save config:', error)
-    // message.error(t('setting.searchService.saveBlacklistFailed'))
+    console.error('Failed to save config:', error)
+    message.error(t('setting.searchService.saveBlacklistFailed'))
   }
 }
-
-
 
 
 </script>
@@ -340,7 +392,7 @@ const handleSave = async () => {
   gap: 16px;
   align-items: center;
 
-  #searchTemplates{
+  #searchTemplates {
     width: 100%;
   }
 }
