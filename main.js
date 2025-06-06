@@ -1,6 +1,6 @@
 // main.js
 
-const { app, BrowserWindow,ipcMain } = require('electron');
+const { app, BrowserWindow,ipcMain,shell } = require('electron');
 const path = require('path');
 const { exec, spawn } = require('child_process');
 import { initDockerSetupService, checkAndRunDockerSetup, DOCKER_SETUP_DONE_KEY } from './dockerSetupService.js';
@@ -203,6 +203,25 @@ if (!gotTheLock) {
     console.log('Docker setup check initiated.');
 
     // 其他 app ready 后续逻辑...
+
+
+      // ✅ 拦截新窗口打开
+    createdWindow.webContents.setWindowOpenHandler(({ url }) => {
+      // 如果是 http/https，就在系统默认浏览器中打开
+      if (url.startsWith('http')) {
+        shell.openExternal(url);
+        return { action: 'deny' };
+      }
+      return { action: 'allow' };
+    });
+
+    // ✅ 拦截页面内跳转（可选）
+    createdWindow.webContents.on('will-navigate', (event, url) => {
+      if (url.startsWith('http') && url !== createdWindow.webContents.getURL()) {
+        event.preventDefault();
+        shell.openExternal(url);
+      }
+    });
   });
 
 
