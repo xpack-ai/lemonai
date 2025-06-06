@@ -88,6 +88,8 @@ const dataSync = async () => {
 }
 
 const dataUpdate = async () => {
+  const defaultData = require('../../public/default_data/default_platform.json');
+
   // v0.1 => v0.1.1
   await Platform.update({
     api_url: 'https://ark.cn-beijing.volces.com/api/v3'
@@ -98,7 +100,6 @@ const dataUpdate = async () => {
   })
   const platform = await Platform.findOne({ where: { name: 'Gemini' } })
   if (!platform) {
-    const defaultData = require('../../public/default_data/default_platform.json');
     const geminiPlatform = defaultData.find(item => item.name === 'Gemini')
     console.log(geminiPlatform)
     const platformData = {
@@ -134,6 +135,31 @@ const dataUpdate = async () => {
       base_config_schema: CloudswaySearchProvider.base_config_schema,
     };
     await SearchProviderTable.create(searchProviderData);
+  }
+
+  const cloudswayPlatform = await Platform.findOne({ where: { name: 'Cloudsway' } })
+  if (!cloudswayPlatform) {
+    const cloudswayPlatform = defaultData.find(item => item.name === 'Cloudsway')
+    const platformData = {
+      name: cloudswayPlatform.name,
+      logo_url: cloudswayPlatform.logo_url,
+      source_type: 'system',
+      api_key: cloudswayPlatform.api_key,
+      api_url: cloudswayPlatform.api_url,
+      api_version: cloudswayPlatform.api_version,
+      key_obtain_url: cloudswayPlatform.key_obtain_url,
+    };
+    const platform = await Platform.create(platformData);
+    const modelsData = cloudswayPlatform.models.map(model => ({
+      // @ts-ignore
+      platform_id: platform.id,
+      logo_url: model.logo_url,
+      model_id: model.model_id,
+      model_name: model.model_name,
+      group_name: model.group_name,
+      model_types: model.model_types,
+    }));
+    await Model.bulkCreate(modelsData);
   }
 }
 
