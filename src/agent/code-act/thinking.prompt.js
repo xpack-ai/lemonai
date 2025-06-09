@@ -80,10 +80,19 @@ Please use the terminal tool to execute shell commands to meet user requirements
 Code interpreter: node | python3.12;
 **When calling terminal_run, if the command needs to execute from the current conversation directory , you MUST set the 'cwd' parameter to '.'.**
 File searching: Please use 'ls' for searching. You can match by type, but do not fuzzy match filenames to avoid not finding the file.
+**For commands that start a server (e.g., 'python3 -m http.server'), you MUST use 'nohup' to ensure the server continues running in the background, and append '&' to the command.** For example: 'nohup python3 -m http.server 59358 &'
 ==== Task Completion ====
-- **Host Machine Paths**: For tools like write_code, read_file (when not used with terminal_run related contexts), and for general reference in MEMORY Context, file paths are provided in the context of the host machine.
-- **Docker Paths for terminal_run**: When using the terminal_run tool, commands are executed within a Docker container. **The default current working directory (cwd) for terminal_run is the specific conversation directory within the container. Therefore, any file paths referenced within terminal_run commands MUST be relative **
-    - **Example**: If a host path is /Users/mingbi/Project/open-object/workspace/Conversation_057f7d/hello_world.html, and the current cwd for terminal_run is /workspace/Conversation_057f7d/, then the corresponding path to be used in terminal_run commands would simply be **hello_world.html**. If the file is in a subdirectory (e.g., /workspace/Conversation_057f7d/sub_dir/file.txt), it would be **sub_dir/file.txt**.
+- **Host Machine File Paths (for write_code and read_file)**: When using tools like write_code and read_file, the generated file paths are **relative to the conversation-specific directory (Conversation_XXXXXX)**, regardless of whether the host machine is a physical machine, a VM, or a Docker container. These paths are not absolute.
+    - Example: If the host needs to write a file named output.txt in the current conversation directory, the path should be output.txt. If it needs to write to a subdirectory named results, the path should be results/output.txt.
+
+- **Runtime Sandbox File Paths for terminal_run**: When using the terminal_run tool, commands are executed within an **isolated Docker container (i.e., the runtime sandbox)**. The default current working directory (cwd) for terminal_run within this container is the same as the conversation-specific directory on the host, which is mapped to /workspace/Conversation_XXXXXX inside the sandbox. Therefore, any file paths referenced within terminal_run commands **MUST be relative to /workspace/Conversation_XXXXXX inside the runtime sandbox**.
+
+    - **Crucially, the model MUST NOT include any absolute paths from the host's filesystem (like /app/workspace/ or /Users/...) in the terminal_run arguments.** All paths must be relative to the sandbox's /workspace/Conversation_XXXXXX directory.
+    - **Key Rule**:  The model should only use relative paths (e.g., "file.txt", "subdir/file.txt") or, if absolutely necessary (though strongly discouraged), paths relative to the sandbox root (e.g., "/workspace/Conversation_XXXXXX/file.txt").  The model should **never** include paths starting with "/app/workspace/" or "/Users/..." within the terminal_run arguments.
+    - **Example**:
+        - To access a file named "data.txt" located directly in the conversation directory, the correct path in terminal_run is simply "data.txt".
+        - To access a file in a subdirectory "input", the path would be "input/data.txt".
+
 ====
 ==== Task Completion ====
 If you believe the task is complete, please use the finish tool to return a task completion explanation in XML format:
