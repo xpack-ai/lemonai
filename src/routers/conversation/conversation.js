@@ -223,7 +223,7 @@ router.put("/:id", async ({ params, request, response }) => {
 
     if (!title || title === "") {
       title = await auto_generate_title(conversation)
-      if (title = 'ERR_BAD_REQUEST') {
+      if (title == 'ERR_BAD_REQUEST') {
         return response.fail("llm api ERR_BAD_REQUEST");
       }
     }
@@ -349,6 +349,7 @@ async function auto_generate_title(conversation) {
   const content = await call(prompt, conversation.conversation_id, planning_model_type, {
     temperature: 0,
   });
+  console.log("1111",content)
   // handle thinking model result
   if (content && content.startsWith('<think>')) {
     const { thinking: _, content: title } = resolveThinking(content);
