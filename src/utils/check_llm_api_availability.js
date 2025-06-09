@@ -1,6 +1,6 @@
-async function checkLlmApiAvailability(baseUrl, apiKey, model) {
-  if (!baseUrl || !apiKey) {
-    return { status: false, message: 'Base URL and API Key are required.' };
+async function checkLlmApiAvailability(baseUrl, apiKey='', model) {
+  if (!baseUrl) {
+    return { status: false, message: 'Base URL is required.' };
   }
   const api_url = baseUrl + '/chat/completions'
   const controller = new AbortController();
