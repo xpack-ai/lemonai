@@ -427,7 +427,7 @@
     "api_key": "",
     "api_url": "https://ark.cn-beijing.volces.com/api/v3",
     "api_version": "1.0",
-    "key_obtain_url": "https://ark.cn-beijing.volces.com/",
+    "key_obtain_url": "https://www.volcengine.com/experience/ark",
     "is_enabled": "False",
     "activate_time": "-1",
     "models": [
