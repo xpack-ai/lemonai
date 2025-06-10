@@ -1,5 +1,6 @@
 const axios = require('axios')
 const { getDefaultModel } = require('@src/utils/default_model')
+const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
 
 // 评估
 const resolveEvaluatePrompt = async (requirement = '', result = '') => {
@@ -42,7 +43,7 @@ const evaluate = async (requirement, result, conversation_id) => {
 }
 
 const evaluate_server = async (requirement, result, conversation_id) => {
-  const url = ''
+  const url = `${SUB_SERVER_DOMAIN}/api/sub_server/evaluate`
   const config = {
     method: "post",
     maxBodyLength: Infinity,

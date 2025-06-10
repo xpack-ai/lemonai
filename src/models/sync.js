@@ -174,7 +174,7 @@ const dataUpdate = async () => {
       api_url: lemonPlatform.api_url,
       api_version: lemonPlatform.api_version,
       key_obtain_url: lemonPlatform.key_obtain_url,
-      is_subscribe: lemonPlatform.is_subscribe
+      is_subscribe: true
     };
     const platform = await Platform.create(platformData);
     const modelsData = lemonPlatform.models.map(model => ({

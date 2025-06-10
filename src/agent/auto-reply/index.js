@@ -6,25 +6,27 @@ const axios = require('axios')
 const call = require("@src/utils/llm");
 const { getDefaultModel } = require('@src/utils/default_model')
 const resolveAutoReplyPrompt = require('@src/agent/prompt/auto_reply.js');
+const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
 
 const auto_reply = async (goal, conversation_id) => {
   let model_info = await getDefaultModel()
   if (model_info.is_subscribe) {
-    let replay = await auto_reply_server(goal)
+    let replay = await auto_reply_server(goal, conversation_id)
     return replay
   }
   let replay = await auto_reply_local(goal, conversation_id)
   return replay
 }
 
-const auto_reply_server = async (goal) => {
-  const url = ''
+const auto_reply_server = async (goal, conversation_id) => {
+  const url = `${SUB_SERVER_DOMAIN}/api/sub_server/auto_reply`
   const config = {
     method: "post",
     maxBodyLength: Infinity,
     url,
     data: {
-      goal
+      goal,
+      conversation_id
     },
   };
 

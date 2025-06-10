@@ -3,9 +3,7 @@ require("module-alias/register");
 
 const Conversation = require("@src/models/Conversation");
 const Message = require("@src/models/Message");
-const call = require("@src/utils/llm");
-const resolveGenerateTitlePrompt = require("@src/agent/prompt/generate_title");
-const planning_model_type = 'assistant';
+const auto_generate_title = require('@src/agent/generate-title')
 
 const uuid = require("uuid");
 const { Op } = require("sequelize");
@@ -222,7 +220,7 @@ router.put("/:id", async ({ params, request, response }) => {
     }
 
     if (!title || title === "") {
-      title = await auto_generate_title(conversation)
+      title = await auto_generate_title(conversation.dataValues.content, conversation.dataValues.conversation_id)
       if (title == 'ERR_BAD_REQUEST') {
         return response.fail("llm api ERR_BAD_REQUEST");
       }
@@ -341,21 +339,5 @@ router.post("/query", async ({ request, response }) => {
   return response.success(conversations);
 });
 
-const resolveThinking = require("@src/utils/thinking");
-
-async function auto_generate_title(conversation) {
-  console.log(conversation)
-  const prompt = await resolveGenerateTitlePrompt(conversation.content);
-  const content = await call(prompt, conversation.conversation_id, planning_model_type, {
-    temperature: 0,
-  });
-  console.log("1111",content)
-  // handle thinking model result
-  if (content && content.startsWith('<think>')) {
-    const { thinking: _, content: title } = resolveThinking(content);
-    return title;
-  }
-  return content;
-}
 
 module.exports = exports = router.routes();

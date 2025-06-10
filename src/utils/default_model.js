@@ -22,7 +22,7 @@ const _fetchDefaultModel = async (type = 'assistant') => {
   }
   const platform_name = platform.dataValues.name;
 
-  return { model_name, platform_name, api_key, api_url, base_url: base_url, is_subscribe: false };
+  return { model_name, platform_name, api_key, api_url, base_url: base_url, is_subscribe: platform.dataValues.is_subscribe };
 };
 
 const getDefaultModel = async (type = 'assistant') => {

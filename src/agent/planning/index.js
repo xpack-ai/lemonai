@@ -2,6 +2,7 @@ require("module-alias/register");
 require("dotenv").config();
 
 const axios = require('axios')
+const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
 
 const call = require("@src/utils/llm");
 const resolvePlanningPrompt = require("@src/agent/prompt/plan");
@@ -20,7 +21,7 @@ const planning = async (goal, files, previousResult, conversation_id) => {
 };
 
 const planning_server = async (goal, files, previousResult, conversation_id) => {
-  const url = ''
+  const url = `${SUB_SERVER_DOMAIN}/api/sub_server/planning`
   const config = {
     method: "post",
     maxBodyLength: Infinity,

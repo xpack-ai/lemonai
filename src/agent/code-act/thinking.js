@@ -1,9 +1,12 @@
+require('dotenv').config();
+const axios = require('axios')
 const resolveThinkingPrompt = require("./thinking.prompt");
 const resolveThinking = require("@src/utils/thinking");
 const { getDefaultModel } = require('@src/utils/default_model')
 
 const call = require("@src/utils/llm");
 const DEVELOP_MODEL = 'assistant';
+const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
 
 const thinking = async (requirement, context = {}) => {
   let model_info = await getDefaultModel()
@@ -32,7 +35,7 @@ const thinking_server = async (requirement, context = {}) => {
     return message.content;
   }
 
-  const url = ''
+  const url = `${SUB_SERVER_DOMAIN}/api/sub_server/thinking`
   const config = {
     method: "post",
     maxBodyLength: Infinity,
@@ -47,8 +50,8 @@ const thinking_server = async (requirement, context = {}) => {
 
   const result = await axios.request(config);
   // Use LLM thinking to instruct next action
-  let prompt = result.prompt;
-  let content = result.content;
+  let prompt = result.data.data.prompt;
+  let content = result.data.data.content;
   
   if (prompt) {
     await memory.addMessage('user', prompt);
