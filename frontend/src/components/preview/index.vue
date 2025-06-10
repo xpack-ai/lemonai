@@ -91,7 +91,7 @@ import BrowserImage from '@/components/browser/image.vue';
 import FileContent from '@/components/file/index.vue';
 import emitter from '@/utils/emitter';
 import workspaceService from '@/services/workspace';
-import Browse from '@/assets/message/browse.svg';
+import Browser from '@/assets/message/browse.svg';
 import Edit from '@/assets/message/edit.svg';
 import Bash from '@/assets/message/bash.svg';
 import {storeToRefs} from 'pinia';
@@ -117,11 +117,11 @@ const messageQueue = computed(() => {
 });
 
 const svgHash = {
-  browse: markRaw(Browse),
+  browser: markRaw(Browser),
   write_code: markRaw(Edit),
   terminal_run: markRaw(Bash),
   read_file: markRaw(Edit),
-  web_search: markRaw(Browse),
+  web_search: markRaw(Browser),
 };
 
 const type = ref('');
@@ -203,8 +203,8 @@ async function handleMessageUpdate(newValue) {
     case 'browser':
       typeDescription.value = t('lemon.preview.browser');
       typeTitle.value = t('lemon.preview.browsing');
-      // fileName.value = newValue.extras?.url || '';
       browserImageData.value = newValue.meta.json.browser_history_screenshot || '';
+      fileName.value = newValue.meta.json.browser_history[0].final_url[0].split('?')[0] || '';
       break;
     case 'write_code':
       typeDescription.value = t('lemon.preview.editor');

@@ -234,7 +234,8 @@ watch(file, (newValue) => {
   fileName.value = newValue.filename?.endsWith('.md') ? newValue.filename.split('.')[0] : newValue.filename
   fileName.value = fileName.value.split('\\').pop()
 
-  if (canCodePreview.value || canOfficePreview.value) {
+  // if (canCodePreview.value || canOfficePreview.value) {   TODO add office preview process
+  if(canCodePreview.value){
     workspaceService.getFile(newValue.filepath).then((res) => {
       //将res 转为str
       let resString = typeof res === 'string' ? res : JSON.stringify(res);
