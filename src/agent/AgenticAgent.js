@@ -1,10 +1,10 @@
 require('dotenv').config();
 const planning = require("@src/agent/planning/index.js");
+const auto_reply = require("@src/agent/auto-reply/index")
+const summary = require("@src/agent/summary/index")
+
 const completeCodeAct = require("@src/agent/code-act/code-act.js");
 const TaskManager = require('./TaskManager'); // assume task manager path
-const resolveAutoReplyPrompt = require('@src/agent/prompt/auto_reply.js');
-const resolveResultPrompt = require('@src/agent/prompt/generate_result.js');
-const call = require('@src/utils/llm.js');
 const Message = require('@src/utils/message.js');
 const MessageTable = require('@src/models/Message')
 const Conversation = require('@src/models/Conversation')
@@ -61,7 +61,11 @@ class AgenticAgent {
         this.logger.log('Agent stopped.');
         return;
       }
-      await this.auto_reply(goal);
+      const reply = await auto_reply(goal, this.context.conversation_id);
+      const reply_msg = Message.format({ status: 'success', action_type: "auto_reply", content: reply })
+      this.onTokenStream(reply_msg);
+      await Message.saveToDB(reply_msg, this.context.conversation_id);
+
       if (this.is_stop) {
         this.logger.log('Agent stopped.');
         return;
@@ -122,8 +126,7 @@ class AgenticAgent {
           }
         })
       )
-      const prompt = await resolveResultPrompt(this.goal, tasks);
-      const result = await call(prompt, this.context.conversation_id);
+      const result = await summary(this.goal, this.context.conversation_id, tasks)
       const msg = Message.format({ status: 'success', action_type: 'finish_summery', content: result, json: newFiles });
       this.onTokenStream(msg);
       await Message.saveToDB(msg, this.context.conversation_id);
@@ -142,16 +145,6 @@ class AgenticAgent {
         logs: this.logs
       };
     }
-  }
-
-  async auto_reply(goal) {
-    // Call the model to get a response in English based on the goal
-    const prompt = await resolveAutoReplyPrompt(goal);
-    const auto_reply = await call(prompt, this.context.conversation_id);
-
-    const msg = Message.format({ status: 'success', action_type: "auto_reply", content: auto_reply })
-    this.onTokenStream(msg);
-    await Message.saveToDB(msg, this.context.conversation_id);
   }
 
   async plan(goal) {

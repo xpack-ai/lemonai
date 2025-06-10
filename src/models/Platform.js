@@ -51,6 +51,12 @@ const fields = {
     defaultValue: false,
     comment: 'Enabled'
   },
+  is_subscribe: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+    comment: 'is subscribe'
+  },
   create_at: {
     type: DataTypes.DATE,
     allowNull: false,

@@ -42,6 +42,7 @@ const dataSync = async () => {
         api_url: item.api_url,
         api_version: item.api_version,
         key_obtain_url: item.key_obtain_url,
+        is_subscribe: item.is_subscribe || false
       };
       const platform = await Platform.create(platformData);
 
@@ -151,6 +152,32 @@ const dataUpdate = async () => {
     };
     const platform = await Platform.create(platformData);
     const modelsData = cloudswayPlatform.models.map(model => ({
+      // @ts-ignore
+      platform_id: platform.id,
+      logo_url: model.logo_url,
+      model_id: model.model_id,
+      model_name: model.model_name,
+      group_name: model.group_name,
+      model_types: model.model_types,
+    }));
+    await Model.bulkCreate(modelsData);
+  }
+  // v0.1.2 => v0.1.3
+  const platform_lemon = await Platform.findOne({ where: { name: 'Lemon' } })
+  if (!platform_lemon) {
+    const lemonPlatform = defaultData.find(item => item.name === 'Lemon')
+    const platformData = {
+      name: lemonPlatform.name,
+      logo_url: lemonPlatform.logo_url,
+      source_type: 'system',
+      api_key: lemonPlatform.api_key,
+      api_url: lemonPlatform.api_url,
+      api_version: lemonPlatform.api_version,
+      key_obtain_url: lemonPlatform.key_obtain_url,
+      is_subscribe: lemonPlatform.is_subscribe
+    };
+    const platform = await Platform.create(platformData);
+    const modelsData = lemonPlatform.models.map(model => ({
       // @ts-ignore
       platform_id: platform.id,
       logo_url: model.logo_url,

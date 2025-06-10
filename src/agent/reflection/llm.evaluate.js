@@ -1,3 +1,6 @@
+const axios = require('axios')
+const { getDefaultModel } = require('@src/utils/default_model')
+
 // 评估
 const resolveEvaluatePrompt = async (requirement = '', result = '') => {
   const prompt = `Please act as a professional review expert, fully understand the user's requirements and expected results, compare and analyze the execution results, evaluate whether the execution results meet the user's requirements
@@ -27,7 +30,35 @@ Start:`
 
 const call = require("@src/utils/llm");
 const evaluate_model = 'assistant';
+
 const evaluate = async (requirement, result, conversation_id) => {
+  let model_info = await getDefaultModel()
+  if (model_info.is_subscribe) {
+    let content = await evaluate_server(requirement, result, conversation_id)
+    return content
+  }
+  let content = await evaluate_local(requirement, result, conversation_id)
+  return content
+}
+
+const evaluate_server = async (requirement, result, conversation_id) => {
+  const url = ''
+  const config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url,
+    data: {
+      requirement,
+      result,
+      conversation_id
+    },
+  };
+
+  const res = await axios.request(config);
+  return res.data.data;
+};
+
+const evaluate_local = async (requirement, result, conversation_id) => {
   const prompt = await resolveEvaluatePrompt(requirement, result);
   console.log('\n === evaluation prompt ===\n', prompt);
   // process.exit(0);

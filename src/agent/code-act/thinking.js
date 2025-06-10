@@ -1,12 +1,66 @@
 const resolveThinkingPrompt = require("./thinking.prompt");
 const resolveThinking = require("@src/utils/thinking");
+const { getDefaultModel } = require('@src/utils/default_model')
 
 const call = require("@src/utils/llm");
 const DEVELOP_MODEL = 'assistant';
 
 const thinking = async (requirement, context = {}) => {
+  let model_info = await getDefaultModel()
+  if (model_info.is_subscribe) {
+    let content = await thinking_server(requirement, context)
+    return content
+  }
+  let content = await thinking_local(requirement, context)
+  return content
+}
+
+const thinking_server = async (requirement, context = {}) => {
   const { memory, retryCount } = context;
   // console.log('memory', memory);
+  const summarize = false;
+  const messages = await memory.getMessages(summarize);
+  if (retryCount > 0) {
+    // Retry with user reply
+    console.log('retryCount', retryCount);
+    // messages.pop();
+  }
+
+  // If last message is assistant, return directly, support quickly playback and run action
+  const message = messages[messages.length - 1];
+  if (message && message.role === 'assistant') {
+    return message.content;
+  }
+
+  const url = ''
+  const config = {
+    method: "post",
+    maxBodyLength: Infinity,
+    url,
+    data: {
+      messages,
+      requirement,
+      context,
+      conversation_id:context.conversation_id
+    },
+  };
+
+  const result = await axios.request(config);
+  // Use LLM thinking to instruct next action
+  let prompt = result.prompt;
+  let content = result.content;
+  
+  if (prompt) {
+    await memory.addMessage('user', prompt);
+  }
+  await memory.addMessage('assistant', content);
+
+  return content;
+}
+
+const thinking_local = async (requirement, context = {}) => {
+  const { memory, retryCount } = context;
+  console.log('memory', memory);
   const summarize = false;
   const messages = await memory.getMessages(summarize);
   if (retryCount > 0) {
@@ -42,7 +96,6 @@ const thinking = async (requirement, context = {}) => {
     const { thinking: _, content: output } = resolveThinking(content);
     return output;
   }
-
   return content;
 }
 
