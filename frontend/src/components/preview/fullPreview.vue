@@ -10,7 +10,7 @@
         </div>
 
         <div class="btns">
-          <a-tooltip placement="bottom" :arrow="false" color="#ffffff" trigger="click"
+          <a-tooltip placement="bottom" :arrow="false" color="#ffffff" trigger="click" 
                      overlayClassName="tooltip-com" v-model:open="downloadTooltipVisible">
             <template #title>
               <div class="custom-tooltip">
@@ -442,6 +442,7 @@ emitter.on('fullPreviewVisable-close', () => {
           display: flex;
           justify-items: center;
           align-items: center;
+          background-color: unset;
         }
 
         .icon-bt:hover {
