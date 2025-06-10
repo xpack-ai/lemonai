@@ -4,6 +4,8 @@ const CloudswaySearch = require('./impl/web_search/CloudswaySearch');
 const UserProviderConfig = require('@src/models/UserProviderConfig');
 const SearchProvider = require('@src/models/SearchProvider');
 const UserSearchSetting = require('@src/models/UserSearchSetting');
+const axios = require('axios')
+const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
 
 /** @type {import('types/Tool').Tool} */
 const WebSearchTool = {
@@ -32,7 +34,7 @@ const WebSearchTool = {
      * @param {number} [args.num_results=3] - Optional number of results.
      * @returns {Promise<string>} A promise resolving to a string containing the action description.
      */
-    getActionDescription: async ({query, num_results = 3}) => {
+    getActionDescription: async ({ query, num_results = 3 }) => {
         return query;
     },
 
@@ -43,7 +45,7 @@ const WebSearchTool = {
      * @param {number} [args.num_results=3] - Optional number of results.
      * @returns {Promise<Object>} A promise resolving to a string containing the search results.
      */
-    execute: async ({query, num_results = 3}) => {
+    execute: async ({ query, num_results = 3 }) => {
         try {
             // 如果设置了，默认走设置
             let userSearchSetting = await UserSearchSetting.findOne()
@@ -59,7 +61,7 @@ const WebSearchTool = {
             }
 
             // 判断当前设置
-            const searchProvider = await SearchProvider.findOne({where: {id: userSearchSetting.provider_id}})
+            const searchProvider = await SearchProvider.findOne({ where: { id: userSearchSetting.provider_id } })
             let json = {}
             let content = ''
             let obj
@@ -83,11 +85,16 @@ const WebSearchTool = {
                     obj = await doLocalSearch(query, 'bing', num_results)
                     json = obj.json
                     content = obj.content
-                    break
+                    break;
+                case 'Lemon':
+                    obj = await doLemonSearch(query, num_results)
+                    json = obj.json
+                    content = obj.content
+                    break;
             }
             return {
                 content,
-                meta: {json}
+                meta: { json }
             }
         } catch (error) {
             console.error(`[WebSearchTool] Error during execution for query "${query}":`, error);
@@ -99,44 +106,60 @@ const WebSearchTool = {
 
 async function doTalivySearch(query, num_results) {
     let userSearchSetting = await UserSearchSetting.findOne()
-    const userProviderConfig = await UserProviderConfig.findOne({where: {provider_id: userSearchSetting.provider_id}})
+    const userProviderConfig = await UserProviderConfig.findOne({ where: { provider_id: userSearchSetting.provider_id } })
     let tavily_api_key = userProviderConfig.base_config.api_key
 
-    const talivy = new TalivySearch({key: tavily_api_key});
-    const results = await talivy.search(query, {max_results: num_results});
+    const talivy = new TalivySearch({ key: tavily_api_key });
+    const results = await talivy.search(query, { max_results: num_results });
     // console.log(`[WebSearchTool] Search results for "${query}":`, results);
 
     const formatted = await talivy.formatContent();
     const json = await talivy.formatJSON();
     const content = `Web search results for "${query}":\n\n${formatted}`;
 
-    return {json, content}
+    return { json, content }
+}
+
+async function doLemonSearch(query, num_results) {
+    const url = `${SUB_SERVER_DOMAIN}/api/sub_server/search`
+    const config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url,
+        data: {
+            query,
+            num_results
+        },
+    };
+
+    const result = await axios.request(config);
+    return result.data.data;
 }
 
 async function doCloudswaySearch(query, num_results) {
     let userSearchSetting = await UserSearchSetting.findOne()
-    const userProviderConfig = await UserProviderConfig.findOne({where: {provider_id: userSearchSetting.provider_id}})
+    const userProviderConfig = await UserProviderConfig.findOne({ where: { provider_id: userSearchSetting.provider_id } })
     let cloudsway_access_key = userProviderConfig.base_config.api_key
     let cloudsway_endpoint = userProviderConfig.base_config.endpoint
-    const cloudsway = new CloudswaySearch({access_key: cloudsway_access_key, endpoint: cloudsway_endpoint});
-    const results = await cloudsway.search(query, {max_results: num_results});
+    const cloudsway = new CloudswaySearch({ access_key: cloudsway_access_key, endpoint: cloudsway_endpoint });
+    const results = await cloudsway.search(query, { max_results: num_results });
     // console.log(`[WebSearchTool] Search results for "${query}":`, results);
     const formatted = await cloudsway.formatContent();
     const json = await cloudsway.formatJSON();
     const content = `Web search results for "${query}":\n\n${formatted}`;
     console.log(`[WebSearchTool] doCloudswaySearch Search results for "${query}":`, results)
-    return {json, content}
+    return { json, content }
 }
 
 
 async function doLocalSearch(query, engine_name, num_results) {
     const localSearch = new LocalSearch()
-    const results = await localSearch.search(query, {uid: 'user1', max_results: num_results, engine: engine_name});
+    const results = await localSearch.search(query, { uid: 'user1', max_results: num_results, engine: engine_name });
     let formatted = await localSearch.formatContent()
     const json = await localSearch.formatJSON();
     const content = `Web search results for "${query}":\n\n${formatted}`;
 
-    return {json, content}
+    return { json, content }
 }
 
 
