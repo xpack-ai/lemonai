@@ -87,7 +87,7 @@
               <div v-else>
                 <span class="api-key">{{handleApiTitle }}</span>
                   <a-input-password id="api-key-value" v-model:value="choose_platform.api_key"
-                                  :placeholder="handleApiPlaceholder"  @blur="handleSaveChanges">
+                                  :placeholder="handleApiPlaceholder"  @change="handleSaveChanges">
                      <template #addonAfter>
                         <a-button class="no-button" @click="handleCheckApiKey" :loading="checkLoading" >{{
                $t('setting.modelService.check') }}</a-button>
@@ -105,7 +105,7 @@
             <span class="api-address-title">{{ $t('setting.modelService.apiAddress') }}</span>
 
             <a-input v-model:value="choose_platform.api_url"
-                     :placeholder="$t('setting.modelService.apiAddressPlaceholder')" class="api-input" @blur="handleSaveChanges">
+                     :placeholder="$t('setting.modelService.apiAddressPlaceholder')" class="api-input" @change="handleSaveChanges">
               <template #addonAfter v-if="handleShowCheckButton">
                         <a-button class="no-button" @click="handleCheckApiKey" :loading="checkLoading" >{{
                $t('setting.modelService.check') }}</a-button>
