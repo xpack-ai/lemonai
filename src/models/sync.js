@@ -188,6 +188,16 @@ const dataUpdate = async () => {
     }));
     await Model.bulkCreate(modelsData);
   }
+  // const lemonSearchProviderData = defaultSearchProviderData.find(item => item.name === 'Lemon');
+  // const lemonSearchProvider = await SearchProviderTable.findOne({ where: { name: lemonSearchProviderData.name } });
+  // if (!lemonSearchProvider) {
+  //   const searchProviderData = {
+  //     name: lemonSearchProviderData.name,
+  //     logo_url: lemonSearchProviderData.logo_url,
+  //     base_config_schema: lemonSearchProviderData.base_config_schema,
+  //   };
+  //   await SearchProviderTable.create(searchProviderData);
+  // }
 }
 
 const sync = async () => {
