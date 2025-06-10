@@ -25,6 +25,14 @@ instance.interceptors.request.use(
       config.headers['Content-Type'] = 'multipart/form-data'
     }
 
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken) {
+      config.headers = {
+        ...config.headers, // 保留原有的 headers 配置
+        "Authorization": `Bearer ${accessToken}`
+      };
+    }
+    
     return config;
   },
   (error) => {
@@ -32,6 +40,9 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+
+
 
 // 响应拦截（请求返回后拦截）
 let isShowing401Error = false; // 标志位，用于控制 401 提示是否已显示

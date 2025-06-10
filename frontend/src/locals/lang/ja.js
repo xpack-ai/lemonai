@@ -1,8 +1,8 @@
 export default {
   // ログイン画面
   auth: {
-    loginToOpenAgent: "OpenAgentにログイン",
-    registerOpenAgentAccount: "OpenAgentアカウントを登録",
+    loginToLemonAI: "LemonAIにログイン",
+    registerLemonAIAccount: "LemonAIアカウントを登録",
     verifyEmail: "メール認証",
     resetPassword: "パスワードのリセット",
     loginWithGoogle: "Googleでログイン",

@@ -1,8 +1,8 @@
 export default {
   //登录界面
   auth: {
-    loginToOpenAgent: "Iniciar sesión en OpenAgent",
-    registerOpenAgentAccount: "Registrar cuenta OpenAgent",
+    loginToLemonAI: "Iniciar sesión en LemonAI",
+    registerLemonAIAccount: "Registrar cuenta LemonAI",
     verifyEmail: "Verificar correo electrónico",
     resetPassword: "Restablecer contraseña",
     loginWithGoogle: "Iniciar sesión con Google",

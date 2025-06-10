@@ -17,7 +17,8 @@ const modules = [
   'search_provider_setting',
   'runtime',
   'message',
-  'experience'
+  'experience',
+  'user'
 ];
 
 for (const module of modules) {

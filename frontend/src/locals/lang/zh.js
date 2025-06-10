@@ -1,15 +1,15 @@
 export default {
   //登录界面
   auth: {
-    loginToOpenAgent: "登录 OpenAgent",
-    registerOpenAgentAccount: "注册 OpenAgent 账户",
+    loginToLemonAI: "登录 LemonAI",
+    registerLemonAIAccount: "注册 LemonAI 账户",
     verifyEmail: "验证邮箱",
     resetPassword: "重置密码",
     loginWithGoogle: "使用 Google 登录",
     registerWithGoogle: "使用 Google 注册",
     login: "登录",
     register: "注册",
-    logOut: "登出",
+    logOut: "退出登录",
     forgotPassword: "忘记密码",
     resetPasswordButton: "重置密码",
     backToLogin: "返回登录",

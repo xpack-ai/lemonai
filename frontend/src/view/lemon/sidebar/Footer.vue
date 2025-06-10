@@ -30,6 +30,13 @@
             fill="#666" p-id="5528"></path>
         </svg>
       </button>
+      <!-- 登录 -->
+       <button class="login" v-if="isLogined" @click="toLogin">
+         {{ $t('auth.login') }}
+       </button>
+       <button class="login" v-else @click="toLoginOut">
+         {{ $t('auth.logOut') }}
+       </button>
     </div>
 
   </div>
@@ -47,6 +54,7 @@ const opShow = ref(true);
 const { t } = useI18n()
 import { driver } from "driver.js";
 import "driver.js/dist/driver.css";
+import tr from '@/locals/lang/tr';
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 const tour = async () => {
   const tourDriver = driver({
@@ -100,6 +108,23 @@ onMounted(() => {
     checkModel();
   });
 });
+//判断有没有登录
+const isLogined = computed(() => {
+  const token = localStorage.getItem('access_token');
+  if(token){
+    return false;
+  }
+  return true;
+});
+const toLogin = () => {
+  router.push({ path: '/auth' });
+};
+
+const  toLoginOut = () => {
+  localStorage.removeItem('access_token');
+  //刷新页面
+  location.reload();
+};
 
 const toSetting = () => {
   router.push({ path: '/setting/basic' });
@@ -169,6 +194,8 @@ const toSetting = () => {
 .footer-actions {
   display: flex;
   gap: 12px;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .footer-button {
@@ -187,5 +214,15 @@ const toSetting = () => {
     background-color: #f5f5f5;
     color: #333;
   }
+}
+
+.login{
+  border: 1px solid #666;
+  background: unset;
+  font-size: 14px;
+  border-radius: 20px;
+  height: 32px;
+  cursor: pointer;
+  min-width: 64px
 }
 </style>

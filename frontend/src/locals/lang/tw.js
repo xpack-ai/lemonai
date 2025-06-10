@@ -1,8 +1,8 @@
 export default {
   // 登入介面
   auth: {
-    loginToOpenAgent: "登入 OpenAgent",
-    registerOpenAgentAccount: "註冊 OpenAgent 帳戶",
+    loginToLemonAI: "登入 LemonAI",
+    registerLemonAIAccount: "註冊 LemonAI 帳戶",
     verifyEmail: "驗證電子郵件",
     resetPassword: "重設密碼",
     loginWithGoogle: "使用 Google 登入",

@@ -1,8 +1,8 @@
 export default {
   // Interface de Login
   auth: {
-    loginToOpenAgent: "Entrar no OpenAgent",
-    registerOpenAgentAccount: "Registrar uma conta OpenAgent",
+    loginToLemonAI: "Entrar no LemonAI",
+    registerLemonAIAccount: "Registrar uma conta LemonAI",
     verifyEmail: "Verificar e-mail",
     resetPassword: "Redefinir senha",
     loginWithGoogle: "Entrar com Google",

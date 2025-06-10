@@ -20,6 +20,16 @@ const routes = [
     meta: { verify: true }
   },
   {
+    path: "/auth",
+    name: "login",
+    component: () => import(/* webpackChunkName: "auth" */ "@/view/auth/index.vue"),
+  },
+  {
+    path: "/auth/google",
+    name: "google",
+    component: () => import(/* webpackChunkName: "auth" */ "@/view/auth/GoogleCallback.vue"),
+  },
+  {
     path: "/demo",
     name: "demo",
     component: () => import(/* webpackChunkName: "demo" */ "@/view/demo/index.vue"),
@@ -75,9 +85,15 @@ const router = createRouter({
   routes,
 });
 
-
 router.beforeEach((to, from, next) => {
-
+  const token = localStorage.getItem('access_token');
+  const { meta = {} } = to;
+  // If route requires authentication and no token exists, redirect to login
+  // if (meta.verify && !token) {
+  //   console.log("Authentication failed, redirecting to login");
+  //   next({ name: 'login' });
+  //   return;
+  // }
   next();
 })
 

@@ -1,8 +1,8 @@
 export default {
   // Giriş Arayüzü
   auth: {
-    loginToOpenAgent: "OpenAgent'a Giriş Yap",
-    registerOpenAgentAccount: "OpenAgent Hesabı Kaydol",
+    loginToLemonAI: "LemonAI'a Giriş Yap",
+    registerLemonAIAccount: "LemonAI Hesabı Kaydol",
     verifyEmail: "E-posta Doğrulama",
     resetPassword: "Şifre Sıfırlama",
     loginWithGoogle: "Google ile Giriş Yap",

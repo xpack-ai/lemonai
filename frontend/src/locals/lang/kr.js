@@ -1,8 +1,8 @@
 export default {
   // 로그인 화면
   auth: {
-    loginToOpenAgent: "OpenAgent에 로그인",
-    registerOpenAgentAccount: "OpenAgent 계정 등록",
+    loginToLemonAI: "LemonAI에 로그인",
+    registerLemonAIAccount: "LemonAI 계정 등록",
     verifyEmail: "이메일 인증",
     resetPassword: "비밀번호 재설정",
     loginWithGoogle: "Google로 로그인",

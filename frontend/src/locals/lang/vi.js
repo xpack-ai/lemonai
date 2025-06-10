@@ -1,7 +1,7 @@
 export default {
   auth: {
-    loginToOpenAgent: "Đăng nhập vào OpenAgent",
-    registerOpenAgentAccount: "Đăng ký tài khoản OpenAgent",
+    loginToLemonAI: "Đăng nhập vào LemonAI",
+    registerLemonAIAccount: "Đăng ký tài khoản LemonAI",
     verifyEmail: "Xác minh email",
     resetPassword: "Đặt lại mật khẩu",
     loginWithGoogle: "Đăng nhập bằng Google",
