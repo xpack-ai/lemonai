@@ -3,15 +3,15 @@ const axios = require('axios')
 async function browser(action, uuid) {
   const host = 'localhost'
   const host_port = 9000
-
+  // console.log("Actions INFO",action);
   const request = {
     method: 'POST',
     url: `http://${host}:${host_port}/api/browser/task`,
     data: { prompt: action.params.question, llm_config: action.params.llm_config },
   };
   const response = await axios(request);
-  //extracted_content
-  const result_content = response.data.data.history.task;
+  // const result_content = response.data.data.history.task;
+  const result_content = JSON.stringify(response.data.data.history.browser_history);
   return {
     uuid,
     status: 'success',
