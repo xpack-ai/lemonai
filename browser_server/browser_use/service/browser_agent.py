@@ -32,7 +32,7 @@ class BrowserAgentManager:
             "browser_history":   result,
             "browser_history_screenshot": history.screenshots(),
             "total_duration_seconds":total_duration_seconds,
-            "total_input_tokens":total_input_tokens,
+            "total_tokens":total_input_tokens,
             "is_successful":is_successful,
             "is_done":is_done,
             "number_of_steps":number_of_steps,
