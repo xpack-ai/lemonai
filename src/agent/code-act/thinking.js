@@ -6,7 +6,7 @@ const { getDefaultModel } = require('@src/utils/default_model')
 
 const call = require("@src/utils/llm");
 const DEVELOP_MODEL = 'assistant';
-const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
+const sub_server_request = require('@src/utils/sub_server_request')
 
 const thinking = async (requirement, context = {}) => {
   let model_info = await getDefaultModel()
@@ -35,24 +35,13 @@ const thinking_server = async (requirement, context = {}) => {
     return message.content;
   }
 
-  const url = `${SUB_SERVER_DOMAIN}/api/sub_server/thinking`
-  const config = {
-    method: "post",
-    maxBodyLength: Infinity,
-    url,
-    data: {
-      messages,
-      requirement,
-      context,
-      conversation_id:context.conversation_id
-    },
-  };
+  let { prompt, content } = await sub_server_request('/api/sub_server/thinking', {
+    messages,
+    requirement,
+    context,
+    conversation_id: context.conversation_id
+  })
 
-  const result = await axios.request(config);
-  // Use LLM thinking to instruct next action
-  let prompt = result.data.data.prompt;
-  let content = result.data.data.content;
-  
   if (prompt) {
     await memory.addMessage('user', prompt);
   }

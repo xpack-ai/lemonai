@@ -6,7 +6,7 @@ const axios = require('axios')
 const call = require("@src/utils/llm");
 const { getDefaultModel } = require('@src/utils/default_model')
 const resolveAutoReplyPrompt = require('@src/agent/prompt/auto_reply.js');
-const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
+const sub_server_request = require('@src/utils/sub_server_request')
 
 const auto_reply = async (goal, conversation_id) => {
   let model_info = await getDefaultModel()
@@ -19,19 +19,10 @@ const auto_reply = async (goal, conversation_id) => {
 }
 
 const auto_reply_server = async (goal, conversation_id) => {
-  const url = `${SUB_SERVER_DOMAIN}/api/sub_server/auto_reply`
-  const config = {
-    method: "post",
-    maxBodyLength: Infinity,
-    url,
-    data: {
-      goal,
-      conversation_id
-    },
-  };
-
-  const result = await axios.request(config);
-  return result.data.data;
+  return sub_server_request('/api/sub_server/auto_reply',{
+    goal,
+    conversation_id
+  })
 };
 
 const auto_reply_local = async (goal, conversation_id) => {
