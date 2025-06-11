@@ -1,3 +1,5 @@
+import About from "@/view/setting/about.vue";
+
 export default {
     // 登录界面
     auth: {
@@ -208,7 +210,8 @@ export default {
             modelService: 'Model Service',
             searchService: 'Search Service',
             mcpService: 'MCP Service',
-            experience: 'Experience'
+            experience: 'Experience',
+            about: 'About',
         },
         basic: {
             title: "Basic Settings",
@@ -492,7 +495,23 @@ export default {
             saturday: "Saturday",
             earlier: "Earlier",
         },
+        about: {
+            title: "About",
+            lemonAI: "LemonAI",
+            checkUpdate: "Check Update",
+            officialWebsite: "Official Website",
+            view: "View",
+            feedback: "Feedback",
+            submitFeedback: "Submit Feedback",
+            license: "License",
+            newVersionReleased: "Wow🔥 New Version Released!🚀",
+            version: "Version",
+            skipUpdate: "Skip Update",
+            viewDetails: "View Details",
+            alreadyLatest: "The current version is the latest"
+        }
     },
+    
     thinking: "Thinking",
     task_error: "Task Error",
     stop_task: "Task Stopped",

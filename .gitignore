@@ -34,3 +34,7 @@ Caches
 # python 
 .venv
 __pycache__
+
+# trae
+.trae
+

@@ -18,7 +18,8 @@ const modules = [
   'runtime',
   'message',
   'experience',
-  'user'
+  'user',
+  'version'
 ];
 
 for (const module of modules) {

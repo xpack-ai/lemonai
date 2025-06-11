@@ -207,7 +207,8 @@ export default {
       modelService: "模型服务",
       searchService: "搜索服务",
       mcpService: "MCP服务",
-      experience: '经验库'
+      experience: '经验库',
+      about: '关于',
     },
     basic: {
       title: "基本设置",
@@ -477,6 +478,21 @@ export default {
       saturday: "星期六",
       earlier: "更早",
     },
+    about: {
+      title: "关于",
+      lemonAI: "LemonAI",
+      checkUpdate: "检查更新",
+      officialWebsite: "官方网站",
+      view: "查看",
+      feedback: "意见反馈",
+      submitFeedback: "反馈",
+      license: "许可证",
+      newVersionReleased: "Wow🔥 新版本已发布！🚀",
+      version: "版本",
+      skipUpdate: "暂不更新",
+      viewDetails: "查看详情",
+      alreadyLatest: "当前已经是最新版本"
+    }
   },
   thinking: "思考中",
   task_error: "任务异常终止",
