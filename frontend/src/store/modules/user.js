@@ -1,14 +1,24 @@
+import { set } from '@vueuse/core';
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user: {}
+    user: {},
+    membership:{},
+    points:{}
   }),
   actions: {
     setUser(user) {
       console.log('setUser', user);
       this.user = user;
-    }
+    },
+    setMembership(membership) {
+      this.membership = membership;
+    },
+    setPoints(points) {
+      this.points = points;
+    },
+
   },
   persist: true,
 })

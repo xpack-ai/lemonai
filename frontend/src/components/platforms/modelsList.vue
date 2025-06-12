@@ -56,7 +56,7 @@
                 </a-popover>
               </div>
             </div>
-            <div class="model-actions">
+            <div class="model-actions"  v-if="!is_subscribe">
               <setting-outlined class="action-icon" @click.stop="handleModelSetting(model)"/>
               <minus-outlined class="action-icon" @click.stop="handleModelDelete(model)"/>
             </div>
@@ -68,13 +68,12 @@
     <div class="model-more-detail">
       <span>{{ $t('setting.modelService.viewOfficialDocs') }}</span>
     </div>
-    <div>
+    <div v-if="!is_subscribe">
       <a-button type="primary" class="addmodel" @click="handleModelSetting()">
         <PlusOutlined/>
         {{ $t('setting.modelService.add') }}
       </a-button>
     </div>
-
     <!-- 集成 ModelInfo 组件 -->
     <model-info :platform_id="props.platform_id" ref="modelInfoRef"/>
   </div>
@@ -111,6 +110,10 @@ const props = defineProps({
   platform_id: {
     type: Number,
     default: -1
+  },
+  is_subscribe:{
+    type: Boolean,
+    default: false
   }
 });
 

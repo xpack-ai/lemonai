@@ -1,3 +1,4 @@
+import path from 'path';
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
@@ -33,6 +34,11 @@ const routes = [
     path: "/demo",
     name: "demo",
     component: () => import(/* webpackChunkName: "demo" */ "@/view/demo/index.vue"),
+    meta: { verify: true }
+  },{
+    path: "/pricing",
+    name: "pricing",
+    component: () => import("@/view/pay/pricing.vue"),
     meta: { verify: true }
   },
   {

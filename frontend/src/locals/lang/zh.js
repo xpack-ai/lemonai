@@ -7,6 +7,7 @@ export default {
     resetPassword: "重置密码",
     loginWithGoogle: "使用 Google 登录",
     registerWithGoogle: "使用 Google 注册",
+    loginWithPhone: "使用手机号登录",
     login: "登录",
     register: "注册",
     logOut: "退出登录",
@@ -14,13 +15,21 @@ export default {
     resetPasswordButton: "重置密码",
     backToLogin: "返回登录",
     verifyEmailButton: "验证邮箱",
+    verifyCode:  "验证码",
     resendCode: "重新发送验证码",
     email: "邮箱",
+    phone: "手机号",
     password: "密码",
     fullname: "全名",
     codeSentTo: "验证码已发送至",
     pleaseInputEmail: "请输入邮箱",
-    pleaseInputValidEmail: "请输入有效的邮箱",
+    pleaseInputPhone: "请输入手机号",
+    confirmPassword: "确认密码",
+    smsCode:  "短信验证码",
+    sendCode: "发送验证码",
+    pleaseInputSMSCode: "请输入短信验证码",
+    pleaseInputValidPassword: "请输入有效的密码",
+    pleaseInputValidPhone: "请输入有效的手机号",
     pleaseInputPassword: "请输入密码",
     pleaseInputFullname: "请输入全名",
     pleaseInputVerifyCode: "请输入验证码",
@@ -50,7 +59,9 @@ export default {
     appleLoginInProgress: "Apple 登录功能正在开发中",
     googleRegisterInProgress: "Google 注册功能正在开发中",
     appleRegisterInProgress: "Apple 注册功能正在开发中",
-    verifyingGoogleLogin: "正在验证 Google 登录"
+    verifyingGoogleLogin: "正在验证 Google 登录",
+    //其他登录 方式
+    otherLogin:"选择其他登录方式"
   },
   //主界面
   lemon: {

@@ -246,9 +246,13 @@ router.delete("/:id", async ({ params, response }) => {
  *                   description: Message
  */
 router.get("/enabled", async ({ response }) => {
+
     const platforms = await Platform.findAll({
         where: {
-            is_enabled: true,
+            [Op.or]: [
+                { is_enabled: true },
+                { is_subscribe: true }
+            ]
         },
     });
     let allModels = [];

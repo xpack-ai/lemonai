@@ -18,7 +18,9 @@ const modules = [
   'runtime',
   'message',
   'experience',
-  'user'
+  'user',
+  'membership_plan',
+  'payment'
 ];
 
 for (const module of modules) {

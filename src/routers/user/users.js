@@ -11,6 +11,9 @@ async function forwardRequest(ctx,method,path) {
     method: method,
     maxBodyLength: Infinity,
     url,
+    headers: {
+      ...ctx.headers, // 带上原始请求的 headers
+    },
     data: ctx.request.body,
   };
 
@@ -20,8 +23,32 @@ async function forwardRequest(ctx,method,path) {
   return result.data;
 }
 
+router.get("/userinfo",async (ctx) => {
+  let res =  await forwardRequest(ctx, "GET", "userinfo")
+  return ctx.body = res;
+})
+
 router.post("/google-auth", async (ctx) => {
   let res =  await forwardRequest(ctx, "POST", "google-auth")
+  return ctx.body = res;
+});
+
+
+
+//loginSMSCode
+router.post("/login-sms-code", async (ctx) => {
+  let res =  await forwardRequest(ctx, "POST", "login-sms-code")
+  return ctx.body = res;
+});
+
+//send-sms-code
+router.post("/send-sms-code", async (ctx) => {
+  let res =  await forwardRequest(ctx, "POST", "send-sms-code")
+  return ctx.body = res;
+});
+//verifySmsVerifyCode
+router.post("/verifySmsVerifyCode", async (ctx) => {
+  let res =  await forwardRequest(ctx, "POST", "verifySmsVerifyCode")
   return ctx.body = res;
 });
 

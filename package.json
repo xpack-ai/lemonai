@@ -1,7 +1,7 @@
 {
   "name": "LemonAI",
   "productName": "LemonAI",
-  "version": "1.0.1",
+  "version": "0.1.2",
   "private": true,
   "main": ".vite/main.js",
   "scripts": {

@@ -64,7 +64,7 @@
           <span v-if="choose_platform.source_type === 'user'" class="platform-icon">
             <setting-outlined class="platform-setting" @click.stop="handlePlatformSetting"/>
           </span>
-          <span class="platform-status">
+          <span class="platform-status" v-if="!choose_platform.is_subscribe">
             <a-switch v-model:checked="choose_platform.is_enabled" class="custom-switch" @change="handleSaveChanges"/>
           </span>
           <!-- <a-button :disabled="!isInfoChanged" type="primary" class="save-button" @click="handleSaveChanges">{{
@@ -72,7 +72,7 @@
         </div>
 
         <div class="info-content">
-          <div class="info-platform">
+          <div class="info-platform" v-if="!choose_platform.is_subscribe">
             <!--      provider info DIY      -->
             <div class="api-msg-container" >
 <!--              <div v-if="choose_platform.name===`Cloudsway`">-->
@@ -131,7 +131,7 @@
           </div>
           <div class="info-model">
             <div>
-              <models-list :models="models" :platform_id="choose_platform.id" @setting="" @delete="handleModelDelete"
+              <models-list :models="models" :platform_id="choose_platform.id" :is_subscribe="choose_platform.is_subscribe" @setting="" @delete="handleModelDelete"
                            @add-model="handleModelAdd" @update-model="handleModelUpdate"/>
             </div>
           </div>
@@ -177,6 +177,9 @@ import emitter from '@/utils/emitter'
 
 import {driver} from "driver.js";
 import "driver.js/dist/driver.css";
+
+import { useUserStore } from '@/store/modules/user.js'
+const { user,membership,points } = useUserStore();
 
 const platforms = ref({})
 const choose_platform = ref({
@@ -414,6 +417,20 @@ const step1 = async () => {
 
 function init(id) {
   service.getPlatforms().then((res) => {
+    //判断是不是会员 membership
+    let is_membership = false;
+    //判断是不是在 membership.endDate: "2026-06-12T09:44:02.000Z" membership.startDate: "2025-06-12T09:44:02.000Z" 在这个时间范围内
+    if (membership.startDate && membership.endDate) {
+        const start = new Date(membership.startDate);
+        const end = new Date(membership.endDate);
+        const now = new Date();
+
+        if (!isNaN(start.getTime()) && !isNaN(end.getTime())) {
+          if (now >= start && now <= end) {
+            is_membership = true;
+          }
+        }
+    }
     platforms.value = res.sort((u, v) => {
       // return u.name.toUpperCase() > v.name.toUpperCase() ? 1 : -1; // 忽略大小写进行排序，确保大写字母在小写字母之前
       return u.name.localeCompare(v.name); // 使用本地语言环境进行排序，确保正确的字母顺序
@@ -421,6 +438,10 @@ function init(id) {
       ...platform,
       color: colors[index % colors.length]
     }))
+    // 如果不是会员 则把 is_subscribe: true 的过滤掉
+    if (!is_membership) {
+      platforms.value = platforms.value.filter(platform => platform.is_subscribe);
+    }
     if (id) {
       choose_platform.value = platforms.value.find(p => p.id === id)
       handleGetModels(choose_platform.value.id)

@@ -78,7 +78,10 @@ const messageStatus  = computed(() => {
     return false
   }
   console.log('chatStore.chat', chatStore.chat)
-  return chatStore.chat?.status == "running" 
+  // return chatStore.chat?.status == "running" 
+  let conversationId = chatStore.chat?.conversation_id 
+  let chat = chatStore.list.find((c) => c.conversation_id == conversationId)
+  return chat?.status == 'running';
 })
 
 onMounted(async () => {

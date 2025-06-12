@@ -10,131 +10,17 @@
       <!-- Title -->
       <h2 class="auth-title">{{ pageTitle }}</h2>
       <div v-if="activeKey === 'login'">
-        <!-- Login Form -->
-        <div class="social-buttons">
-          <a-button class="social-button google" @click="handleGoogleLogin">
-            <template #icon>
-              <google />
-            </template>
-            {{ $t('auth.loginWithGoogle') }}
-          </a-button>
-          <!-- Apple login button hidden as requested -->
-        </div>
-        <div class="divider">
-          <span>{{ $t('auth.or') }}</span>
-        </div>
-        <a-form :model="loginForm" name="login-form" @finish="handleLogin" autocomplete="off" layout="vertical">
-          <a-form-item name="email" :rules="[
-            { required: true, message: $t('auth.pleaseInputEmail') },
-            { type: 'email', message: $t('auth.pleaseInputValidEmail') }
-          ]">
-            <div class="form-label">{{ $t('auth.email') }}<span class="required-mark">*</span></div>
-            <a-input v-model:value="loginForm.email" :placeholder="$t('auth.pleaseInputEmail')">
-            </a-input>
-          </a-form-item>
-          <a-form-item name="password" :rules="[{ required: true, message: $t('auth.pleaseInputPassword') }]" extra="">
-            <div class="password-label-container">
-              <div class="form-label">{{ $t('auth.password') }}<span class="required-mark">*</span></div>
-              <a class="forgot-link" @click="activeKey = 'forgot'">{{ $t('auth.forgotPassword') }}</a>
-            </div>
-            <a-input-password v-model:value="loginForm.password" :placeholder="$t('auth.pleaseInputPassword')">
-            </a-input-password>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" html-type="submit" block :loading="loading" :disabled="!isLoginValid">
-              {{ $t('auth.login') }}
-            </a-button>
-          </a-form-item>
-          <div class="auth-footer">
-            <span>{{ $t('auth.noAccount') }} </span>
-            <a @click="activeKey = 'register'">{{ $t('auth.register') }}</a>
-          </div>
-        </a-form>
+        <login @toRegister="activeKey = 'register'" @handleLogin="handleLogin" @toForgot="activeKey = 'forgot'" @handleGoogleLogin="handleGoogleLogin" @handleSMSLogin="activeKey = 'smsLogin'" />
+      </div>
+      <div v-if="activeKey === 'smsLogin'">
+        <smsLogin @toLogin="activeKey = 'login'" @handleLoginSMSCode="handleLoginSMSCode" />
       </div>
       <div v-if="activeKey === 'register'">
         <!-- Register Form -->
-        <div class="social-buttons">
-          <a-button class="social-button google" @click="handleGoogleRegister">
-            <template #icon>
-              <google />
-            </template>
-            {{ $t('auth.registerWithGoogle') }}
-          </a-button>
-          <!-- Apple register button hidden as requested -->
-        </div>
-        <div class="divider">
-          <span>{{ $t('auth.or') }}</span>
-        </div>
-        <a-form :model="registerForm" name="register-form" @finish="handleRegister" autocomplete="off"
-          layout="vertical">
-          <a-form-item name="fullname" :rules="[{ required: true, message: $t('auth.pleaseInputFullname') }]">
-            <div class="form-label">{{ $t('auth.fullname') }}<span class="required-mark">*</span></div>
-            <a-input v-model:value="registerForm.fullname" :placeholder="$t('auth.pleaseInputFullname')">
-            </a-input>
-          </a-form-item>
-          <a-form-item name="email" :rules="[
-            { required: true, message: $t('auth.pleaseInputEmail') },
-            { type: 'email', message: $t('auth.pleaseInputValidEmail') }
-          ]">
-            <div class="form-label">{{ $t('auth.email') }}<span class="required-mark">*</span></div>
-            <a-input v-model:value="registerForm.email" :placeholder="$t('auth.pleaseInputEmail')">
-            </a-input>
-          </a-form-item>
-          <a-form-item name="password" :rules="[{ required: true, message: $t('auth.pleaseInputPassword') }]">
-            <div class="form-label">{{ $t('auth.password') }}<span class="required-mark">*</span></div>
-            <a-input-password v-model:value="registerForm.password" :placeholder="$t('auth.pleaseInputPassword')">
-            </a-input-password>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" html-type="submit" block :loading="loading" :disabled="!isRegisterValid">
-              {{ $t('auth.register') }}
-            </a-button>
-          </a-form-item>
-          <div class="auth-footer">
-            <span>{{ $t('auth.haveAccount') }} </span>
-            <a @click="activeKey = 'login'">{{ $t('auth.login') }}</a>
-          </div>
-        </a-form>
+        <register @toLogin="activeKey = 'login'" @handleRegister="handleRegister"/>
       </div>
       <div v-if="activeKey === 'forgot'">
-        <!-- Forgot Password Form -->
-        <a-form :model="forgotForm" name="forgot-form" @finish="handleForgotPassword" autocomplete="off"
-          layout="vertical">
-          <a-form-item v-if="resetPasswordStatus === 'sendCode'" name="email" :rules="[
-            { required: true, message: $t('auth.pleaseInputEmail') },
-            { type: 'email', message: $t('auth.pleaseInputValidEmail') }
-          ]">
-            <div class="form-label">{{ $t('auth.email') }}<span class="required-mark">*</span></div>
-            <a-input v-model:value="forgotForm.email" :placeholder="$t('auth.pleaseInputEmail')">
-            </a-input>
-          </a-form-item>
-          <a-form-item v-if="resetPasswordStatus === 'inputCode'" name="code"
-            :rules="[{ required: true, message: $t('auth.pleaseInputVerifyCode') }]">
-            <div class="form-label">{{ $t('auth.codeSentTo') }} {{ forgotForm.email }}</div>
-            <a-input v-model:value="forgotForm.code" :placeholder="$t('auth.pleaseInputVerifyCode')">
-            </a-input>
-          </a-form-item>
-          <a-form-item v-if="resetPasswordStatus === 'inputCode'" name="password"
-            :rules="[{ required: true, message: $t('auth.pleaseInputNewPassword') }]">
-            <div class="form-label">{{ $t('auth.password') }}<span class="required-mark">*</span></div>
-            <a-input-password v-model:value="forgotForm.password" :placeholder="$t('auth.pleaseInputNewPassword')">
-            </a-input-password>
-          </a-form-item>
-          <a-form-item v-if="resetPasswordStatus === 'inputCode'" name="confirmPassword"
-            :rules="[{ required: true, message: $t('auth.pleaseConfirmPassword') }]">
-            <div class="form-label">{{ $t('auth.pleaseConfirmPassword') }}<span class="required-mark">*</span></div>
-            <a-input-password v-model:value="forgotForm.confirmPassword" :placeholder="$t('auth.pleaseConfirmPassword')">
-            </a-input-password>
-          </a-form-item>
-          <a-form-item>
-            <a-button type="primary" :disabled="!isForgotValid" html-type="submit" block :loading="loading">
-              {{ $t('auth.resetPasswordButton') }}
-            </a-button>
-          </a-form-item>
-          <div class="auth-footer">
-            <a @click="activeKey = 'login'">{{ $t('auth.backToLogin') }}</a>
-          </div>
-        </a-form>
+        <forgot @toLogin="activeKey = 'login'" @handleForgotPassword="handleForgotPassword"/>
       </div>
       <div v-if="activeKey === 'verify'">
         <!-- Email Verification Form -->
@@ -164,11 +50,16 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import logo from '@/assets/image/lemon.jpg';
 import google from '@/assets/svg/google.svg';
+
 // import apple from '@/assets/svg/apple.svg';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import auth from '@/services/auth';
 import { useI18n } from 'vue-i18n';
+import login from './components/login.vue'
+import register from './components/register.vue'
+import forgot from './components/forgot.vue'
+import smsLogin from './components/sms-login.vue'
 
 const router = useRouter();
 const { t } = useI18n();
@@ -177,37 +68,11 @@ const { t } = useI18n();
 const activeKey = ref('login');
 const loading = ref(false);
 
-// 登录表单
-const loginForm = reactive({
-  email: '',
-  password: '',
-  remember: false
-});
-const isLoginValid = computed(() => {
-  return loginForm.email && loginForm.password && loginForm.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-});
 
-// 注册表单
-const registerForm = reactive({
-  fullname: '',
-  email: '',
-  password: ''
-});
-const isRegisterValid = computed(() => {
-  return registerForm.fullname && registerForm.email && registerForm.password;
-});
+//判断是国内还是海外 VITE_REGION
+const isAbroad = computed(() => import.meta.env.VITE_REGION === 'abroad');
 
-// 忘记密码表单
-const forgotForm = reactive({
-  email: '',
-  code: '',
-  password: '',
-  confirmPassword: ''
-});
-const isForgotValid = computed(() => {
-  return forgotForm.email && forgotForm.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-});
-const resetPasswordStatus = ref('sendCode');
+
 
 // 验证相关状态
 const verifyEmail = ref('');
@@ -238,7 +103,8 @@ const handleVerify = async () => {
       const res = await auth.register(
         registerForm.fullname,
         registerForm.email,
-        registerForm.password
+        registerForm.password,
+        ''
       );
       if (res.code === 200) {
         message.success(t('auth.registrationSuccessful'));
@@ -281,7 +147,7 @@ const resendCode = async () => {
 const handleLogin = async (values) => {
   try {
     loading.value = true;
-    const res = await auth.login(values.email, values.password);
+    const res = await auth.login(values.email, values.password,values.phone);
     if (res.code === 200) {
       message.success(t('auth.loginSuccessful'));
       router.push({ name: 'app' });
@@ -295,33 +161,65 @@ const handleLogin = async (values) => {
   }
 };
 
+//短信验证码登录 
+const handleLoginSMSCode = async (values) => { 
+  const res = await auth.loginSMSCode(values.phone, values.smsCode);
+  if (res.code === 200) {
+    message.success(t('auth.loginSuccessful'));
+    router.push({ name: 'app' });
+  }else{
+    message.error(res.message);
+    return;
+  }
+};
+
 // 处理注册
 const handleRegister = async (values) => {
+  console.log('handleRegister', values);
   try {
-    loading.value = true;
-    if (!values.fullname || !values.email || !values.password) {
-      throw new Error(t('auth.fillCompleteInfo'));
-    }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(values.email)) {
+    if (!emailRegex.test(values.email) && isAbroad.value) {
       throw new Error(t('auth.pleaseEnterValidEmail'));
+    }
+    const phoneRegex = /^1[3-9]\d{9}$/
+    if (!phoneRegex.test(values.phone) && !isAbroad.value) {
+      throw new Error(t('auth.pleaseEnterValidPhone'));
     }
     if (values.password.length < 6) {
       throw new Error(t('auth.passwordTooShort'));
     }
-    activeKey.value = 'verify';
-    verifyEmail.value = values.email;
-    localStorage.setItem('lastSendTime', new Date().toString());
-    const res = await auth.sendEmailVerification(values.email);
-    if (res.code === 200) {
-      message.success(t('auth.codeSent'));
-    } else {
-      message.error(res.message);
+    if(isAbroad.value){
+      activeKey.value = 'verify';
+      verifyEmail.value = values.email;
+      const res = await auth.sendEmailVerification(values.email);
+      if (res.code === 200) {
+        message.success(t('auth.codeSent'));
+      } else {
+        message.error(res.message);
+      }
+    }else{
+      //验证短信验证码 values.smsCode
+      let smsRes = await auth.verifySmsVerifyCode(values.phone, values.smsCode);
+      if (smsRes.code === 200) {
+        let res = await auth.register(values.fullname, "", values.password,values.phone);
+        if (res.code === 200) {
+          message.success(t('auth.registrationSuccessful'));
+          activeKey.value = 'login';
+        } else {
+          message.error(res.message);
+        }
+      } else {
+        message.error(t('auth.verificationCodeError'));
+      }
+      console.log("smsRes",smsRes);
+    
     }
+
+    localStorage.setItem('lastSendTime', new Date().toString());
+
   } catch (error) {
     message.error(error.message || t('auth.registrationFailed'));
   } finally {
-    loading.value = false;
   }
 };
 
@@ -329,32 +227,25 @@ const handleRegister = async (values) => {
 const handleForgotPassword = async (values) => {
   try {
     loading.value = true;
-    if (resetPasswordStatus.value === 'sendCode') {
-      const res = await auth.sendEmailVerification(forgotForm.email);
-      if (res.code === 200) {
-        message.success(t('auth.codeSent'));
-        resetPasswordStatus.value = 'inputCode';
-      } else {
-        message.error(res.message);
-      }
-    } else {
-      if (!forgotForm.code) {
-        message.error(t('auth.pleaseInputCode'));
-        return;
-      }
-      if (forgotForm.password !== forgotForm.confirmPassword) {
-        message.error(t('auth.passwordsDoNotMatch'));
-        return;
-      }
-      const res = await auth.resetPassword(forgotForm.email, forgotForm.code, forgotForm.password);
-      if (res.code === 200) {
+    //第一步 校验验证码
+    let codeRes = null;
+    if(isAbroad){
+      codeRes = await auth.verifySmsVerifyCode(values.phone, values.smsCode);
+    }else{
+      codeRes = await auth.verifyEmailVerifyCode(values.email, values.code);
+    }
+    if(codeRes.code === 200){
+      //重置密码
+      let res = await auth.resetPassword(values.email, values.password,values.phone);
+      if(res.code === 200){
         message.success(t('auth.passwordResetSuccessful'));
         activeKey.value = 'login';
-        loginForm.email = forgotForm.email;
-        loginForm.password = '';
-      } else {
-        message.error(res.message);
+      }else{
+        message.error('auth.passwordResetFailed');
       }
+    }else{
+      message.error(t('auth.codeError'));
+      return;
     }
   } catch (error) {
     message.error(t('auth.passwordResetFailed'));
@@ -461,7 +352,7 @@ const handleAppleRegister = async () => {
         align-items: center;
         justify-content: center;
         font-size: 14px;
-
+        color: #333;
 
 
         img {
@@ -480,31 +371,7 @@ const handleAppleRegister = async () => {
 
     }
 
-    .divider {
-      position: relative;
-      text-align: center;
-      margin: 24px 0;
 
-      &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background-color: #e5e7eb;
-        z-index: 0;
-      }
-
-      span {
-        position: relative;
-        background-color: transparent;
-        padding: 0 12px;
-        color: #6b7280;
-        font-size: 14px;
-        z-index: 1;
-      }
-    }
 
     .password-label-container {
       display: flex;
