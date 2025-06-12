@@ -5,9 +5,9 @@ from langchain_core.messages import HumanMessage
 # --- Argument Parsing ---
 # Sets up how we can provide input to the script from the command line.
 argparser = argparse.ArgumentParser(description="Chat with an OpenAI compatible model.")
-argparser.add_argument("--model", type=str, default="qwen3-235b-a22b", help="The model to use.")
+argparser.add_argument("--model", type=str, default="", help="The model to use.")
 argparser.add_argument("--api_key", type=str, default="", help="Your API key.")
-argparser.add_argument("--base_url", type=str, default="https://dashscope.aliyuncs.com/compatible-mode/v1", help="The base URL for the API.")
+argparser.add_argument("--base_url", type=str, default="", help="The base URL for the API.")
 
 if __name__ == "__main__":
     args = argparser.parse_args()
@@ -45,4 +45,3 @@ if __name__ == "__main__":
 
     except Exception as e:
         print(f"\nAn error occurred: {e}")
-

@@ -9,7 +9,9 @@ class BrowserAgent:
         # agent prompt path
         self.prompts_base_path = Path(__file__).parent.parent / 'agent' / 'prompt'
         self.prompts_extend_path = self.prompts_base_path / 'extend'
+        # self.prompts_sys_path = self.prompts_base_path / 'system'
         self.prompts_extend = self._load_prompts(self.prompts_extend_path)
+        # self.prompts_sys = self._load_prompts(self.prompts_sys_path)
     
     def _load_prompts(self,prompt_files_path: Path):
         prompts = []
@@ -26,8 +28,9 @@ class BrowserAgent:
                          )
         # get extend prompt
         extend_prompt = self.prompts_extend[extend_prompt_id]
-        print(f"INFO    [system] extend prompt:{extend_prompt}")
-        return Agent(task=task, llm=llm, extend_system_message=extend_prompt,browser_session = browser_session,*args)
+        # sys_prompt = self.prompts_sys[-1]
+        print(f"INFO    [system] agent prompt:{extend_prompt}")
+        return Agent(task=task, llm=llm, override_system_message=None,extend_system_message=extend_prompt,browser_session = browser_session,*args)
 
 
     def get_extend_prompt(self, prompt_id:int = 0):
