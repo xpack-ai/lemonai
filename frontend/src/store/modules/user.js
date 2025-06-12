@@ -18,6 +18,11 @@ export const useUserStore = defineStore('user', {
     setPoints(points) {
       this.points = points;
     },
+    clear(){
+      this.user = {};
+      this.membership = {};
+      this.points = {};
+    }
 
   },
   persist: true,

@@ -36,7 +36,7 @@
 
             <div class="credits">
               <div class="credits-amount">
-                {{ plan.monthly_points.toLocaleString() }} 积分 /年
+                {{ plan.monthly_points.toLocaleString() }} 积分 /月
               </div>
               <!-- <p class="credits-note">未使用积分不会结转</p> -->
             </div>

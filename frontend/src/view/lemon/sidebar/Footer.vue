@@ -77,9 +77,20 @@ async function checkModel() {
     tour();
   }
 }
+const  isLogin = computed(() => {
+    //判断是否存在用户ID user
+    if  (user.id) {
+        return true;    
+    }
+    return false;
+});
 
 //获取用户信息 getUserInfo
 async function getUserInfo() {
+  //判断有没有登录
+  if (!isLogin.value) {
+    return;
+  }
   let res = await userService.getUserInfo();
   //设置缓存
   useUserStore().setMembership(res.membership);
@@ -92,28 +103,6 @@ onMounted(() => {
     getUserInfo();
   });
 });
-//判断有没有登录
-const isLogined = computed(() => {
-  const token = localStorage.getItem('access_token');
-  if (token) {
-    return false;
-  }
-  return true;
-});
-const toLogin = () => {
-  router.push({ path: '/auth' });
-};
-
-const toLoginOut = () => {
-  localStorage.removeItem('access_token');
-  //刷新页面
-  location.reload();
-};
-
-const toSetting = () => {
-  router.push({ path: '/setting/basic' });
-};
-
 </script>
 
 <style lang="scss" scoped>

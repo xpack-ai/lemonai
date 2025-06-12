@@ -21,6 +21,8 @@ const modules = [
   'user',
   'membership_plan',
   'payment',
+  'points_transaction',
+  'recharge_product',
   'version'
 ];
 

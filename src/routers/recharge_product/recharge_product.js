@@ -6,7 +6,7 @@ const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
 
 //转发请求的函数
 async function forwardRequest(ctx, method, path) {
-  const url = `${SUB_SERVER_DOMAIN}/api/payment/${path}`;
+  const url = `${SUB_SERVER_DOMAIN}/api/recharge_product/${path}`;
   const config = {
     method,
     maxBodyLength: Infinity,
@@ -26,19 +26,9 @@ async function forwardRequest(ctx, method, path) {
   return result.data;
 }
 
-router.post("/create_mambership_plan_order",async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "create_mambership_plan_order")
-  return ctx.body = res;
-})
 
-//create_point_purchase_order
-router.post("/create_point_purchase_order",async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "create_point_purchase_order")
-  return ctx.body = res;
-})
-
-router.get("/check_order_status",async (ctx) => {
-  let res =  await forwardRequest(ctx, "GET", "check_order_status")
+router.get("/list",async (ctx) => {
+  let res =  await forwardRequest(ctx, "GET", "list")
   return ctx.body = res;
 })
 

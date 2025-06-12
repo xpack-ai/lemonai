@@ -129,6 +129,7 @@ const service = {
     localStorage.removeItem('access_token');
     localStorage.removeItem('lastSendTime');
     localStorage.removeItem('user');
+    userStore.clear();
   },
   
   getCurrentUser() {

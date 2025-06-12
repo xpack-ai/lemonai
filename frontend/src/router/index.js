@@ -86,6 +86,10 @@ const routes = [
         path: "about",
         component: () => import("@/view/setting/about.vue"),
         meta: { verify: true }
+      },{
+        path:"usage",
+        component: () => import("@/view/auth/usage.vue"),
+        meta: { verify: true }
       }
     ]
   }
