@@ -1,8 +1,7 @@
 require("module-alias/register");
 require("dotenv").config();
 
-const axios = require('axios')
-const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
+const sub_server_request = require('@src/utils/sub_server_request')
 
 const call = require("@src/utils/llm");
 const { getDefaultModel } = require('@src/utils/default_model')
@@ -20,20 +19,11 @@ const summary = async (goal, conversation_id, tasks) => {
 }
 
 const summary_server = async (goal, conversation_id, tasks) => {
-  const url = `${SUB_SERVER_DOMAIN}/api/sub_server/summary`
-  const config = {
-    method: "post",
-    maxBodyLength: Infinity,
-    url,
-    data: {
-      goal,
-      conversation_id, 
-      tasks
-    },
-  };
-
-  const result = await axios.request(config);
-  return result.data.data;
+  return sub_server_request('/api/sub_server/summary', {
+    goal,
+    conversation_id,
+    tasks
+  })
 };
 
 const summary_local = async (goal, conversation_id, tasks) => {

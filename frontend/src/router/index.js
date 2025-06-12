@@ -81,6 +81,11 @@ const routes = [
         path: "experience",
         component: () => import("@/view/setting/experience.vue"),
         meta: { verify: true }
+      },
+      {
+        path: "about",
+        component: () => import("@/view/setting/about.vue"),
+        meta: { verify: true }
       }
     ]
   }

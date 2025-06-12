@@ -4,8 +4,7 @@ const CloudswaySearch = require('./impl/web_search/CloudswaySearch');
 const UserProviderConfig = require('@src/models/UserProviderConfig');
 const SearchProvider = require('@src/models/SearchProvider');
 const UserSearchSetting = require('@src/models/UserSearchSetting');
-const axios = require('axios')
-const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
+const sub_server_request = require('@src/utils/sub_server_request')
 
 /** @type {import('types/Tool').Tool} */
 const WebSearchTool = {
@@ -121,19 +120,10 @@ async function doTalivySearch(query, num_results) {
 }
 
 async function doLemonSearch(query, num_results) {
-    const url = `${SUB_SERVER_DOMAIN}/api/sub_server/search`
-    const config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url,
-        data: {
-            query,
-            num_results
-        },
-    };
-
-    const result = await axios.request(config);
-    return result.data.data;
+    return sub_server_request('/api/sub_server/search', {
+        query,
+        num_results
+    })
 }
 
 async function doCloudswaySearch(query, num_results) {

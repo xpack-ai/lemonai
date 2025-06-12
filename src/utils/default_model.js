@@ -2,6 +2,7 @@ require("module-alias/register");
 const DefaultModelSetting = require('@src/models/DefaultModelSetting');
 const Model = require('@src/models/Model');
 const Plantform = require('@src/models/Platform');
+const globals = require('@src/globals');
 
 const _defaultModelCache = {};
 
@@ -21,6 +22,11 @@ const _fetchDefaultModel = async (type = 'assistant') => {
     api_url = platform.dataValues.api_url + '/chat/completions';
   }
   const platform_name = platform.dataValues.name;
+
+  if (platform.dataValues.is_subscribe) {
+    const token = globals.getToken()
+    return { model_name:'deepseek-chat', platform_name, api_key: token, api_url: `${process.env.SUB_SERVER_DOMAIN}/api/agent/v1/chat/completions`, base_url: `${process.env.SUB_SERVER_DOMAIN}/api/agent/v1`, is_subscribe: platform.dataValues.is_subscribe };
+  }
 
   return { model_name, platform_name, api_key, api_url, base_url: base_url, is_subscribe: platform.dataValues.is_subscribe };
 };

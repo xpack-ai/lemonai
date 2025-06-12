@@ -204,7 +204,9 @@ async function handleMessageUpdate(newValue) {
       typeDescription.value = t('lemon.preview.browser');
       typeTitle.value = t('lemon.preview.browsing');
       browserImageData.value = newValue.meta.json.browser_history_screenshot || '';
-      fileName.value = newValue.meta.json.browser_history[0].final_url[0].split('?')[0] || '';
+      //TODO sequence browser screenshot display
+      let lengthBrowserHistory = newValue.meta.json.browser_history.length;
+      fileName.value = newValue.meta.json.browser_history[lengthBrowserHistory-1].url.split('?')[0] || '';
       break;
     case 'write_code':
       typeDescription.value = t('lemon.preview.editor');

@@ -30,3 +30,11 @@ out
 .vite
 Caches
 *.pyc
+
+# python 
+.venv
+__pycache__
+
+# trae
+.trae
+

@@ -1,24 +1,24 @@
-项目使用python环境
+the project use python environment
 
-# 安装
+# install
 
 ```bash
 cd /path/to/browserUse
 ```
+you can use uv or pip or other to install 
 
-环境安装有多种方式，这里列出两种供参考
+## uv install：
 
-## uv安装：
+recommend uv to manage python environment
 
-推荐使用uv管理python环境
 
-创建虚拟环境
+create virtual environment
 
 ```
 uv venv 
 ```
 
-激活虚拟环境
+activate virtual environment
 
 + Linux/macOS：
 
@@ -32,7 +32,7 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-安装依赖
+install requirements
 
 + pyproject.toml：
 
@@ -46,43 +46,41 @@ uv pip install .
 uv pip install -r requirements.txt
 ```
 
-## Pip安装：
+## Pip install：
 
-首先激活对应的虚拟环境
+acitavate virtual environment
 
-然后执行
 
 ```
 pip install -r requirements.txt
 ```
 
-依赖安装
 
-## 浏览器插件安装：
+## browser plugins install:
 
 ```bash
-#需要激活项目虚拟环境
+# before this step, you need to activate virtual environment
 patchright install chromium --with-deps --no-shell
 ```
 
 
 
-# 启动
+# launch
 
 ```bash
-cd /path/to/browserUse
+cd /path/to/browser_server
 ```
 
 ```bash
-激活虚拟环境
+# activate virtual environment
 ```
 
 ```
-python browser_use\server.py
+python src/server.py
 ```
 
 
 
-# 注意
+# tips:
 
-模型必须支持工具调用和 function calling，vision模式仅支持gpt-4o
+the model must support tool calling and function calling, vision mode only supports gpt-4o

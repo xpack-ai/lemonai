@@ -126,6 +126,7 @@ const completeCodeAct = async (task = {}, context = {}) => {
       if (action_result.meta && action_result.meta.filepath) {
         context.generate_files.push(action_result.meta.filepath);
       }
+      // console.log("action_result", action_result);
 
       // 6. Reflection and evaluation
       const reflection_result = await reflection(requirement, action_result, context.conversation_id);

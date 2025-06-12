@@ -20,7 +20,8 @@ const modules = [
   'experience',
   'user',
   'membership_plan',
-  'payment'
+  'payment',
+  'version'
 ];
 
 for (const module of modules) {

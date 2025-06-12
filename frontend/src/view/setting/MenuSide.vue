@@ -18,8 +18,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n';
 import emitter from '@/utils/emitter';
-import { SettingOutlined, ApiOutlined, DeploymentUnitOutlined as ModelOutlined , GlobalOutlined,AppstoreOutlined  } from '@ant-design/icons-vue'
-
+import { SettingOutlined, ApiOutlined, DeploymentUnitOutlined as ModelOutlined , GlobalOutlined,AppstoreOutlined ,InfoCircleOutlined} from '@ant-design/icons-vue'
 const route = useRoute()
 const router = useRouter()
 // 菜单项配置说明：
@@ -35,8 +34,9 @@ const menuItems = [
   { key: 'model-service', name: 'setting.menu.modelService', icon: ApiOutlined },
   { key: "search-service", name: 'setting.menu.searchService', icon: GlobalOutlined },
   { key: 'default-model-setting', name: 'setting.menu.defaultModel', icon: ModelOutlined },
-  { key:'experience',name:'setting.menu.experience',icon: AppstoreOutlined }
+  { key:'experience',name:'setting.menu.experience',icon: AppstoreOutlined },
   // { key: "mcp-service", name: 'setting.menu.mcpService', icon: CodeOutlined }, // 暂时不显示
+  { key: 'about', name: 'setting.menu.about', icon:  InfoCircleOutlined }
 ]
 
 

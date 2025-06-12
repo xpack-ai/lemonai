@@ -146,11 +146,11 @@ router.get("/check", async ({ response }) => {
     if (!defaultModelSetting) {
         check_map.has_default_platform = false
     } else {
-        const model = await Model.findOne({ where: { id: defaultModelSetting.model_id } })
+        const model = await Model.findOne({ where: { id: defaultModelSetting.model_id } });
 
-        const platform = await Platform.findOne({ where: { id: model.platform_id } })
-        if (!platform || !platform.is_enabled) {
-            check_map.has_default_platform = false
+        const platform = await Platform.findOne({ where: { id: model.platform_id } });
+        if (!platform || (!platform.is_subscribe && !platform.is_enabled)) {
+            check_map.has_default_platform = false;
         }
     }
 
