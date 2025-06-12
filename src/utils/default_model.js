@@ -3,6 +3,7 @@ const DefaultModelSetting = require('@src/models/DefaultModelSetting');
 const Model = require('@src/models/Model');
 const Plantform = require('@src/models/Platform');
 const globals = require('@src/globals');
+const sub_server_request = require('@src/utils/sub_server_request')
 
 const _defaultModelCache = {};
 
@@ -25,7 +26,9 @@ const _fetchDefaultModel = async (type = 'assistant') => {
 
   if (platform.dataValues.is_subscribe) {
     const token = globals.getToken()
-    return { model_name:'deepseek-chat', platform_name, api_key: token, api_url: `${process.env.SUB_SERVER_DOMAIN}/api/agent/v1/chat/completions`, base_url: `${process.env.SUB_SERVER_DOMAIN}/api/agent/v1`, is_subscribe: platform.dataValues.is_subscribe };
+    // todo 获取线上browser模型
+    const browser_model_name = await getSubServerBrowserModel()
+    return { model_name: browser_model_name, platform_name, api_key: token, api_url: `${process.env.SUB_SERVER_DOMAIN}/api/agent/v1/chat/completions`, base_url: `${process.env.SUB_SERVER_DOMAIN}/api/agent/v1`, is_subscribe: platform.dataValues.is_subscribe };
   }
 
   return { model_name, platform_name, api_key, api_url, base_url: base_url, is_subscribe: platform.dataValues.is_subscribe };
@@ -49,6 +52,10 @@ const updateDefaultModel = async (type = 'assistant') => {
   }
   return modelInfo;
 };
+
+const getSubServerBrowserModel = async () => {
+  return sub_server_request('/api/sub_server/get_browser_model', {})
+}
 
 module.exports = {
   getDefaultModel,
