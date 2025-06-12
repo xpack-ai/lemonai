@@ -1,5 +1,6 @@
 const { getDefaultModel } = require('@src/utils/default_model')
 const sub_server_request = require('@src/utils/sub_server_request')
+const conversation_token_usage = require('@src/utils/get_sub_server_token_usage')
 
 // 评估
 const resolveEvaluatePrompt = async (requirement = '', result = '') => {
@@ -42,11 +43,14 @@ const evaluate = async (requirement, result, conversation_id) => {
 }
 
 const evaluate_server = async (requirement, result, conversation_id) => {
-  return sub_server_request('/api/sub_server/evaluate', {
+  const [res,token_usage] = await sub_server_request('/api/sub_server/evaluate', {
     requirement,
     result,
     conversation_id
   })
+  await conversation_token_usage(token_usage, conversation_id)
+
+  return res
 };
 
 const evaluate_local = async (requirement, result, conversation_id) => {

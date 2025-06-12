@@ -7,6 +7,7 @@ const { getDefaultModel } = require('@src/utils/default_model')
 const call = require("@src/utils/llm");
 const DEVELOP_MODEL = 'assistant';
 const sub_server_request = require('@src/utils/sub_server_request')
+const conversation_token_usage = require('@src/utils/get_sub_server_token_usage')
 
 const thinking = async (requirement, context = {}) => {
   let model_info = await getDefaultModel()
@@ -35,12 +36,13 @@ const thinking_server = async (requirement, context = {}) => {
     return message.content;
   }
 
-  let { prompt, content } = await sub_server_request('/api/sub_server/thinking', {
+  let [{ prompt, content }, token_usage] = await sub_server_request('/api/sub_server/thinking', {
     messages,
     requirement,
     context,
     conversation_id: context.conversation_id
   })
+  await conversation_token_usage(token_usage, context.conversation_id)
 
   if (prompt) {
     await memory.addMessage('user', prompt);
