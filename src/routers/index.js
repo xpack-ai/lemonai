@@ -23,7 +23,8 @@ const modules = [
   'payment',
   'points_transaction',
   'recharge_product',
-  'version'
+  'version',
+  'order'
 ];
 
 for (const module of modules) {

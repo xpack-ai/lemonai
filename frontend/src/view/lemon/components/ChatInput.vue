@@ -96,6 +96,8 @@ const fileList = ref([])
 const selectedModel = ref(null)
 const modelList = ref([]) // ✅ 改为响应式
 
+const emit = defineEmits(['send'])
+
 const groupedOptions = computed(() => {
   const groups = {}
   modelList.value.forEach((model) => {
@@ -115,6 +117,8 @@ const groupedOptions = computed(() => {
     options,
   }))
 })
+
+
 
 const changeModel = async (modelId) => {
   let model = modelList.value.find((model) => model.id == modelId)

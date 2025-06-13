@@ -21,7 +21,7 @@ import emitter from '@/utils/emitter';
 import auth from '@/services/auth';
 import { useUserStore } from '@/store/modules/user.js'
 const { user,membership,points } = useUserStore();
-import { SettingOutlined,ProjectOutlined, ApiOutlined, DeploymentUnitOutlined as ModelOutlined , GlobalOutlined,AppstoreOutlined ,InfoCircleOutlined} from '@ant-design/icons-vue'
+import { SettingOutlined,UserOutlined,ProjectOutlined, ApiOutlined, DeploymentUnitOutlined as ModelOutlined , GlobalOutlined,AppstoreOutlined ,InfoCircleOutlined} from '@ant-design/icons-vue'
 const route = useRoute()
 const router = useRouter()
 // 菜单项配置说明：
@@ -48,7 +48,9 @@ let menuItems = [
 const init  = async () => { 
   if(user.id) {
     //menuItems 给 menuItems 添加一条数据 放在第二位置 
-    menuItems.splice(1, 0, { key: 'usage', name: '使用情况', icon: ProjectOutlined });
+    menuItems.splice(1, 0, { key: 'profile', name: '账户管理', icon: UserOutlined });
+    menuItems.splice(2, 0, { key: 'usage', name: '积分管理', icon: ProjectOutlined });
+   
   }
 };
 

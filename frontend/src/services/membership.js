@@ -37,6 +37,12 @@ const service = {
     const res = await http.get(uri,Query)
     return res
   },
+  //order list
+  async getOrderList(Query) {
+    const uri = '/api/order/list'
+    const res = await http.get(uri,Query)
+    return res
+  },
   //recharge_product/list
   async getRechargeProductList() {
     const uri = '/api/recharge_product/list'

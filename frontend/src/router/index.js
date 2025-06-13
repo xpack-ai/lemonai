@@ -90,6 +90,11 @@ const routes = [
         path:"usage",
         component: () => import("@/view/auth/usage.vue"),
         meta: { verify: true }
+      },{
+        //UserProfile.vue
+        path: "profile",
+        component: () => import("@/view/auth/UserProfile.vue"),
+        meta: { verify: true }
       }
     ]
   }

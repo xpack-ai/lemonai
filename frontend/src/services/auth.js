@@ -112,6 +112,17 @@ const service = {
       throw error;
     }
   },
+  //updateUsername
+  async updateUsername(username) {
+    try {
+      const uri = "/api/users/updateUsername";
+      const response = await http.post(uri, { username });
+      return response.data || {};
+    } catch (error) {
+      console.error('Update username error:', error);
+      throw error;
+    }
+  },
   //resetPassword
   async resetPassword(email, password,phone) {
     try {

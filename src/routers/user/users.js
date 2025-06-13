@@ -51,6 +51,11 @@ router.post("/verifySmsVerifyCode", async (ctx) => {
   let res =  await forwardRequest(ctx, "POST", "verifySmsVerifyCode")
   return ctx.body = res;
 });
+///api/users/updateUsername
+router.post("/updateUsername", async (ctx) => {
+  let res =  await forwardRequest(ctx, "POST", "updateUsername")
+  return ctx.body = res;
+});
 
 router.post("/sendEmailVerifyCode", async (ctx) => {
   let res =  await forwardRequest(ctx, "POST", "sendEmailVerifyCode")
