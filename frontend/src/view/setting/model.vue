@@ -438,10 +438,6 @@ function init(id) {
       ...platform,
       color: colors[index % colors.length]
     }))
-    // 如果不是会员 则把 is_subscribe: true 的过滤掉
-    if (!is_membership) {
-      platforms.value = platforms.value.filter(platform => platform.is_subscribe);
-    }
     if (id) {
       choose_platform.value = platforms.value.find(p => p.id === id)
       handleGetModels(choose_platform.value.id)

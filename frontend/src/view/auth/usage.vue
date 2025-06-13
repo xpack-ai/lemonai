@@ -26,7 +26,7 @@
               </div>
               <div>
                 <div class="points-details-accounts" v-for="item in points.accounts">
-                  <div class="points-accounts">{{ item.type == "MONTHLY" ? "月度积分":"年度积分" }}</div>
+                  <div class="points-accounts">{{ getPointsTypeName(item.type) }}</div>
                   <div class="points-accounts">{{ item.balance }}</div>
                 </div>
               </div>
@@ -105,6 +105,22 @@ const loading = ref(false)
 const isModalVisible = ref(false)
 const rechargeProducts = ref([])
 
+//返回积分类型对应的名称
+//FREE: 免费积分, MONTHLY: 月度积分, PURCHASED_ADDON: 购买附加积分, GIFTED_ADDON: 赠送附加积分, FEEDBACK_ADDON: 反馈的附加积分
+function getPointsTypeName(type) {
+  switch (type) {
+    case 'FREE':
+      return '免费积分'
+    case 'MONTHLY':
+      return '月度积分'
+    case 'PURCHASED_ADDON':
+      return '购买附加积分'
+    case 'GIFTED_ADDON':
+      return '赠送附加积分'
+    case 'FEEDBACK_ADDON':
+      return '反馈的附加积分'
+  }
+}
 
 
 const handleBuy = async (item) => {

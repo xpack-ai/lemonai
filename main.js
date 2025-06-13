@@ -11,6 +11,23 @@ let backendProcess; // 你的后端进程变量
 // Store 实例将在异步加载后创建
 let store;
 
+const dotenv = require('dotenv');
+const fs = require('fs');
+
+const isDev = !app.isPackaged; // 是否为开发环境
+
+// 判断环境来设定 .env 文件路径
+const envPath = isDev
+  ? path.resolve(process.cwd(), '.env') // 开发环境
+  : path.resolve(process.resourcesPath, '.env'); // 打包后
+
+// 安全地加载 .env
+if (fs.existsSync(envPath)) {
+  dotenv.config({ path: envPath });
+  console.log('✅ .env 加载成功:', process.env);
+} else {
+  console.error('❌ .env 文件不存在:', envPath);
+}
 
 if (app && app.getPath) {
   const dataUserPath = app.getPath("userData");
