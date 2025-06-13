@@ -12,7 +12,7 @@ async function forwardRequest(ctx,method,path) {
     maxBodyLength: Infinity,
     url,
     headers: {
-      ...ctx.headers, // 带上原始请求的 headers
+      authorization: ctx.headers['authorization'],
     },
     data: ctx.request.body,
   };
