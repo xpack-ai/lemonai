@@ -87,6 +87,8 @@ import { computed } from 'vue'
 const { t } = useI18n()
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter();
+import { useUserStore } from '@/store/modules/user.js'
+const { user,membership,points } = useUserStore();
 
 const chatStore = useChatStore()
 const messageText = ref('')
@@ -196,17 +198,39 @@ const handleNotification = async (path,message,toMessage) => {
     },
   });
 }
+
+const  isLogin = computed(() => {
+    //判断是否存在用户ID user
+    if  (user.id) {
+        return true;    
+    }
+    return false;
+});
+
 const handleSend = async () => {
   const text = messageText.value.trim()
   if (text || fileList.value.length > 0) {
     let res = await checkModel()
     if(!res.has_default_platform){
       //请前往设置默认模型
-      handleNotification("/setting/default-model-setting",t("setting.defaultModel.defaultModel"),t("click_here_to_go_to_settings"))
+      message.warning(t("click_here_to_go_to_settings"))
       return
     }
     if(!res.has_search_setting){
       handleNotification("/setting/search-service",t("setting.searchService.searchService"),t("click_here_to_go_to_settings"))
+      return
+    }
+
+    //  let model = modelList.value.find((model) => model.id == modelId)
+    let model = modelList.value.find((model) => model.id == selectedModel.value)
+    console.log(model)
+    if(model.is_subscribe && !isLogin.value){
+      handleNotification("/auth",t("auth.login"),t("auth.subscribeModel"))
+      return
+    }
+    //判断积分
+    if(points.total <= 0 && isLogin.value && model.is_subscribe ){
+      handleNotification("/setting/usage",t("auth.insufficientPoints"),t("auth.insufficientPointsPleaseGoToUpgradeOrPurchase"))
       return
     }
     emit('send', {
@@ -389,6 +413,8 @@ const keydown = (e) => {
   }
 }
 
+
+
 .input-container {
   flex: 1;
   display: flex;
@@ -500,6 +526,7 @@ const keydown = (e) => {
   font-weight: 500;
   color: #333;
 }
+
 </style>
 <style>
  .model-select .ant-select-selector{

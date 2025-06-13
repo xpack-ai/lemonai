@@ -1,9 +1,26 @@
 //引用sse
-import de from '@/locals/lang/de';
 import sse from '@/services/sse';
 import fileServices from '@/services/files';
 import { useChatStore } from '@/store/modules/chat';
 import messageFun from './message';
+import userService from '@/services/auth'
+
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/modules/user.js'
+const userStore = useUserStore();
+const { user, membership, points } = storeToRefs(userStore);
+
+
+
+
+//获取用户信息 getUserInfo
+async function getUserInfo() {
+  let res = await userService.getUserInfo();
+  //设置缓存
+  membership.value = res.membership;
+  points.value = res.points;
+}
+
 
 const chatStore = useChatStore();
 
@@ -66,12 +83,14 @@ async function sendMessage(question, conversationId, files) {
     };
     const abortController = new AbortController();
     sse(uri, options, onTokenStream, onOpenStream, answer, throttledScrollToBottom, abortController).then((res) => {
-        chatStore.list.find((c) => c.conversation_id == conversationId).status = 'done';
         return res;
     }).catch((error) => {
-        chatStore.list.find((c) => c.conversation_id == conversationId).status = 'done';
+       
         console.error(error);
         return '';
+    }).finally(() => {
+        chatStore.list.find((c) => c.conversation_id == conversationId).status = 'done';
+        getUserInfo();
     });
 }
 

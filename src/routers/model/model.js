@@ -266,6 +266,8 @@ router.get("/enabled", async ({ response }) => {
             allModels.push({
                 ...model.dataValues,
                 platform_name: platform.name,
+                is_subscribe:platform.is_subscribe
+
             });
         }
     }

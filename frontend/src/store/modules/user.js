@@ -13,6 +13,7 @@ export const useUserStore = defineStore('user', {
       this.user = user;
     },
     setMembership(membership) {
+      console.log('setMembership', membership);
       this.membership = membership;
     },
     setPoints(points) {

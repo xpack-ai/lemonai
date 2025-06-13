@@ -66,6 +66,7 @@
             <div class="auth-footer">
                 <span>{{ $t('auth.noAccount') }} </span>
                 <a @click="toRegister">{{ $t('auth.register') }}</a>
+                <!-- 保持离线状态 -->
             </div>
         </a-form>
 
@@ -290,6 +291,13 @@ const toForgot = () => {
     margin-top: 16px;
     font-size: 14px;
     color: #6b7280;
+
+    .auth-footer-keep-offline{
+        //下划线
+        text-decoration: underline;
+        margin-left: 8px;;
+        cursor: pointer;
+    }
 
     a {
         color: #4f46e5;

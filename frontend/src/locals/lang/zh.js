@@ -38,6 +38,7 @@ export default {
     pleaseInput6DigitCode: "请输入 6 位验证码",
     or: "或",
     noAccount: "没有账户？",
+    keepOffline:  "保持离线",
     haveAccount: "已有账户？",
     notReceivedCode: "未收到验证码？",
     codeSent: "验证码已发送",
@@ -61,7 +62,13 @@ export default {
     appleRegisterInProgress: "Apple 注册功能正在开发中",
     verifyingGoogleLogin: "正在验证 Google 登录",
     //其他登录 方式
-    otherLogin:"选择其他登录方式"
+    otherLogin:"选择其他登录方式",
+    //您当前选择的是订阅模型，请前往登录后使用 或 选择其它模型
+    subscribeModel: "您当前选择是订阅模型，请前往登录后使用 或 选择其它模型",
+    //积分不足
+    insufficientPoints: "积分不足",
+    //当前积分不足，请前往升级或购买,
+    insufficientPointsPleaseGoToUpgradeOrPurchase: "当前积分不足，请前往升级或购买",
   },
   //主界面
   lemon: {

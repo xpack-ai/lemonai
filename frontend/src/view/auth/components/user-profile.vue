@@ -10,7 +10,7 @@
         </div>
         <!-- 会员信息 -->
         <div class="memberInfo" v-if="isLogin">
-            <span>{{ membership?.planName || '免费' }}</span>
+            <span>{{ membership.planName || '免费' }}</span>
             <button @click="toMember" class="upgrade">升级</button>
         </div> 
         <!-- 积分 -->
@@ -47,12 +47,14 @@
     </div>
 </template>
 <script setup>
-import { computed, inject, h,ref } from "vue";
+import { computed, inject, h,ref,onMounted,nextTick} from "vue";
 
 import Logout from "@/assets/logout.svg";
 import auth from '@/services/auth';
+import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/modules/user.js'
-const { user,membership,points } = useUserStore();
+const userStore = useUserStore();
+const { user, membership, points } = storeToRefs(userStore);
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -80,7 +82,7 @@ const toSetting = () => {
 //判断是否登录
 const  isLogin = computed(() => {
     //判断是否存在用户ID user
-    if  (user.id) {
+    if  (user.value.id) {
         return true;    
     }
     return false;
@@ -100,6 +102,24 @@ const handleLogin = async () => {
 const toUsage = () => {
     router.push({ path: '/setting/usage' });
 };
+
+//获取用户信息 getUserInfo
+async function getUserInfo() {
+  //判断有没有登录
+  if (!isLogin.value) {
+    return;
+  }
+  let res = await auth.getUserInfo();
+  //设置缓存
+  membership.value = res.membership;
+  points.value = res.points;
+}
+
+onMounted(() => {
+  nextTick(() => {
+    getUserInfo();
+  });
+});
 
 </script>
 <style lang="scss" scoped>

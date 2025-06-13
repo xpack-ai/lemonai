@@ -19,9 +19,10 @@ import { useRoute, useRouter } from 'vue-router'
 import service from '@/services/default-model-setting'
 import userService from '@/services/auth'
 import { useI18n } from 'vue-i18n'
-import { useUserStore } from '@/store/modules/user.js'
+
 import User from '@/assets/sidebar/user.svg'
-const { user,membership,points } = useUserStore();
+import { useUserStore } from '@/store/modules/user.js'
+let { user,membership,points } = useUserStore();
 
 const router = useRouter();
 const opShow = ref(true);
@@ -93,8 +94,8 @@ async function getUserInfo() {
   }
   let res = await userService.getUserInfo();
   //设置缓存
-  useUserStore().setMembership(res.membership);
-  useUserStore().setPoints(res.points);
+  membership = res.membership;
+  points = res.points;
 }
 
 onMounted(() => {

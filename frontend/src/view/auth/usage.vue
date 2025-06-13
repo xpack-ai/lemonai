@@ -43,7 +43,7 @@
     </div>
 
     <a-modal
-    v-model:visible="isModalVisible"
+    v-model:open="isModalVisible"
     title="购买积分"
     :footer="null"
     width="800px"
@@ -66,7 +66,7 @@
     </div>
     <div v-else>暂无可用的积分套餐</div>
   </a-modal>
-  <a-modal v-model:visible="showQrCode" title="微信扫码支付" centered :footer="null">
+  <a-modal v-model:open="showQrCode" title="微信扫码支付" centered :footer="null">
   <div style="text-align: center;">
     <div style="display: inline-block;">
       <a-qrcode :value="qrCodeUrl" :size="200" />
@@ -78,17 +78,36 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import auth from '@/services/auth';
 import membershipService from '@/services/membership'
-import { useUserStore } from '@/store/modules/user.js'
-const { user, membership, points } = useUserStore();
+
+
 import dayjs from 'dayjs'
 import { useRouter } from "vue-router";
 const router = useRouter();
 import { message  } from 'ant-design-vue';
 
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/modules/user.js'
+const userStore = useUserStore();
+const { user, membership, points } = storeToRefs(userStore);
+
+
+
+
+//获取用户信息 getUserInfo
+async function getUserInfo() {
+  let res = await auth.getUserInfo();
+  //设置缓存
+  membership.value = res.membership;
+  points.value = res.points;
+}
+
 onMounted(() => {
+  getUserInfo();
     getPointsTransactionList()
 })
+
 
 //分页
 const page = ref(1)

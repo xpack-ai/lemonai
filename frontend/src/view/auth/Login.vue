@@ -42,6 +42,10 @@
           </a-form>
         </div>
       </div>
+      <div class="auth-footer">
+        <span class="auth-footer-keep-offline" @click="toHome">{{ $t('auth.keepOffline') }}</span>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -145,6 +149,9 @@ const resendCode = async () => {
   message.info(t('auth.codeResent'));
 };
 
+const toHome = () => {
+  router.push('/');
+};
 // 处理登录
 const handleLogin = async (values) => {
   try {
@@ -302,6 +309,22 @@ const handleAppleRegister = async () => {
 </script>
 
 <style lang="scss" scoped>
+
+
+.auth-footer {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+    color: #6b7280;
+
+    .auth-footer-keep-offline{
+        //下划线
+        text-decoration: underline;
+        margin-left: 8px;;
+        cursor: pointer;
+    }
+}
+
 .auth-container {
   display: flex;
   justify-content: center;
