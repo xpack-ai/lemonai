@@ -12,7 +12,7 @@ async function forwardRequest(ctx, method, path) {
     maxBodyLength: Infinity,
     url,
     headers: {
-      ...ctx.headers,
+      authorization: ctx.headers['authorization'],
     },
   };
 
