@@ -1,7 +1,7 @@
 const router = require("koa-router")();
 const axios = require("axios");
 const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
-
+const Conversation = require('@src/models/Conversation')
 
 
 //转发请求的函数
@@ -27,8 +27,21 @@ async function forwardRequest(ctx, method, path) {
 }
 
 
-router.get("/list",async (ctx) => {
-  let res =  await forwardRequest(ctx, "GET", "list")
+router.get("/list", async (ctx) => {
+  let res = await forwardRequest(ctx, "GET", "list")
+
+  for (let item of res.data.list) {
+    if (item.source_id) {
+      try {
+        let conversation = await Conversation.findOne({ where: { conversation_id: item.source_id } })
+        if (conversation) {
+          item.conversation_title = conversation.dataValues.title
+        }
+      } catch (e) {
+
+      }
+    }
+  }
   return ctx.body = res;
 })
 

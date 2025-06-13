@@ -33,6 +33,11 @@ const props = defineProps({
   display: flex;
   flex-direction: column; // 垂直排列子元素
 }
+.search-result-list-container::-webkit-scrollbar  { 
+  width: 0;
+  height: 0;
+}
+
 
 .result-item {
   padding: 0.75rem 0; // 每个结果项的上下内边距

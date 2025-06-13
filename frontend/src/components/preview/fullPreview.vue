@@ -122,7 +122,8 @@
         <MarkDown v-else-if="rendering && canBeMd" :content="content"/>
         <!-- Html rendering -->
         <iframe v-else-if="rendering && canBeHtml" :srcdoc="content" class="html-render-iframe"
-                sandbox="allow-scripts" frameborder="0"></iframe>
+                 frameborder="0"></iframe>
+        <!-- sandbox="allow-scripts" -->
         <!-- Source code rendering -->
         <CodeViewer v-else-if="canCodePreview" :file-path="file.filepath" :file-content="content"/>
         <!--  TODO office 文件预览 PDF Excel DOC DOCX-->

@@ -145,7 +145,7 @@ const highlightedContent = computed(() => {
   overflow: auto;
   background-color: #f5f5f5;
 }
-
+/* 不动时消失滚动条 */
 .mcp-server-content::-webkit-scrollbar-track {
   background-color: #f5f5f5;
 }
@@ -157,8 +157,12 @@ const highlightedContent = computed(() => {
 .file-content-container::-webkit-scrollbar-thumb {
   background-color: #d2d2d2;
   border-radius: 6px;
+  opacity: 0; /* 默认隐藏滚动条 */
+  transition: opacity 0.3s ease; /* 平滑过渡效果 */
 }
-
+.file-content-container:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
 
 pre {
   margin: 0;

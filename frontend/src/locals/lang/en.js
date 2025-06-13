@@ -211,7 +211,7 @@ export default {
             searchService: 'Search Service',
             mcpService: 'MCP Service',
             experience: 'Experience',
-            about: 'About',
+            about: 'About Lemon',
         },
         basic: {
             title: "Basic Settings",
@@ -320,6 +320,7 @@ export default {
                 OpenRouter: "OpenRouter",
                 LMStudio: "LM Studio",
                 Cloudsway: "Cloudsway",
+                Lemon: "Lemon",
             },
             showMoreOptions: " More Options",
             hideOptions:  " More Options",
@@ -417,7 +418,10 @@ export default {
             endpointPlaceholder: "Enter your EndPoint",
             accessKeyPlaceholder: "Enter your Access Key",
             saveBlacklistSuccess: "Blacklist saved successfully",
-            saveBlacklistFailed: "Failed to save blacklist"
+            saveBlacklistFailed: "Failed to save blacklist",
+            apiKeyRequired: "API Key is required",
+            accessKeyRequired: "Access Key is required",
+            endpointRequired: "Endpoint is required",
         },
         // MCP服务
         mcpService: {
