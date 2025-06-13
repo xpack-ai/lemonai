@@ -1,93 +1,116 @@
 <template>
+  <div class="top-bar">
+    <a-button type="text" @click="back">
+      <template #icon>
+        <arrow-left-outlined />
+      </template>
+      {{ $t('setting.back') }}
+    </a-button>
+  </div>
   <div class="pricing-page">
     <div class="header">
-      <h1 class="title">定价</h1>
+      <h1 class="title">{{ $t('member.pricing') }}</h1>
 
       <div class="billing-toggle">
-        <a-segmented v-model:value="billingType" :options="billingOptions" size="large" />
+        <a-segmented
+          v-model:value="billingType"
+          :options="billingOptions"
+          size="large"
+        />
       </div>
     </div>
 
     <div class="pricing-cards">
-      <a-row :gutter="24" justify="center">
-        <a-col :xs="24" :sm="24" :md="8" :lg="8" v-for="plan in pricingPlans" :key="plan.id">
-          <a-card class="pricing-card" :class="{ popular: plan.popular, recommended: plan.recommended }" bordered>
+      <a-row :gutter="24" justify="center" v-if="filteredPlans.length">
+        <a-col
+          :xs="24"
+          :sm="24"
+          :md="8"
+          :lg="8"
+          v-for="plan in pricingPlans"
+          :key="plan.id"
+        >
+          <a-card
+            class="pricing-card"
+            :class="{ popular: plan.popular, recommended: plan.recommended }"
+            bordered
+          >
             <div class="plan-badge" v-if="plan.popular || plan.recommended">
               <a-tag :color="plan.popular ? '#722ed1' : '#1890ff'">
-                {{ plan.popular ? '最受欢迎' : '推荐' }}
+                {{
+                  plan.popular
+                    ? $t('member.mostPopular')
+                    : $t('member.recommended')
+                }}
               </a-tag>
             </div>
 
             <div class="plan-header">
               <h3 class="plan-name">{{ plan.plan_name }}</h3>
-              <div class="discount-badge" v-if="billingType === 'year' && plan.discount">
+              <div
+                class="discount-badge"
+                v-if="billingType === 'year' && plan.discount"
+              >
                 <a-tag :color="plan.discountColor">
-                  {{ plan.discount }}% 折扣 年付
+                  {{ plan.discount }}% {{ $t('member.discount') }}
+                  {{ $t('member.annual') }}
                 </a-tag>
               </div>
             </div>
 
             <div class="pricing" style="text-align:center; margin: 20px 0;">
-              <div class="price">
-                <!-- ¥{{ displayedPrices[plan.id] }}/{{ billingType === 'month' ? '月' : '年' }} -->
-                ¥{{ plan.price }}
-              </div>
+              <div class="price">¥{{ plan.price }}</div>
             </div>
 
             <div class="credits">
               <div class="credits-amount">
-                {{ plan.monthly_points.toLocaleString() }} 积分 /月
+                {{ plan.monthly_points.toLocaleString() }}
+                {{ $t('member.points') }} / {{ $t('member.month') }}
               </div>
-              <!-- <p class="credits-note">未使用积分不会结转</p> -->
-            </div>
-
-            <div class="features" v-if="false">
-              <h4 class="features-title">AI 模型</h4>
-              <a-list size="small" :data-source="plan.features">
-                <template #renderItem="{ item }">
-                  <a-list-item>
-                    <a-list-item-meta>
-                      <template #avatar>
-                        <a-icon type="check" style="color: #52c41a;" />
-                      </template>
-                      <template #title>
-                        <span>{{ item }}</span>
-                      </template>
-                    </a-list-item-meta>
-                  </a-list-item>
-                </template>
-              </a-list>
             </div>
 
             <div class="cta">
-              <a-button :loading="loading" type="primary" size="large" block :class="{ 'popular-btn': plan.popular }" @click=pay(plan)>
-                选择 {{ plan.name }}
+              <a-button
+                :loading="loading"
+                type="primary"
+                size="large"
+                block
+                :class="{ 'popular-btn': plan.popular }"
+                @click="pay(plan)"
+              >
+                {{ $t('member.select') }} {{ plan.name }}
               </a-button>
             </div>
           </a-card>
         </a-col>
       </a-row>
+      <div v-else style="text-align: center; margin-top: 40px; font-size: 16px; color: #888;">
+        {{ $t('member.noPlanForBilling') }}
+      </div>
     </div>
-  </div>
-  <a-modal v-model:visible="showQrCode" title="微信扫码支付" centered :footer="null">
-  <div style="text-align: center;">
-    <div style="display: inline-block;">
-      <a-qrcode :value="qrCodeUrl" :size="200" />
-    </div>
-    <p style="margin-top: 12px;">请使用微信扫码完成支付</p>
-  </div>
-</a-modal>
 
+  </div>
+
+  <a-modal v-model:visible="showQrCode" :title="$t('member.qrTitle')" centered :footer="null">
+    <div style="text-align: center;">
+      <div style="display: inline-block;">
+        <a-qrcode :value="qrCodeUrl" :size="200" />
+      </div>
+      <p style="margin-top: 12px;">{{ $t('member.qrTip') }}</p>
+    </div>
+  </a-modal>
 </template>
 
 <script setup>
-import { ref, reactive, watch, onBeforeUnmount, onMounted } from 'vue'
+import { ref, reactive, watch, onBeforeUnmount, onMounted,computed } from 'vue'
 import membershipService from '@/services/membership'
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const billingType = ref('year')
 const billingOptions = [
-  { label: '月付', value: 'month' },
-  { label: '年付', value: 'year' },
+  { label: t('member.billingMonthly'), value: 'month' },
+  { label: t('member.billingYearly'), value: 'year' },
 ]
 
 const pricingPlans = ref([])
@@ -96,6 +119,24 @@ const qrCodeUrl = ref('')
 const pollingTimer = ref(null)
 const loading = ref(false)
 
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const back = () => {
+  router.push('/')
+}
+
+const filteredPlans = computed(() => {
+  console.log('filteredPlans', billingType.value,pricingPlans.value)
+  //duration_days 根据这个判断 如果是 365 则为年 否则 则为 月
+  return pricingPlans.value.filter(plan => {
+    if (billingType.value === 'year') {
+      return plan.duration_days === 365
+    } else {
+      return plan.duration_days !== 365
+    }
+  })
+})
 
 const checkOrderStatus = async (orderSn) => {
   const maxRetries = 20
@@ -103,19 +144,16 @@ const checkOrderStatus = async (orderSn) => {
 
   pollingTimer.value = setInterval(async () => {
     attempts++
-
     const res = await membershipService.checkOrderStatus(orderSn)
     if (res?.status === 'paid') {
       clearInterval(pollingTimer.value)
       showQrCode.value = false
-      paySuccess();
-      // message.success("支付成功！")
-      console.log('支付成功')
+      paySuccess()
+      console.log(t('member.paySuccess'))
     }
-
     if (attempts >= maxRetries) {
       clearInterval(pollingTimer.value)
-      console.warn("支付超时，请重新下单")
+      console.warn(t('member.payTimeout'))
     }
   }, 3000)
 }
@@ -123,7 +161,6 @@ const checkOrderStatus = async (orderSn) => {
 const pay = async (plan) => {
   loading.value = true
   let res = await membershipService.createOrder(plan.id)
-
   if (res && res.code_url) {
     loading.value = false
     qrCodeUrl.value = res.code_url
@@ -131,74 +168,21 @@ const pay = async (plan) => {
     checkOrderStatus(res.order_sn)
   } else {
     loading.value = false
-    // 你可以使用 a-message 错误提示
-    // message.error("生成二维码失败，请稍后重试")
-    console.error("二维码生成失败", res)
+    console.error(t('member.qrError'), res)
   }
-  //checkOrderStatus 轮询 orderSn
-  console.log(res)
 }
 
-//支付成功 跳转到首页
 const paySuccess = () => {
   router.push('/')
 }
 
 const getMembershipPlan = async () => {
   let res = await membershipService.getList()
-  pricingPlans.value = res;
-  console.log(res)
+  pricingPlans.value = res
 }
 
 onMounted(() => {
-  getMembershipPlan();
-});
-
-// 显示的价格，初始化为当前 billingType 对应价格
-const displayedPrices = reactive({})
-// 计时器容器，用于清除定时器
-const timers = {}
-
-// 初始化显示价格为月付价
-// pricingPlans.forEach(plan => {
-//   displayedPrices[plan.id] = plan.price[billingType.value]
-// })
-
-// 数字动画函数
-function animatePrice(planId, from, to, duration = 500) {
-  if (timers[planId]) {
-    clearInterval(timers[planId])
-  }
-  const frameRate = 30
-  const totalFrames = Math.round(duration / (1000 / frameRate))
-  let frame = 0
-  const diff = to - from
-
-  timers[planId] = setInterval(() => {
-    frame++
-    if (frame >= totalFrames) {
-      displayedPrices[planId] = to
-      clearInterval(timers[planId])
-      timers[planId] = null
-    } else {
-      displayedPrices[planId] = Math.round(from + (diff * frame) / totalFrames)
-    }
-  }, 1000 / frameRate)
-}
-
-// 监听 billingType 改变，触发动画
-watch(billingType, (newType, oldType) => {
-  pricingPlans.forEach(plan => {
-    animatePrice(plan.id, displayedPrices[plan.id], plan.price[newType])
-  })
-})
-
-onBeforeUnmount(() => {
-  // 清除所有定时器
-  Object.values(timers).forEach(timer => {
-    if (timer) clearInterval(timer)
-  })
-  if (pollingTimer.value) clearInterval(pollingTimer.value)
+  getMembershipPlan()
 })
 </script>
 
@@ -230,6 +214,14 @@ onBeforeUnmount(() => {
 
 .pricing-cards {
   margin-bottom: 60px;
+}
+.top-bar {
+  height: 60px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+  flex-shrink: 0;
 }
 
 .pricing-card {

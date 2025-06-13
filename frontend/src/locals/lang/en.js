@@ -1,5 +1,3 @@
-import About from "@/view/setting/about.vue";
-
 export default {
     // 登录界面
     auth: {
@@ -52,7 +50,22 @@ export default {
         appleLoginInProgress: "Apple login functionality is under development",
         googleRegisterInProgress: "Google registration functionality is under development",
         appleRegisterInProgress: "Apple registration functionality is under development",
-        verifyingGoogleLogin: "Verifying Google login"
+        verifyingGoogleLogin: "Verifying Google login",
+        loginWithPhone: "Login with phone number",
+        verifyCode: "Verification code",
+        smsCode: "SMS verification code",
+        sendCode: "Send code",
+        phone: "Phone number",
+        pleaseInputValidPhone: "Please enter a valid phone number",
+        pleaseInputPassword: "Please enter your password",
+        pleaseInputSMSCode: "Please enter the SMS verification code",
+        confirmPassword: "Confirm password",
+        pleaseInputPhone: "Please enter your phone number",
+        keepOffline: "Stay offline",
+        otherLogin: "Choose another login method",
+        subscribeModel: "You have selected a subscription-only model. Please log in to continue or choose a different model.",
+        insufficientPoints: "Insufficient points",
+        insufficientPointsPleaseGoToUpgradeOrPurchase: "You don't have enough points. Please upgrade or purchase more points."
     },
     //主界面
     lemon: {

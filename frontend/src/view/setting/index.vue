@@ -29,8 +29,10 @@
 import { onMounted, nextTick } from 'vue'
 import { ArrowLeftOutlined } from '@ant-design/icons-vue'
 import SettingMenu from './MenuSide.vue'
-import { useI18n } from 'vue-i18n';
+
 import emitter from '@/utils/emitter';
+
+import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 import { useRouter } from 'vue-router'
