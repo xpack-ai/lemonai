@@ -87,8 +87,11 @@ import { computed } from 'vue'
 const { t } = useI18n()
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter();
+
+import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/modules/user.js'
-const { user,membership,points } = useUserStore();
+const userStore = useUserStore();
+const { user, membership, points } = storeToRefs(userStore);
 
 const chatStore = useChatStore()
 const messageText = ref('')
@@ -201,7 +204,7 @@ const handleNotification = async (path,message,toMessage) => {
 
 const  isLogin = computed(() => {
     //判断是否存在用户ID user
-    if  (user.id) {
+    if  (user.value.id) {
         return true;    
     }
     return false;
@@ -229,7 +232,7 @@ const handleSend = async () => {
       return
     }
     //判断积分
-    if(points.total <= 0 && isLogin.value && model.is_subscribe ){
+    if(points.value.total <= 0 && isLogin.value && model.is_subscribe ){
       handleNotification("/setting/usage",t("auth.insufficientPoints"),t("auth.insufficientPointsPleaseGoToUpgradeOrPurchase"))
       return
     }
