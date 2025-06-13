@@ -5,16 +5,16 @@
             <div style="    display: flex;align-items: center;justify-content: space-between;">
                 <div>
                     <div class="plan-name">
-                        {{ membership.planName }}
+                        {{ membership?.planName || '免费'}}
                     </div>
                     <!-- 到期时间 -->
-                    <div class="expiration-date">
+                    <div class="expiration-date" v-if="membership">
                         到期时间：{{ dayjs(membership.endDate).format('YYYY-MM-DD HH:mm') }}
                     </div>
                 </div>
                 <div style="gap:12px;display: flex;">
                     <button @click="toMember" class="upgrade">升级</button>
-                    <button @click="toPoints" class="upgrade">购买积分</button>
+                    <button @click="toPoints" v-if="membership" class="upgrade">购买积分</button>
                 </div>
             </div>
 

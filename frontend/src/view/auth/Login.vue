@@ -89,6 +89,8 @@ const pageTitle = computed(() => {
       return t('auth.registerLemonAIAccount');
     case 'verify':
       return t('auth.verifyEmail');
+    case 'smsLogin':
+      return t('auth.loginToLemonAI');
     default:
       return t('auth.resetPassword');
   }

@@ -36,7 +36,7 @@ let menuItems = [
   // { key: 'default-model', name: $t('setting.menu.defaultModel'), icon: ModelOutlined }, // 弃用
   { key: 'model-service', name: 'setting.menu.modelService', icon: ApiOutlined },
   { key: "search-service", name: 'setting.menu.searchService', icon: GlobalOutlined },
-  { key: 'default-model-setting', name: 'setting.menu.defaultModel', icon: ModelOutlined },
+  // { key: 'default-model-setting', name: 'setting.menu.defaultModel', icon: ModelOutlined },
   { key:'experience',name:'setting.menu.experience',icon: AppstoreOutlined },
   // { key: "mcp-service", name: 'setting.menu.mcpService', icon: CodeOutlined }, // 暂时不显示
   { key: 'about', name: 'setting.menu.about', icon:  InfoCircleOutlined }

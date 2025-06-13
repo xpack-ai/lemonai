@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="input-container">
-          <a-textarea class="input-textarea" v-model:value="messageText" :placeholder="placeholder" :auto-size="{ minRows: 1, maxRows: 8 }"
+          <a-textarea class="input-textarea" v-model:value="messageText" :placeholder="placeholder" :auto-size="{ minRows: 2, maxRows: 8 }"
             @keydown="keydown" />
           <div class="input-actions">
             <div class="left-actions">
@@ -32,6 +32,28 @@
                   </template>
                 </a-button>
               </a-upload>
+              <a-select
+        class="model-select"
+        @change="changeModel"
+        v-model:value="selectedModel"
+        placeholder="请选择模型"
+        style="width: 200px"
+        :options="groupedOptions"
+        optionLabelProp="label"
+        :fieldNames="{ label: 'label', value: 'value', options: 'options' }"
+      >
+        <template #option="{ label, value, logo_url }">
+          <div style="display: flex; align-items: center;">
+            <img
+              v-if="logo_url"
+              :src="logo_url"
+              alt="logo"
+              style="width: 20px; height: 20px; margin-right: 8px;"
+            />
+            <span>{{ label }}</span>
+          </div>
+        </template>
+      </a-select>
             </div>
             <a-button v-if="!messageStatus" @click="handleSend" class="send-button" :disabled="!messageText">
               <template #icon>
@@ -45,6 +67,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -70,8 +93,57 @@ const messageText = ref('')
 const placeholder = ref(t('lemon.welcome.placeholder'))
 const currentMode = ref('text')
 const fileList = ref([])
+const selectedModel = ref(null)
+const modelList = ref([]) // ✅ 改为响应式
 
-const emit = defineEmits(['send'])
+const groupedOptions = computed(() => {
+  const groups = {}
+  modelList.value.forEach((model) => {
+    const group = model.group_name || '未分组'
+    if (!groups[group]) {
+      groups[group] = []
+    }
+    groups[group].push({
+      label: model.model_name,
+      value: model.id,
+      logo_url: model.logo_url,
+    })
+  })
+
+  return Object.entries(groups).map(([group, options]) => ({
+    label: group,
+    options,
+  }))
+})
+
+const changeModel = async (modelId) => {
+  let model = modelList.value.find((model) => model.id == modelId)
+  console.log('model', model)
+  let res1 = await modelService.updateModel({
+    model_id: modelId,
+    setting_type: 'assistant',
+    config:{}
+  })
+  let res2 = await modelService.updateModel({
+    model_id: modelId,
+    setting_type: 'topic-naming',
+    config:{}
+  })
+}
+
+const initModel = async () => {
+  const res = await modelService.getModels()
+  const modelsSettings = await modelService.getModelBySetting()
+  console.log('res', res)
+  modelList.value = res
+  console.log('modelsSettings', modelsSettings)
+  let model = modelsSettings.find((model) => model.setting_type === 'assistant')
+  if(model){
+    selectedModel.value = model.model_id*1
+  }
+}
+
+
 const messageStatus  = computed(() => {
   //根据会话ID 找到 当前会话的状态
   if(!chatStore.chat){
@@ -85,6 +157,7 @@ const messageStatus  = computed(() => {
 })
 
 onMounted(async () => {
+  await initModel()
   emitter.on('changeMessageText', (text) => {
     messageText.value = text
   })
@@ -97,6 +170,8 @@ const checkModel = async () => {
   let res = await modelService.checkModel()
    return res
 }
+
+
 
 const handleNotification = async (path,message,toMessage) => {
   const key = `jump-notification-${Date.now()}`; // 通知唯一 key
@@ -202,7 +277,6 @@ const keydown = (e) => {
 </script>
 
 <style lang="scss" scoped>
-
 .upload-button {
   border-color: #0000000f;
   border-radius: 9999px;
@@ -400,4 +474,31 @@ const keydown = (e) => {
   border: none;
   box-shadow: none;
 }
+
+
+
+.model-option {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+}
+
+.model-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  margin-right: 10px;
+  object-fit: cover;
+  background-color: #f0f0f0;
+}
+
+.model-name {
+  font-weight: 500;
+  color: #333;
+}
+</style>
+<style>
+ .model-select .ant-select-selector{
+  border: none !important;
+ }
 </style>

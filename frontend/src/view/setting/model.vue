@@ -420,7 +420,7 @@ function init(id) {
     //判断是不是会员 membership
     let is_membership = false;
     //判断是不是在 membership.endDate: "2026-06-12T09:44:02.000Z" membership.startDate: "2025-06-12T09:44:02.000Z" 在这个时间范围内
-    if (membership.startDate && membership.endDate) {
+    if (membership && membership?.startDate && membership?.endDate) {
         const start = new Date(membership.startDate);
         const end = new Date(membership.endDate);
         const now = new Date();
