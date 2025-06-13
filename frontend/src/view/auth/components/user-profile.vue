@@ -10,7 +10,7 @@
         </div>
         <!-- 会员信息 -->
         <div class="memberInfo" v-if="isLogin">
-            <span>{{ membership.planName || '免费' }}</span>
+            <span>{{ membership?.planName || '免费' }}</span>
             <button @click="toMember" class="upgrade">升级</button>
         </div> 
         <!-- 积分 -->
