@@ -326,6 +326,8 @@ export default {
         Bailian: "阿里云百炼",
         OpenRouter: "OpenRouter",
         LMStudio: "LM Studio",
+        Cloudsway: "Cloudsway",
+        Lemon: "Lemon",
 
       },
       showMoreOptions: " 更多选项",
@@ -412,7 +414,10 @@ export default {
       baiduName: "百度（免费）",
       bingName: "必应（免费）",
       saveBlacklistSuccess: "黑名单保存成功",
-      saveBlacklistFailed: "黑名单保存失败"
+      saveBlacklistFailed: "黑名单保存失败",
+      apiKeyRequired: "APIKey 为空",
+      accessKeyRequired: "Access Key为空",
+      endpointRequired: "Endpoint为空",
     },
     mcpService: {
       title: "MCP服务",

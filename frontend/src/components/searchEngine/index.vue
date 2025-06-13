@@ -16,17 +16,17 @@
           <span style="white-space: nowrap">{{ $t('setting.searchService.apiTips') }}</span>
           <a-input-password v-model:value="selectedConfig.base_config.api_key" class="search-choose-api-input"
                             :placeholder="$t('setting.searchService.apiKeyPlaceholder')" :disabled="loading"
-                            @blur="handleSave"/>
+                            @change="handleSave"/>
         </div>
         <div class="search-choose-api-config" v-if="selectedTemplate === 'Cloudsway'">
           <span style="white-space: nowrap">{{ $t('setting.searchService.accessKey') }}</span>
           <a-input-password v-model:value="selectedConfig.base_config.api_key" class="search-choose-api-input"
                             :placeholder="$t('setting.searchService.accessKeyPlaceholder')" :disabled="loading"
-                            @blur="handleSave"/>
+                            @change="handleSave"/>
           <span style="white-space: nowrap">{{ $t('setting.searchService.endPoint') }}</span>
           <a-input-password v-model:value="selectedConfig.base_config.endpoint" class="search-choose-api-input"
                             :placeholder="$t('setting.searchService.endpointPlaceholder')" :disabled="loading"
-                            @blur="handleSave"/>
+                            @change="handleSave"/>
         </div>
         <a-button class="save-button" @click="handleCheckApiKey" :loading="checkLoading">{{
             $t('setting.modelService.check')
@@ -62,7 +62,6 @@
           <a-switch v-model:checked="selectedConfig.cover_provider_search" />
         </div>
       </div> -->
-
       <!-- <div class="search-enhancement header search-bool-item">
         <div>
           <span>{{ $t('setting.searchService.searchEnhancement') }}</span>
@@ -80,7 +79,7 @@
               1: '1',
               5: $t('setting.searchService.default'),
               20: '20'
-            }"/>
+            }" @afterChange="handleSave"/>
           </a-form-item>
         </div>
       </div>
@@ -121,8 +120,8 @@ const searchTemplates = ref([])
 const loading = ref(true)
 const selectedTemplate = ref('')
 const selectedConfig = ref({
-  provider_id: -1,
-  provider_name: '',
+  provider_id: 1,
+  provider_name: 'Tavily',
   base_config: {
     api_key: "",
     endpoint: ""
@@ -146,10 +145,22 @@ const handleCheckApiKey = async () => {
   if (selectedConfig.value.provider_name == "Tavily") {
     config.type = "tavily"
     config.api_key = selectedConfig.value.base_config.api_key;
+    if (config.api_key == "") {
+      message.error(t('setting.searchService.apiKeyRequired'))
+      return
+    }
   } else if (selectedConfig.value.provider_name == "Cloudsway"){
     config.type = "cloudsway"
     config.api_key = selectedConfig.value.base_config.api_key;
     config.endpoint = selectedConfig.value.base_config.endpoint;
+    if (config.api_key == ""){
+      message.error(t('setting.searchService.accessKeyRequired'))
+      return
+    }else if (config.endpoint == ""){
+      message.error(t('setting.searchService.endpointRequired'))
+      return
+    }
+    
   }else {
     config.type = "local"
     config.engine = selectedConfig.value.provider_name;

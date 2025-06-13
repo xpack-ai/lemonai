@@ -457,25 +457,24 @@ const handleGetModels = ( id) => {
 }
 
 const filteredPlatforms = computed(() => {
-  if (!searchQuery.value) return platforms.value
-  const query = searchQuery.value.toLowerCase()
-  return platforms.value.filter(platform =>
-      platform.name.toLowerCase().includes(query)
-  )
-})
+  // Defensive check: Ensure platforms.value is an array; default to empty array if not
+  const platformsArray = Array.isArray(platforms.value) ? platforms.value : [];
+  // 1. Sort by is_enabled: true first, false later
+  const sortedPlatforms = [...platformsArray].sort((a, b) => {
+    return (b.is_enabled ? 1 : 0) - (a.is_enabled ? 1 : 0);
+  });
 
-// // TODO 平台按照启用优先顺序排列
-// const sortedPlatforms = computed(() => {
-//   if (!filteredPlatforms.value) return platforms.value;
-//   return [...filteredPlatforms.value].sort((a, b) => {
-//     // 优先按 is_enabled 排序，true 在前
-//     if (a.is_enabled && !b.is_enabled) return -1;
-//     if (!a.is_enabled && b.is_enabled) return 1;
-//     // is_enabled 相同时，按国际化后的名称排序
-//     return getPlatformDisplayName(a.name).localeCompare(getPlatformDisplayName(b.name));
-//   });
-// });
+  // 2. Return sorted platforms if no search query
+  if (!searchQuery.value) {
+    return sortedPlatforms;
+  }
 
+  // 3. Filter by search query
+  const query = searchQuery.value.toLowerCase();
+  return sortedPlatforms.filter(platform =>
+    platform.name && platform.name.toLowerCase().includes(query) || getPlatformDisplayName(platform.name).includes(query)
+  );
+});
 const handleModelAdd = async (model) => {
   // console.log(model)
  handleGetModels(choose_platform.value.id)
@@ -721,18 +720,30 @@ emitter.on('fresh-pages', (value) => {
 }
 
 .platform-list::-webkit-scrollbar {
-  width: 4px;
+  width: 2px;
+  height: 30px;
   background-color: transparent;
+  scrollbar-width: none; /* 默认隐藏 */
 }
 
 .platform-list::-webkit-scrollbar-thumb {
   background-color: #d9d9d9;
   border-radius: 3px;
+  opacity: 0; /* 默认隐藏滚动条 */
+  transition: opacity 0.3s ease; /* 平滑过渡 */
 }
 
 .platform-list::-webkit-scrollbar-track {
   background-color: transparent;
 }
+
+/* 鼠标悬停时显示滚动条 */
+.platform-list:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+
+
 
 .model-header {
   display: flex;

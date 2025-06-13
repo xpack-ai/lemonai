@@ -5,7 +5,7 @@
       <div class="son">
         <div>
           <span>{{ $t('setting.about.lemonAI') }}</span>
-          <span class="version">V {{ versionInfo.localVersion }}</span>
+          <span class="version">V{{ versionInfo.localVersion }}</span>
         </div>
         <div>
           <a-button @click="handleUpdate">{{ $t('setting.about.checkUpdate') }}</a-button>
@@ -156,7 +156,7 @@ onMounted(() => {
   margin-left: 10px;
   color: #36deee;
   border-radius: 4px;
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
 }
 
 .update-detail {
