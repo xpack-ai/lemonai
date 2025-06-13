@@ -30,7 +30,7 @@ jobs:
   build-and-push-runtime-sandbox:
     needs: check-changes
     if: ${{ needs.check-changes.outputs.runtime_sandbox_changed == 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       IMAGE_NAME: hexdolemonai/lemon-runtime-sandbox
       DOCKERFILE: containers/runtime/Dockerfile
