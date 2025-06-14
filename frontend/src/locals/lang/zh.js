@@ -71,8 +71,10 @@ export default {
     keepOffline:  "保持离线",
     otherLogin: "选择其他登录方式",
     subscribeModel: "您当前选择是订阅模型，请前往登录后使用 或 选择其它模型",
+    //您当前选择搜索服务是订阅服务，请前往登录后使用 或 选择其它服务
+    subscribeService: "您选择的搜索服务属于订阅服务，请登录后使用，或更换为其他服务",
     insufficientPoints: "积分不足",
-    insufficientPointsPleaseGoToUpgradeOrPurchase: "当前积分不足，请前往升级或购买",
+    insufficientPointsPleaseGoToUpgradeOrPurchase: "您正在使用订阅模型或订阅搜索服务，但当前积分不足，请前往升级或购买",
   },
   //会员
   member: {
@@ -554,4 +556,6 @@ export default {
   task_playing: "任务进行中",
   //点击此处跳转到设置页面
   click_here_to_go_to_settings: "点击此处跳转到设置页面",
+  //请选择 模型
+  please_select_model: "请选择模型",
 }

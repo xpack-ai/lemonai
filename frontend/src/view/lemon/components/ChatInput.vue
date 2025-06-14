@@ -81,10 +81,12 @@ import  FileSvg from '@/assets/message/file.svg'
 import deleteFile from "@/assets/message/deleteFile.svg"
 import files from '@/services/files';
 import modelService from '@/services/default-model-setting'
+import searchEngineService from '@/services/search-engine'
 import { notification } from 'ant-design-vue'
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 const { t } = useI18n()
+import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 const router = useRouter();
 
@@ -167,6 +169,7 @@ const messageStatus  = computed(() => {
 
 onMounted(async () => {
   await initModel()
+  await getSearchEngineService()
   emitter.on('changeMessageText', (text) => {
     messageText.value = text
   })
@@ -210,13 +213,22 @@ const  isLogin = computed(() => {
     return false;
 });
 
+const searchEngine = ref(null);
+
+const getSearchEngineService = async () => {
+  const userConfig = await searchEngineService.getSearchEngineConfig()
+  if (userConfig) {
+    searchEngine.value = userConfig;
+  }
+};
+
 const handleSend = async () => {
   const text = messageText.value.trim()
   if (text || fileList.value.length > 0) {
     let res = await checkModel()
     if(!res.has_default_platform){
       //请前往设置默认模型
-      message.warning(t("click_here_to_go_to_settings"))
+      message.warning(t("please_select_model"))
       return
     }
     if(!res.has_search_setting){
@@ -231,8 +243,13 @@ const handleSend = async () => {
       handleNotification("/auth",t("auth.login"),t("auth.subscribeModel"))
       return
     }
+    //provider_name: "Lemon"
+    if(searchEngine.value.provider_name === "Lemon" && !isLogin.value){
+      handleNotification("/setting/search-service",t("auth.login"),t("auth.subscribeService"))
+      return
+    }
     //判断积分
-    if(points.value.total <= 0 && isLogin.value && model.is_subscribe ){
+    if(points.value.total <= 0 && isLogin.value && (model.is_subscribe || searchEngine.value.provider_name === "Lemon" ) ){
       handleNotification("/setting/usage",t("auth.insufficientPoints"),t("auth.insufficientPointsPleaseGoToUpgradeOrPurchase"))
       return
     }
