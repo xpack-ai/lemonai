@@ -1,6 +1,6 @@
 const router = require("koa-router")();
 const axios = require("axios");
-const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
+const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN || 'https://sub-server.lemonai.cc';
 
 
 
@@ -26,19 +26,19 @@ async function forwardRequest(ctx, method, path) {
   return result.data;
 }
 
-router.post("/create_mambership_plan_order",async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "create_mambership_plan_order")
+router.post("/create_mambership_plan_order", async (ctx) => {
+  let res = await forwardRequest(ctx, "POST", "create_mambership_plan_order")
   return ctx.body = res;
 })
 
 //create_point_purchase_order
-router.post("/create_point_purchase_order",async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "create_point_purchase_order")
+router.post("/create_point_purchase_order", async (ctx) => {
+  let res = await forwardRequest(ctx, "POST", "create_point_purchase_order")
   return ctx.body = res;
 })
 
-router.get("/check_order_status",async (ctx) => {
-  let res =  await forwardRequest(ctx, "GET", "check_order_status")
+router.get("/check_order_status", async (ctx) => {
+  let res = await forwardRequest(ctx, "GET", "check_order_status")
   return ctx.body = res;
 })
 

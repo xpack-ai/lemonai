@@ -28,7 +28,7 @@ const _fetchDefaultModel = async (type = 'assistant') => {
     const token = globals.getToken()
     // todo 获取线上browser模型
     const browser_model_name = await getSubServerBrowserModel()
-    return { model_name: browser_model_name, platform_name, api_key: token, api_url: `${process.env.SUB_SERVER_DOMAIN}/api/agent/v1/chat/completions`, base_url: `${process.env.SUB_SERVER_DOMAIN}/api/agent/v1`, is_subscribe: platform.dataValues.is_subscribe };
+    return { model_name: browser_model_name, platform_name, api_key: token, api_url: `${process.env.SUB_SERVER_DOMAIN || 'https://sub-server.lemonai.cc'}/api/agent/v1/chat/completions`, base_url: `${process.env.SUB_SERVER_DOMAIN || 'https://sub-server.lemonai.cc'}/api/agent/v1`, is_subscribe: platform.dataValues.is_subscribe };
   }
 
   return { model_name, platform_name, api_key, api_url, base_url: base_url, is_subscribe: platform.dataValues.is_subscribe };
