@@ -1,86 +1,85 @@
 <template>
-    <div class="usage">
-        <!-- 上部分：会员信息 -->
-        <div class="member-info">
-            <div style="    display: flex;align-items: center;justify-content: space-between;">
-                <div>
-                    <div class="plan-name">
-                        {{ membership?.planName || '免费'}}
-                    </div>
-                    <!-- 到期时间 -->
-                    <div class="expiration-date" v-if="membership">
-                        到期时间：{{ dayjs(membership.endDate).format('YYYY-MM-DD HH:mm') }}
-                    </div>
-                </div>
-                <div style="gap:12px;display: flex;">
-                    <button @click="toMember" class="upgrade">升级</button>
-                    <button @click="toPoints" v-if="membership" class="upgrade">购买积分</button>
-                </div>
-            </div>
-
-            <!-- 积分详情 -->
-            <div class="points-details">
-              <div class="points-details-text-container">
-                <div class="points-details-text">积分</div>
-                <div class="points-details-total">{{ points.total }}</div>
-              </div>
+  <div class="usage">
+      <div class="member-info">
+          <div style="    display: flex;align-items: center;justify-content: space-between;">
               <div>
-                <div class="points-details-accounts" v-for="item in points.accounts">
-                  <div class="points-accounts">{{ getPointsTypeName(item.type) }}</div>
-                  <div class="points-accounts">{{ item.balance }}</div>
-                </div>
+                  <div class="plan-name">
+                      {{ membership?.planName || t('member.freePlan') }}
+                  </div>
+                  <div class="expiration-date" v-if="membership">
+                      {{ t('member.expirationDate') }}{{ dayjs(membership.endDate).format('YYYY-MM-DD HH:mm') }}
+                  </div>
               </div>
-             
+              <div style="gap:12px;display: flex;">
+                  <button @click="toMember" class="upgrade">{{ t('member.upgrade') }}</button>
+                  <button @click="toPoints" v-if="membership" class="upgrade">{{ t('member.purchasePoints') }}</button>
+              </div>
+          </div>
+
+          <div class="points-details">
+            <div class="points-details-text-container">
+              <div class="points-details-text">{{ t('member.points') }}</div>
+              <div class="points-details-total">{{ points.total }}</div>
+            </div>
+            <div>
+              <div class="points-details-accounts" v-for="item in points.accounts">
+                <div class="points-accounts">{{ getPointsTypeName(item.type) }}</div>
+                <div class="points-accounts">{{ item.balance }}</div>
+              </div>
             </div>
 
-        </div>
+          </div>
 
-        <!-- 下部分：积分使用情况 -->
-        <a-card title="积分使用记录">
-            <a-table :columns="columns" @change="handleTableChange" :data-source="data" row-key="id"
-                :pagination="{ current: page, pageSize: pageSize, page, total: total }" />
-        </a-card>
-    </div>
-
-    <a-modal
-    v-model:open="isModalVisible"
-    title="购买积分"
-    :footer="null"
-    width="800px"
-    class="recharge-modal"
-    centered
-  >
-    <div v-if="rechargeProducts.length" class="recharge-products">
-      <div
-        v-for="item in rechargeProducts"
-        :key="item.id"
-        class="product-card"
-      >
-        <div class="product-title">{{ item.product_name }}</div>
-        <div class="product-info">
-          <p style="margin-top: 8px;">¥{{ item.amount }}</p>
-          <p>{{ item.points_awarded }}积分</p>
-        </div>
-        <button size="small" :loading="loading" @click="handleBuy(item)">立即购买</button>
       </div>
-    </div>
-    <div v-else>暂无可用的积分套餐</div>
-  </a-modal>
-  <a-modal v-model:open="showQrCode" title="微信扫码支付" centered :footer="null">
-  <div style="text-align: center;">
-    <div style="display: inline-block;">
-      <a-qrcode :value="qrCodeUrl" :size="200" />
-    </div>
-    <p style="margin-top: 12px;">请使用微信扫码完成支付</p>
+
+      <a-card :title="t('member.pointsUsageHistory')">
+          <a-table :columns="columns" @change="handleTableChange" :data-source="data" row-key="id"
+              :pagination="{ current: page, pageSize: pageSize, page, total: total }" />
+      </a-card>
   </div>
+
+  <a-modal
+  v-model:open="isModalVisible"
+  :title="t('member.purchasePoints')"
+  :footer="null"
+  width="800px"
+  class="recharge-modal"
+  centered
+>
+  <div v-if="rechargeProducts.length" class="recharge-products">
+    <div
+      v-for="item in rechargeProducts"
+      :key="item.id"
+      class="product-card"
+    >
+      <div class="product-title">{{ item.product_name }}</div>
+      <div class="product-info">
+        <p style="margin-top: 8px;">{{ currency }} {{ item.amount }}</p>
+        <p>{{ item.points_awarded }}{{ t('member.pointsUnit') }}</p>
+      </div>
+      <button size="small" :loading="loading" @click="handleBuy(item)">{{ t('member.buyNow') }}</button>
+    </div>
+  </div>
+  <div v-else>{{ t('member.noPackagesAvailable') }}</div>
+</a-modal>
+<a-modal v-model:open="showQrCode" :title="t('member.wechatScanToPay')" centered :footer="null">
+<div style="text-align: center;">
+  <div style="display: inline-block;">
+    <a-qrcode :value="qrCodeUrl" :size="200" />
+  </div>
+  <p style="margin-top: 12px;">{{ t('member.wechatScanPrompt') }}</p>
+</div>
 </a-modal>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted,computed } from 'vue'
 import auth from '@/services/auth';
 import membershipService from '@/services/membership'
 
+// --- 国际化引入 ---
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 import dayjs from 'dayjs'
 import { useRouter } from "vue-router";
@@ -91,6 +90,17 @@ import { storeToRefs } from 'pinia';
 import { useUserStore } from '@/store/modules/user.js'
 const userStore = useUserStore();
 const { user, membership, points } = storeToRefs(userStore);
+
+
+//判断是国内还是海外 VITE_REGION
+const isAbroad = computed(() => import.meta.env.VITE_REGION === 'abroad');
+
+
+//¥
+const currency = computed(() => {
+  return isAbroad.value ? '$' : '¥'
+})
+
 
 
 
@@ -129,18 +139,17 @@ const rechargeProducts = ref([])
 function getPointsTypeName(type) {
   switch (type) {
     case 'FREE':
-      return '免费积分'
+      return t("member.pointsType.free")
     case 'MONTHLY':
-      return '月度积分'
+      return t("member.pointsType.monthly")
     case 'PURCHASED_ADDON':
-      return '购买附加积分'
+      return t("member.pointsType.purchasedAddon")
     case 'GIFTED_ADDON':
-      return '赠送附加积分'
+      return t("member.pointsType.giftedAddon")
     case 'FEEDBACK_ADDON':
-      return '反馈的附加积分'
+      return t("member.pointsType.feedbackAddon")
   }
 }
-
 
 const handleBuy = async (item) => {
   loading.value = true
@@ -172,7 +181,7 @@ const checkOrderStatus = async (orderSn) => {
     if (res?.status === 'paid') {
       clearInterval(pollingTimer.value)
       showQrCode.value = false
-      message.success("支付成功！")
+      message.success(t("member.paymentSuccess"))
       paySuccess();
       // message.success("支付成功！")
       console.log('支付成功')
@@ -218,12 +227,12 @@ const toPoints =  async () => {
 
 const columns = [
     {
-        title: '详情',
+        title: t("member.table.details"),
         dataIndex: 'description',
         key: 'description'
     },
     {
-        title: '时间',
+        title: t("member.table.time"),
         dataIndex: 'created_at',
         key: 'created_at',
         customRender: ({ text }) => {
@@ -231,7 +240,7 @@ const columns = [
         }
     },
     {
-        title: '积分变动',
+        title:t("member.table.pointsChange"),
         key: 'amount',
         customRender: ({ record }) => {
             const prefix = record.type === 'credit' ? '+' : record.type === 'debit' ? '-' : ''

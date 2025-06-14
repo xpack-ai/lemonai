@@ -43,4 +43,16 @@ router.get("/check_order_status",async (ctx) => {
 })
 
 
+
+// /strip/create_mambership_plan_order
+router.post("/strip/create_mambership_plan_order",async (ctx) => {
+  let res =  await forwardRequest(ctx, "POST", "strip/create_mambership_plan_order")
+  return ctx.body = res;
+})
+// /strip/create_point_purchase_order
+router.post("/strip/create_point_purchase_order",async (ctx) => {
+  let res =  await forwardRequest(ctx, "POST", "strip/create_point_purchase_order")
+  return ctx.body = res;
+})
+
 module.exports = exports = router.routes();

@@ -48,8 +48,8 @@ let menuItems = [
 const init  = async () => { 
   if(user.id) {
     //menuItems 给 menuItems 添加一条数据 放在第二位置 
-    menuItems.splice(1, 0, { key: 'profile', name: '账户管理', icon: UserOutlined });
-    menuItems.splice(2, 0, { key: 'usage', name: '积分管理', icon: ProjectOutlined });
+    menuItems.splice(1, 0, { key: 'profile', name: 'setting.menu.account', icon: UserOutlined });
+    menuItems.splice(2, 0, { key: 'usage', name: 'setting.menu.integral', icon: ProjectOutlined });
    
   }
 };

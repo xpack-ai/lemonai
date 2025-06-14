@@ -59,7 +59,7 @@
             </div>
 
             <div class="pricing" style="text-align:center; margin: 20px 0;">
-              <div class="price">¥{{ plan.price }}</div>
+              <div class="price">{{ currency }} {{ plan.price }}</div>
             </div>
 
             <div class="credits">
@@ -91,7 +91,7 @@
 
   </div>
 
-  <a-modal v-model:visible="showQrCode" :title="$t('member.qrTitle')" centered :footer="null">
+  <a-modal v-model:open="showQrCode" :title="$t('member.qrTitle')" centered :footer="null">
     <div style="text-align: center;">
       <div style="display: inline-block;">
         <a-qrcode :value="qrCodeUrl" :size="200" />
@@ -106,6 +106,8 @@ import { ref, reactive, watch, onBeforeUnmount, onMounted,computed } from 'vue'
 import membershipService from '@/services/membership'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
+
+
 
 const billingType = ref('year')
 const billingOptions = [
@@ -158,17 +160,35 @@ const checkOrderStatus = async (orderSn) => {
   }, 3000)
 }
 
+//判断是国内还是海外 VITE_REGION
+const isAbroad = computed(() => import.meta.env.VITE_REGION === 'abroad');
+
+//¥
+const currency = computed(() => {
+  return isAbroad.value ? '$' : '¥'
+})
+
 const pay = async (plan) => {
   loading.value = true
-  let res = await membershipService.createOrder(plan.id)
-  if (res && res.code_url) {
+  if (isAbroad.value) {
+    //createOrder
+    let res = await membershipService.createStripeOrder(plan.id)
+    console.log("createStripeOrder",res)
+    //url 跳转到 url 不是新页面打开
+    window.location.href = res.url; 
     loading.value = false
-    qrCodeUrl.value = res.code_url
-    showQrCode.value = true
-    checkOrderStatus(res.order_sn)
-  } else {
-    loading.value = false
-    console.error(t('member.qrError'), res)
+  }else{
+    //createStripeOrder
+    let res = await membershipService.createOrder(plan.id)
+      if (res && res.code_url) {
+        loading.value = false
+        qrCodeUrl.value = res.code_url
+        showQrCode.value = true
+        checkOrderStatus(res.order_sn)
+      } else {
+        loading.value = false
+        console.error(t('member.qrError'), res)
+      }
   }
 }
 

@@ -23,6 +23,23 @@ const service = {
     })
     return res
   },
+
+  ///strip/create_point_purchase_order
+  async createStripeOrder(planId) {
+    const uri = '/api/payment/strip/create_mambership_plan_order'
+    const res = await http.post(uri, {
+      membership_plan_id:planId
+    })
+    return res
+  },
+  //stripe/create_point_purchase_order
+  async createStripePointPurchaseOrder(product_id) {
+    const uri = '/api/payment/stripe/create_point_purchase_order'
+    const res = await http.post(uri, {
+      product_id: product_id
+    })
+    return res
+  },
   ////check_order_status?order_sn
   async checkOrderStatus(orderSn) {
     const uri = '/api/payment/check_order_status'

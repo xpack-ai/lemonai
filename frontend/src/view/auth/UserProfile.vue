@@ -1,53 +1,47 @@
 <template>
   <div class="usage">
-    <!-- 上部分：会员信息 -->
     <div class="account-management">
-      <!-- 用户名显示与编辑按钮 -->
       <div class="username-section" style="margin-bottom: 16px;">
         <div>
-          <span class="label">用户名：</span>
+          <span class="label">{{ t('account.usernameLabel') }}</span>
           <span>{{ user.user_name }}</span>
         </div>
-        <button @click="openUpdateName">编辑</button>
+        <button @click="openUpdateName">{{ t('account.edit') }}</button>
       </div>
 
-      <!-- 重置密码 -->
       <div class="password-reset-section">
-        <span class="label">密码</span>
-        <button @click="resetPassword">重置密码</button>
+        <span class="label">{{ t('account.passwordLabel') }}</span>
+        <button @click="resetPassword">{{ t('account.resetPassword') }}</button>
       </div>
 
-    <!-- 编辑用户名弹窗 -->
     <a-modal
       centered
-      title="编辑用户名"
+      :title="t('account.editUsernameTitle')"
       v-model:open="isUsernameModalVisible"
     >
-      <a-input v-model:value="newUsername" placeholder="请输入新用户名" />
+      <a-input v-model:value="newUsername" :placeholder="t('account.newUsernamePlaceholder')" />
       <template #footer>
-        <button @click="isUsernameModalVisible = false" style="background-color: #0000330f; border-color: #0000330f; color:#1a1a19; margin-right: 8px; ">取消</button>
+        <button @click="isUsernameModalVisible = false" style="background-color: #0000330f; border-color: #0000330f; color:#1a1a19; margin-right: 8px; ">{{ t('account.cancel') }}</button>
         <button type="primary" @click="updateUsername">
-          保存
+          {{ t('account.save') }}
         </button>
       </template>
     </a-modal>
-    <!-- 重置密码弹窗 -->
     <a-modal
       centered
-      title="重置密码"
+      :title="t('account.resetPasswordTitle')"
       v-model:open="isPasswordModalVisible"
     >
-      <a-input-password v-model:value="newPassword" placeholder="请输入密码" />
+      <a-input-password v-model:value="newPassword" :placeholder="t('account.newPasswordPlaceholder')" />
       <template #footer>
-        <button @click="isPasswordModalVisible = false" style="background-color: #0000330f; border-color: #0000330f; color:#1a1a19; margin-right: 8px; ">取消</button>
+        <button @click="isPasswordModalVisible = false" style="background-color: #0000330f; border-color: #0000330f; color:#1a1a19; margin-right: 8px; ">{{ t('account.cancel') }}</button>
         <button type="primary" @click="updatePassword">
-          保存
+          {{ t('account.save') }}
         </button>
       </template>
     </a-modal>
   </div>
-    <!-- 下部分：积分使用情况 -->
-    <a-card title="订单">
+    <a-card :title="t('account.ordersTitle')">
       <a-table :columns="columns" @change="handleTableChange" :data-source="data" row-key="id"
         :pagination="{ current: page, pageSize: pageSize, page, total: total }" />
     </a-card>
@@ -64,6 +58,9 @@ import dayjs from 'dayjs'
 import { useRouter } from "vue-router";
 const router = useRouter();
 import { message } from 'ant-design-vue';
+// --- 国际化引入 ---
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 onMounted(() => {
   getOrderList()
@@ -120,17 +117,17 @@ const handleTableChange = (pagination) => {
 }
 const columns = [
   {
-    title: '订单编号',
+    title: t("account.table.orderId"),
     dataIndex: 'order_sn',
     key: 'order_sn'
   },
   {
-    title: '订单金额',
+    title: t("account.table.orderAmount"),
     dataIndex: 'amount',
     key: 'amount'
   },
   {
-    title: '时间',
+    title: t("account.table.time"),
     dataIndex: 'created_at',
     key: 'created_at',
     customRender: ({ text }) => {
@@ -138,26 +135,25 @@ const columns = [
     }
   },
   {
-    title: '订单状态',
+    title: t("account.table.status"),
     key: 'status',
     customRender: ({ record }) => {
      //pending(待支付)、paid(已支付)、cancelled(已取消)、failed(支付失败)
      switch (record.status) {
        case 'pending':
-         return '待支付'
+         return t("account.orderStatus.pending")
        case 'paid':
-         return '已支付'
+       return t("account.orderStatus.paid")
        case 'cancelled':
-         return '已取消'
+       return t("account.orderStatus.cancelled")
        case 'failed':
-         return '支付失败'
+       return t("account.orderStatus.failed")
        default:
-         return '未知'
+       return t("account.orderStatus.unknown")
      }
     }
   }
 ]
-
 
 </script>
 

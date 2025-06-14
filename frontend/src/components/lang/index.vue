@@ -24,15 +24,15 @@ const { t, locale } = useI18n()
 const langList = ref([
     { id: 1, type: 'en' },
     { id: 2, type: 'zh' },
-    { id: 3, type: 'de' },
-    { id: 4, type: 'es' },
-    { id: 5, type: 'fr' },
-    { id: 6, type: 'ja' },
-    { id: 7, type: 'kr' },
-    { id: 8, type: 'tr' },
-    { id: 9, type: 'pt' },
-    { id: 10, type: 'tw' },
-    { id: 11, type: 'vi' }
+    // { id: 3, type: 'de' },
+    // { id: 4, type: 'es' },
+    // { id: 5, type: 'fr' },
+    // { id: 6, type: 'ja' },
+    // { id: 7, type: 'kr' },
+    // { id: 8, type: 'tr' },
+    // { id: 9, type: 'pt' },
+    // { id: 10, type: 'tw' },
+    // { id: 11, type: 'vi' }
 ])
 
 const selectedLang = ref(locale.value || 'en')
