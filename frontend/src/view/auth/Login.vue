@@ -250,7 +250,7 @@ const handleForgotPassword = async (values) => {
         message.success(t('auth.passwordResetSuccessful'));
         activeKey.value = 'login';
       }else{
-        message.error('auth.passwordResetFailed');
+        message.error(t('auth.passwordResetFailed'));
       }
     }else{
       message.error(t('auth.codeError'));

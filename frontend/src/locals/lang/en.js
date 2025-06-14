@@ -93,7 +93,7 @@ export default {
       confirmPassword: "Confirm password",
       pleaseInputPhone: "Please enter phone number",
       keepOffline:  "Keep offline",
-      otherLogin: "Select other login方式",
+      otherLogin: "Select other login method",
       subscribeModel: "You are currently selecting a subscription model, please login to use or select other models",
       //您当前选择搜索服务是订阅服务，请前往登录后使用 或 选择其它服务
       subscribeService: "The search service you are currently selecting is a subscription service, please login to use or select other services",

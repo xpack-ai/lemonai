@@ -93,13 +93,13 @@ const updateUsername = async () => {
   await authService.updateUsername(newUsername.value)
   isUsernameModalVisible.value = false
   user.user_name = newUsername.value
-  message.success('更新成功')
+  message.success(t("account.updateSuccess"))
 }
 
 const updatePassword = async () => { 
   await authService.resetPassword("", newPassword.value,user.mobile)
   isPasswordModalVisible.value = false
-  message.success('更新成功')
+  message.success(t("account.updateSuccess"))
 }
 const getOrderList = async () => {
   const res = await membershipService.getOrderList(
