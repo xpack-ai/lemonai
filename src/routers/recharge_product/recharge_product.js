@@ -1,6 +1,6 @@
 const router = require("koa-router")();
 const axios = require("axios");
-const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN;
+const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN || 'https://sub-server.lemonai.cc';
 
 
 
