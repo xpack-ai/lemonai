@@ -127,6 +127,7 @@
         details: '详情',
         time: '时间',
         pointsChange: '积分变动',
+        conversation_title: '标题',
       },
       pricing: "定价",
       mostPopular: "最受欢迎",

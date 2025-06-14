@@ -127,6 +127,7 @@ export default {
         details: 'Details',
         time: 'Time',
         pointsChange: 'Points change',
+        conversation_title: 'Title',
       },
       pricing: "Pricing",
       mostPopular: "Most popular",

@@ -227,6 +227,11 @@ const toPoints =  async () => {
 
 const columns = [
     {
+        title: t("member.table.conversation_title"),
+        dataIndex: 'conversation_title',
+        key: 'conversation_title'
+    },
+    {
         title: t("member.table.details"),
         dataIndex: 'description',
         key: 'description'
