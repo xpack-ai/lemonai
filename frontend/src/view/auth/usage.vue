@@ -151,8 +151,18 @@ function getPointsTypeName(type) {
   }
 }
 
+
 const handleBuy = async (item) => {
   loading.value = true
+
+  if(isAbroad){
+    let res = await membershipService.createStripePointPurchaseOrder(item.id)
+    console.log("createStripeOrder",res)
+    //url 跳转到 url 不是新页面打开
+    window.location.href = res.url; 
+    loading.value = false
+  }else{
+
   let res = await membershipService.createPointPurchaseOrder(item.id)
 
   if (res && res.code_url) {
@@ -168,6 +178,7 @@ const handleBuy = async (item) => {
   }
   //checkOrderStatus 轮询 orderSn
   console.log(res)
+  }
 }
 
 const checkOrderStatus = async (orderSn) => {

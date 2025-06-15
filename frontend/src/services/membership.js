@@ -34,7 +34,7 @@ const service = {
   },
   //stripe/create_point_purchase_order
   async createStripePointPurchaseOrder(product_id) {
-    const uri = '/api/payment/stripe/create_point_purchase_order'
+    const uri = '/api/payment/strip/create_point_purchase_order'
     const res = await http.post(uri, {
       product_id: product_id
     })
