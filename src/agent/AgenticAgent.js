@@ -27,14 +27,10 @@ const runtimeMap = {
   'docker': DockerRuntime
 }
 
-const Logger = require('@src/logging/logger'); // assume logger path
-
 class AgenticAgent {
   constructor(context = {}) {
     this.logs = [];
-    this.logger = new Logger('AgenticAgent'); // assume logger path
     this.taskManager = new TaskManager('task_log.md', context.conversation_id); // assume task manager path
-    this.logger.log('AgenticAgent initialized.');
     const RunTime = runtimeMap[RUNTIME_TYPE];
     this.runtime = new RunTime();
     context.runtime = this.runtime;
@@ -45,7 +41,6 @@ class AgenticAgent {
 
   async run(goal) {
     this.goal = goal;
-    this.logger.log(`Starting agent run with goal: ${goal}`);
 
     try {
       if (RUNTIME_TYPE == 'docker') {
@@ -58,7 +53,6 @@ class AgenticAgent {
       await fs.mkdir(dir_path, { recursive: true });
 
       if (this.is_stop) {
-        this.logger.log('Agent stopped.');
         return;
       }
       const reply = await auto_reply(goal, this.context.conversation_id);
@@ -67,20 +61,17 @@ class AgenticAgent {
       await Message.saveToDB(reply_msg, this.context.conversation_id);
 
       if (this.is_stop) {
-        this.logger.log('Agent stopped.');
         return;
       }
       // 1. Planning
       await this.plan(goal);
       if (this.is_stop) {
-        this.logger.log('Agent stopped.');
         return;
       }
       // 2. Execution
       console.log('====== start execute ======')
       await this.execute();
       if (this.is_stop) {
-        this.logger.log('Agent stopped.');
         return;
       }
       // 3. Final Output
@@ -91,7 +82,6 @@ class AgenticAgent {
         tasks: tasks,
         logs: this.logs
       };
-      this.logger.log(`Agent run finished. Final status: ${finalResult.status}`);
 
       // 4. summary result
       // 递归查找目录下所有文件，包括所有子目录及更深层级的文件
@@ -134,7 +124,6 @@ class AgenticAgent {
       return finalResult;
     } catch (error) {
       // Errors from plan or execute will be caught here
-      this.logger.error(`Agent run failed: ${error.message}`);
       await Conversation.update({ status: 'done' }, { where: { conversation_id: this.context.conversation_id } });
       // Optionally update task manager log for overall failure if needed
       throw error;
@@ -148,7 +137,6 @@ class AgenticAgent {
   }
 
   async plan(goal) {
-    this.logger.log('Planning phase started.');
     try {
       // get files
       const files = await File.findAll({ where: { conversation_id: this.context.conversation_id } })
@@ -163,7 +151,6 @@ class AgenticAgent {
       const msg = Message.format({ status: 'success', action_type: "plan", content: '', json: tasks })
       this.onTokenStream(msg);
       await Message.saveToDB(msg, this.context.conversation_id);
-      this.logger.log(`Planning completed. ${tasks.length} tasks generated.`);
       console.log('====== planning completed ======')
 
       // Write the todo list from planning to a md file
@@ -192,7 +179,6 @@ class AgenticAgent {
       return true; // Indicate success
     } catch (error) {
 
-      this.logger.error(`Planning failed: ${error.message}`);
       throw new Error(`Planning failed: ${error.message}`); // Re-throw to be caught by run
     }
   }
@@ -239,24 +225,21 @@ class AgenticAgent {
   }
 
   async execute() {
-    this.logger.log('Execution phase started.');
+
     const tasks = this.taskManager.getTasks(); // assume task manager path
     // console.log(JSON.stringify(tasks, null, 2))
     if (!tasks || tasks.length === 0) {
-      this.logger.log('No tasks to execute.');
       return; // Nothing to execute
     }
     this.context.goal = this.goal;
 
     for (let i = 0; i < tasks.length; i++) {
       if (this.is_stop) {
-        this.logger.log('Agent stopped.');
         return;
       }
       const task = tasks[i];
       // Update task status to running and log
       await this.taskManager.updateTaskStatus(task.id, 'running');
-      this.logger.log(`Executing task ${task.id}: ${task.requirement}`);
       this.logs.push({ timestamp: new Date(), message: `Executing task ${task.id}: ${task.requirement}` });
       const msg = Message.format({ status: 'running', task_id: task.id, action_type: 'task' })
       this.onTokenStream(msg);
@@ -266,8 +249,6 @@ class AgenticAgent {
         const result = await completeCodeAct(task, this.context);
         // Update task status to completed and log
         await this.taskManager.updateTaskStatus(task.id, 'completed', { result: result.content, memorized: result.memorized || '' });
-
-        console.log('task', JSON.stringify(this.taskManager.getTaskById(task.id), null, 2)); // Get updated task information
 
         this.context.tasks = this.taskManager.getTasks(); // Update context tasks
         const uuid = uuidv4()
@@ -289,16 +270,13 @@ class AgenticAgent {
         this.onTokenStream(todo_success_msg);
         await Message.saveToDB(todo_success_msg, this.context.conversation_id);
 
-        this.logger.log(`Task ${task.id} completed successfully. Result: ${JSON.stringify(result)}`);
-        this.logs.push({ timestamp: new Date(), status: 'completed', task: task.id, result: result });
         const msg = Message.format({ status: 'success', task_id: task.id, action_type: 'task', json: result })
         this.onTokenStream(msg);
         await Message.saveToDB(msg, this.context.conversation_id);
       } catch (error) {
         // Update task status to failed and log
         await this.taskManager.updateTaskStatus(task.id, 'failed', { error: error.message });
-        this.logger.error(`Task ${task.id} failed: ${error.message}`);
-        this.logs.push({ timestamp: new Date(), status: 'failed', task: task.id, error: error.message });
+
         const msg = Message.format({ status: 'failure', task_id: task.id, action_type: 'task', json: error })
         this.onTokenStream(msg);
         await Message.saveToDB(msg, this.context.conversation_id);
@@ -306,7 +284,6 @@ class AgenticAgent {
         // For now, we continue to process other tasks
       }
     }
-    this.logger.log('All tasks processed.');
   }
 
   async stop() {
