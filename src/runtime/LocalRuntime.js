@@ -1,6 +1,8 @@
+// @ts-ignore
 const fs = require('fs').promises;
+// @ts-ignore
 const path = require('path');
-const {write_code:util_write_code} = require('./utils/tools');
+const { write_code: util_write_code } = require('./utils/tools');
 const tools = require("@src/tools/index.js");
 const { v4: uuidv4 } = require("uuid");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -26,6 +28,7 @@ class LocalRuntime {
    * @param {Object} [options={}] - Configuration options
    * @param {Memory} options.memory - Memory management instance
    */
+  // @ts-ignore
   constructor(options) {
     this.memory = null
   }
@@ -65,6 +68,7 @@ class LocalRuntime {
     const tool = tools[type];
     if (tool.getActionDescription) {
       const description = await tool.getActionDescription(params);
+      // @ts-ignore
       const value = {
         uuid: uuid,
         content: description,
@@ -75,8 +79,8 @@ class LocalRuntime {
         },
         timestamp: new Date().valueOf()
       }
+      // @ts-ignore
       const msg = Message.format({ uuid: uuid, status: 'running', content: description, action_type: type, task_id: task_id });
-      context.onTokenStream(msg)
       await this.callback(msg, context);
       Message.saveToDB(msg, context.conversation_id);
       await delay(500);
@@ -121,6 +125,7 @@ class LocalRuntime {
       meta_json = result.meta.json || []
       meta_file_path = result.meta.filepath || ''
     }
+    // @ts-ignore
     const msg = Message.format({ status: result.status, memorized: result.memorized || '', content: result.content || '', action_type: type, task_id: task_id, uuid: uuid || '', url: meta_url, json: meta_json, filepath: meta_file_path });
     await this.callback(msg, context);
     await Message.saveToDB(msg, context.conversation_id);

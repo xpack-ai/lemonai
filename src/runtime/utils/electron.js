@@ -1,8 +1,20 @@
 // const { app } = require('electron');
+const fs = require('fs');
 const resolve = require('path').resolve;
 const resourcesPath = process.resourcesPath;
-console.log('LEMON_AI_PATH', process.env.LEMON_AI_PATH);
-const LEMON_AI_PATH = process.env.LEMON_AI_PATH;
+let LEMON_AI_PATH = process.env.LEMON_AI_PATH;
+
+function inDockerEnvironment() {
+  try {
+    fs.accessSync('/.dockerenv');
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+if (inDockerEnvironment()) {
+  LEMON_AI_PATH = '/'
+}
 
 const getFilepath = (dir = 'database', filename) => {
 
