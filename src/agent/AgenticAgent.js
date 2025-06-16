@@ -246,6 +246,7 @@ class AgenticAgent {
       this.logger.log('No tasks to execute.');
       return; // Nothing to execute
     }
+    this.context.goal = this.goal;
 
     for (let i = 0; i < tasks.length; i++) {
       if (this.is_stop) {

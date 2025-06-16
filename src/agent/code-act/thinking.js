@@ -54,7 +54,7 @@ const thinking_server = async (requirement, context = {}) => {
 
 const thinking_local = async (requirement, context = {}) => {
   const { memory, retryCount } = context;
-  console.log('memory', memory);
+  // console.log('memory', memory);
   const summarize = false;
   const messages = await memory.getMessages(summarize);
   if (retryCount > 0) {

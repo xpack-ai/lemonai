@@ -1,6 +1,6 @@
 const WriteCode = {
   name: "write_code",
-  description: "Write html/node/python code to complete task, use python3 code with PyPDF2 to read PDF files",
+  description: "Write html/node/python code to complete task, write markdown to generate requirement/report/design , use python3 code with PyPDF2 to read PDF files",
   params: {
     type: "object",
     properties: {

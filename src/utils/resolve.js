@@ -7,7 +7,11 @@ const resolveXML = (content) => {
     ignoreAttributes: false,
   });
   const result = parser.parse(content);
-  // console.log(result)
+  // Temporary solution
+  // TODO: Optimize Prompt to gen code with CDATA
+  if (result.write_code && result.write_code.content && result.write_code.content.startsWith(`<![CDATA[`)) {
+    result.write_code.content = result.write_code.content.replace(`<![CDATA[`, '').replace(`]]>`, '');
+  }
   return result;
 }
 
