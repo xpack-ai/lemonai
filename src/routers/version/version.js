@@ -57,10 +57,10 @@ async function checkForUpdates() {
     return {
       localVersion: version,
       latestVersion: latestVersion,
-      isLatest: comparison === 0,
-      updateUrl: comparison === -1 ? release.html_url : null,
-      message: comparison === -1 ? `New version found! Latest version: ${latestVersion}` : 'Current version is up to date',
-      body:  release.body,
+      isLatest: comparison !== -1,
+      updateUrl: comparison !== -1 ? null:release.html_url,
+      message: comparison !== -1 ?  'Current version is up to date':`New version found! Latest version: ${latestVersion}`,
+      body:  comparison !== -1?null:release.body,
     };
   } catch (error) {
     return {

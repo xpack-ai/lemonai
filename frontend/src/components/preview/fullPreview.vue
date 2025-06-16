@@ -550,7 +550,7 @@ emitter.on('fullPreviewVisable-close', () => {
 
 .fullPreviewEnable {
   position: absolute;
-  z-index: 9999;
+  z-index: 1000;
   left: 0;
   top: 0;
   right: 0;
