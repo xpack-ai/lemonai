@@ -238,7 +238,7 @@ const handleForgotPassword = async (values) => {
     loading.value = true;
     //第一步 校验验证码
     let codeRes = null;
-    if(isAbroad){
+    if(isAbroad.value){
       codeRes = await auth.verifySmsVerifyCode(values.phone, values.smsCode);
     }else{
       codeRes = await auth.verifyEmailVerifyCode(values.email, values.code);

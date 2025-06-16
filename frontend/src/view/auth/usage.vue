@@ -155,11 +155,10 @@ function getPointsTypeName(type) {
 const handleBuy = async (item) => {
   loading.value = true
 
-  if(isAbroad){
+  if(isAbroad.value){
     let res = await membershipService.createStripePointPurchaseOrder(item.id)
-    console.log("createStripeOrder",res)
-    //url 跳转到 url 不是新页面打开
-    window.location.href = res.url; 
+        //url 跳转到 url 不是新页面打开
+    // window.location.href = res.url; 
     loading.value = false
   }else{
 
