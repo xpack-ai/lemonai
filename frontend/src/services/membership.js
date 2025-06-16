@@ -40,11 +40,27 @@ const service = {
     })
     return res
   },
+  ///strip/checkout-session
+  async createStripeCheckoutSession(sessionId) {
+    const uri = '/api/payment/strip/checkout-session'
+    const res = await http.get(uri, {
+      session_id: sessionId
+    })
+    return res
+  },
   ////check_order_status?order_sn
   async checkOrderStatus(orderSn) {
     const uri = '/api/payment/check_order_status'
     const res = await http.get(uri, {
       order_sn: orderSn
+    })
+    return res
+  },
+  //check_order_status_by_id
+  async checkOrderStatusById(orderId) {
+    const uri = '/api/payment/check_order_status_by_id'
+    const res = await http.get(uri, {
+      order_id: orderId
     })
     return res
   },

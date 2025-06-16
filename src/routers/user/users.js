@@ -88,7 +88,7 @@ router.get('/auth/google', async (ctx) => {
   const queryString = new URLSearchParams(query).toString();
 
   // 拼接目标 URL（带上 hash 和查询参数）
-  const redirectUrl = `http://localhost:5000/#/auth/google${queryString ? '?' + queryString : ''}`;
+  const redirectUrl = `http://localhost:5005/#/auth/google${queryString ? '?' + queryString : ''}`;
 
   ctx.redirect(redirectUrl);
 });

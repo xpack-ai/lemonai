@@ -106,7 +106,7 @@ import { useI18n } from 'vue-i18n';
 const isAbroad = computed(() => import.meta.env.VITE_REGION === 'abroad');
 const { t } = useI18n();
 import auth from '@/services/auth';
-const emit = defineEmits(['toLogin','handleRegister']);
+const emit = defineEmits(['toLogin','handleRegister','handleGoogleRegister']);
 
 // 注册表单
 
@@ -128,6 +128,11 @@ const isRegisterValid = computed(() => {
     registerForm.value.confirmPassword === registerForm.value.password &&
     (!isAbroad.value ? registerForm.value.smsCode : true)
 })
+
+
+const handleGoogleRegister = async () => {
+  emit('handleGoogleRegister');
+};
 
 const toLogin = () => {
     emit('toLogin');
@@ -157,7 +162,7 @@ function sendSMSCode() {
 
 function validateConfirmPassword(_, value) {
   if (value !== registerForm.value.password) {
-    return Promise.reject(new Error(t('auth.passwordsNotMatch')))
+    return Promise.reject(new Error(t('auth.passwordsDoNotMatch')))
   }
   return Promise.resolve()
 }

@@ -17,7 +17,7 @@
       </div>
       <div v-if="activeKey === 'register'">
         <!-- Register Form -->
-        <register @toLogin="activeKey = 'login'" @handleRegister="handleRegister"/>
+        <register @toLogin="activeKey = 'login'" @handleRegister="handleRegister" @handleGoogleRegister="handleGoogleLogin"/>
       </div>
       <div v-if="activeKey === 'forgot'">
         <forgot @toLogin="activeKey = 'login'" @handleForgotPassword="handleForgotPassword"/>
@@ -59,13 +59,14 @@ import google from '@/assets/svg/google.svg';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import auth from '@/services/auth';
-import { useI18n } from 'vue-i18n';
+
 import login from './components/login.vue'
 import register from './components/register.vue'
 import forgot from './components/forgot.vue'
 import smsLogin from './components/sms-login.vue'
 
 const router = useRouter();
+import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 // 页面状态
@@ -106,19 +107,17 @@ const handleVerify = async () => {
     loading.value = true;
     const res = await auth.verifyEmailVerifyCode(verifyEmail.value, verifyForm.code);
     if (res.code === 200) {
-      const res = await auth.register(
-        registerForm.fullname,
-        registerForm.email,
-        registerForm.password,
+      const resRegister = await auth.register(
+        registerForm.value.fullname,
+        registerForm.value.email,
+        registerForm.value.password,
         ''
       );
-      if (res.code === 200) {
+      if (resRegister.code === 200) {
         message.success(t('auth.registrationSuccessful'));
         activeKey.value = 'login';
-        loginForm.email = registerForm.email;
-        loginForm.password = '';
       } else {
-        message.error(res.message);
+        message.error(resRegister.message);
       }
     } else {
       message.error(res.message);
@@ -181,10 +180,11 @@ const handleLoginSMSCode = async (values) => {
     return;
   }
 };
-
+const registerForm = ref({});
 // 处理注册
 const handleRegister = async (values) => {
   console.log('handleRegister', values);
+  registerForm.value = values;
   try {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(values.email) && isAbroad.value) {
@@ -289,14 +289,6 @@ const handleAppleLogin = async () => {
   }
 };
 
-const handleGoogleRegister = async () => {
-  try {
-    loading.value = true;
-    message.info(t('auth.googleRegisterInProgress'));
-  } finally {
-    loading.value = false;
-  }
-};
 
 const handleAppleRegister = async () => {
   try {

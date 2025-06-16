@@ -614,4 +614,36 @@ export default {
     please_select_model: "Please select model",
     //设置
     settings: "Settings",
+    loadingTip: "Loading order information...",
+    backHome: "Back to home",
+    orderInfo: "Order information",
+    orderId: "Order ID",
+    paymentAmount: "Payment amount",
+    orderStatus: "Order status",
+    customerInfo: "Customer information",
+    name: "Name",
+    email: "Email",
+    notProvided: "Not provided",
+    unknown: "Unknown",
+    unknownCurrency: "Unknown currency",
+    loadFailed: "Order loading failed, please try again later.",
+    fetchFailed: "Order fetching failed",
+    status: {
+      checking: "Checking order status...",
+      paid: "Paid",
+      pending: "Pending",
+      cancelled: "Cancelled",
+      failed: "Failed"
+    },
+    resultTitle: {
+      paid: "Paid",
+      pending: "Pending",
+      cancelled: "Cancelled",
+      failed: "Failed",
+      checking: "Checking order information...",
+      unknown: "Unknown order status"
+    },
+    resultSubtitle: {
+      submitted: "Your order has been successfully submitted"
+    }
   }

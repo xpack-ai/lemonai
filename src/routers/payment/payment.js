@@ -42,6 +42,11 @@ router.get("/check_order_status", async (ctx) => {
   return ctx.body = res;
 })
 
+//check_order_status_by_id
+router.get("/check_order_status_by_id", async (ctx) => {
+  let res = await forwardRequest(ctx, "GET", "check_order_status_by_id")
+  return ctx.body = res;
+})
 
 
 // /strip/create_mambership_plan_order
@@ -52,6 +57,11 @@ router.post("/strip/create_mambership_plan_order",async (ctx) => {
 // /strip/create_point_purchase_order
 router.post("/strip/create_point_purchase_order",async (ctx) => {
   let res =  await forwardRequest(ctx, "POST", "strip/create_point_purchase_order")
+  return ctx.body = res;
+})
+// payment/strip/checkout-session
+router.get("/strip/checkout-session",async (ctx) => {
+  let res =  await forwardRequest(ctx, "GET", "strip/checkout-session")
   return ctx.body = res;
 })
 

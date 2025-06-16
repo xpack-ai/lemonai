@@ -614,4 +614,36 @@
     please_select_model: "请选择模型",
     //设置
     settings: "设置",
+    loadingTip: "正在获取订单信息中...",
+    backHome: "返回首页",
+    orderInfo: "订单信息",
+    orderId: "订单号",
+    paymentAmount: "支付金额",
+    orderStatus: "订单状态",
+    customerInfo: "客户信息",
+    name: "姓名",
+    email: "邮箱",
+    notProvided: "未提供",
+    unknown: "未知",
+    unknownCurrency: "未知币种",
+    loadFailed: "订单加载失败，请稍后再试。",
+    fetchFailed: "获取订单失败",
+    status: {
+      checking: "正在获取订单状态...",
+      paid: "支付成功",
+      pending: "订单待处理",
+      cancelled: "订单已取消",
+      failed: "支付失败"
+    },
+    resultTitle: {
+      paid: "支付成功",
+      pending: "订单待处理",
+      cancelled: "订单已取消",
+      failed: "支付失败",
+      checking: "正在获取订单信息中...",
+      unknown: "订单状态未知"
+    },
+    resultSubtitle: {
+      submitted: "您的订单已经成功提交"
+    }
   }

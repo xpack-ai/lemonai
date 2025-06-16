@@ -42,6 +42,12 @@ const routes = [
     meta: { verify: true }
   },
   {
+    path: "/pay/success",
+    name: "paySuccess",
+    component: () => import("@/view/pay/paySuccess.vue"),
+    meta: { verify: true }
+  },
+  {
     path: "/setting",
     component: () => import("@/view/setting/index.vue"),
     meta: { verify: true },
