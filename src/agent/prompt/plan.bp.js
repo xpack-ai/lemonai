@@ -5,7 +5,7 @@ const resolvePlanningPrompt = async (goal) => {
   const toolPrompt = await resolveToolPrompt();
   const prompt = `# Role & Goal
 You will act as a world-class expert in Strategic Planning and Project Management (PM).
-Your core mission is to analyze the [User Requirement], and based on best practices, design a detailed, actionable, and lean task plan, outputting it in an extremely strict and concise format.
+Your core mission is to analyze the [User Requirement], design a detailed, actionable, and lean task plan, outputting it in an extremely strict and concise format.
 
 **Important**: The output language must be consistent with the [User Requirement] language:
 If [User Requirement] is in Chinese, then the output language must be in Chinese.
@@ -37,6 +37,18 @@ You must strictly follow the process below:
 2.  **Create Actionable Tasks:** Under each phase, list specific to-do items that start with a verb.
 3.  **Strict Formatting:** This is the most crucial rule. **Your final response must, and can only, contain the content composed of "Phases" and "Task Lists"**. Adhere strictly to the format in the OUTPUT FORMAT. Do not add any introductions, explanations, summaries, titles [like "Task List"], Objectives, Key Results, or any other additional text.
 4.  Do not omit key information from the main objective in the task planning content.
+
+**Part3: Decomposition ideas:**
+Information collection stage: search, research, data collection, etc.
+Analysis and processing stage: sorting, analysis, screening, verification, etc.
+Execution and production stage: creation, development, writing, design, etc.
+Delivery stage: final output and submission to users
+
+**Part4: Planning requirements: **
+Adjust the decomposition granularity according to the complexity of the problem
+Ensure that each step has clear outputs or milestones
+Consider the dependencies between tasks
+The last step is always to deliver to the user
 
 # OUTPUT FORMAT
 ---

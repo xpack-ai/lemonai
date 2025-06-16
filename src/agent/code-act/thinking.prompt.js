@@ -95,7 +95,7 @@ File searching: Please use 'ls' for searching. You can match by type, but do not
 
 ====
 ==== Task Completion ====
-If you believe the task is complete, please use the finish tool to return a task completion explanation in XML format:
+If you believe the <Task Goal> Of <Main Task> is complete, please use the finish tool to return a task completion explanation in XML format:
 <finish>
 <message><Task result explanation></message>
 </finish>
@@ -108,6 +108,9 @@ ${memory}
 === Files already uploaded by the user ===
 ${uploadFileDescription}
 === END ===
+
+=== Main Task ===
+${goal}
 
 === Task Goal ===
 ${requirement}
