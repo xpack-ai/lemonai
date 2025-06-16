@@ -222,18 +222,35 @@ if (!gotTheLock) {
     // 其他 app ready 后续逻辑...
 
 
-      // ✅ 拦截新窗口打开
+    function isGoogleLoginUrl(url) {
+      // 简单判断是否是 Google 登录相关的URL，可以根据需求细化
+      return url.startsWith('https://accounts.google.com/o/oauth2') || url.includes('google.com/accounts') || url.includes('accounts.google.com');
+    }
+    
+    // 拦截新窗口打开
     createdWindow.webContents.setWindowOpenHandler(({ url }) => {
-      // 如果是 http/https，就在系统默认浏览器中打开
+      if (isGoogleLoginUrl(url)) {
+        // 对于谷歌登录链接，允许在应用内打开（action: 'allow'）
+        return { action: 'allow' };
+      }
+    
+      // 其他 http/https 链接都用系统浏览器打开
       if (url.startsWith('http')) {
         shell.openExternal(url);
         return { action: 'deny' };
       }
+    
       return { action: 'allow' };
     });
-
-    // ✅ 拦截页面内跳转（可选）
+    
+    // 拦截页面内跳转
     createdWindow.webContents.on('will-navigate', (event, url) => {
+      if (isGoogleLoginUrl(url)) {
+        // 对于谷歌登录相关的 URL，允许跳转，什么都不做
+        return;
+      }
+    
+      // 非谷歌登录且为新的 http/https 跳转，阻止并用系统浏览器打开
       if (url.startsWith('http') && url !== createdWindow.webContents.getURL()) {
         event.preventDefault();
         shell.openExternal(url);
