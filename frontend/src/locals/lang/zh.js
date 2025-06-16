@@ -398,7 +398,7 @@
         saveFailed: "保存失败",
         platforms: {
           Anthropic: "Anthropic",
-          ModelScope: "ModelScope 魔塔",
+          ModelScope: "ModelScope 魔搭",
           Gemini: "Gemini",
           OpenAI: "OpenAI",
           Ollama: "Ollama",

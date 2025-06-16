@@ -14,11 +14,22 @@ const DEFAULT_MODEL_TYPE = "assistant";
 
 const LLM_LOGS = require('@src/models/LLMLogs.js');
 
+const handleOptions = (restOptions, model) => {
+  // Temporary solution
+  // TODO: Allow User set options value in model config | config file
+  if (model.platform_name) {
+    if (/volcengine/i.test(model.platform_name) && /deepseek-v3/i.test(model.model_name)) {
+      restOptions.max_tokens = 16000;
+    }
+  }
+  return restOptions;
+}
+
 /**
  * @param {*} prompt 
  * @param {*} model_type 
  * @param {*} options 
- * @param {*} onTokenStream 
+ * @param {*} onTokenStream
  * @returns {Promise<string>}
  */
 const call = async (prompt, conversation_id, model_type = DEFAULT_MODEL_TYPE, options = { temperature: 0 }, onTokenStream = defaultOnTokenStream) => {
@@ -33,6 +44,8 @@ const call = async (prompt, conversation_id, model_type = DEFAULT_MODEL_TYPE, op
     prompt = '/no_think' + prompt;
   }
 
+  handleOptions(restOptions, model_info);
+
   const content = await llm.completion(prompt, context, restOptions);
   const inputPrompt = messages.map(item => item.content).join('\n') + '\n' + prompt;
   const input_tokens = calcToken(inputPrompt)
@@ -40,7 +53,9 @@ const call = async (prompt, conversation_id, model_type = DEFAULT_MODEL_TYPE, op
   if (conversation_id) {
     const conversation = await Conversation.findOne({ where: { conversation_id: conversation_id } })
     if (conversation) {
+      // @ts-ignore
       conversation.input_tokens = conversation.input_tokens + input_tokens
+      // @ts-ignore
       conversation.output_tokens = conversation.output_tokens + output_tokens
       await conversation.save()
     }

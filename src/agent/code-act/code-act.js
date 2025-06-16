@@ -137,7 +137,7 @@ const completeCodeAct = async (task = {}, context = {}) => {
       if (status === "success") {
         retryCount = 0; // reset retryCount
         const { content } = action_result;
-        const task_tool = task.tools[0];
+        const task_tool = task.tools && task.tools[0];
         if (action.type === task_tool) {
           const finish_result = { params: { message: content } }
           const result = await finish_action(finish_result, context, task.id);

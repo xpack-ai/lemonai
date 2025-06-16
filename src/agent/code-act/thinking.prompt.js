@@ -18,7 +18,7 @@ ${completedDescription}`
 
 const resolveThinkingPrompt = async (requirement = '', context = {}) => {
 
-  const { reflection = '' } = context;
+  const { reflection = '', goal = '' } = context;
   const memory = await resolveMemoryPrompt(context);
   const tools = await resolveToolPrompt();
 
@@ -68,7 +68,7 @@ Default style for display web pages
 9. Use professional icon libraries such as FontAwesome or Material lcons (introduced through CDN)
 10. Avoid using emoji as the main icon
 11. Do not omit content points
-12. Be careful not to use escape characters &lt; &gt; that make the html invalid.
+12. **IMPORTANT**: When generating HTML code for the write_code tool, you **MUST** wrap the entire HTML content within a <![CDATA[...]]> section. This is to ensure the response is a valid XML while preserving the HTML tags correctly.
 
 ==== Document and Text Generation ====
 When the task requires generating documents, reports, plans, or general textual content (e.g., itineraries, summaries, articles) and no specific format is explicitly stated, **you MUST generate content in Markdown (.md) format**. Markdown is preferred for its versatility and readability. If the task explicitly requests HTML, PDF, or any other specific format, you **MUST strictly adhere** to that specified format.
@@ -95,7 +95,7 @@ File searching: Please use 'ls' for searching. You can match by type, but do not
 
 ====
 ==== Task Completion ====
-If you believe the task is complete, please use the finish tool to return a task completion explanation in XML format:
+If you believe the <Task Goal> Of <Main Task> is complete, please use the finish tool to return a task completion explanation in XML format:
 <finish>
 <message><Task result explanation></message>
 </finish>
@@ -108,6 +108,9 @@ ${memory}
 === Files already uploaded by the user ===
 ${uploadFileDescription}
 === END ===
+
+=== Main Task ===
+${goal}
 
 === Task Goal ===
 ${requirement}

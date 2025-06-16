@@ -1,6 +1,6 @@
 const TerminalRun = {
   name: "terminal_run",
-  description: "Execute a specified command in the terminal and return the result, use nohup http.server to serve web html file",
+  description: "Execute a specified command in the terminal and return the result",
   params: {
     type: "object",
     properties: {
