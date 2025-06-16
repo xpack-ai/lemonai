@@ -183,7 +183,7 @@ class DockerRuntime {
     if (result.status === 'success') {
       console.log('DockerRuntime.handle_memory.memory logging user prompt');
       const memorized = memorized_type.has(type)
-      await memory.addMessage('user', result.content||result.stderr, action.type, memorized);
+      await memory.addMessage('user', result.content || result.stderr, action.type, memorized);
     }
     return memory;
   }
@@ -213,7 +213,7 @@ class DockerRuntime {
         timestamp: new Date().valueOf()
       }
       const msg = Message.format({ uuid: uuid, status: 'running', content: description, action_type: type, task_id: task_id });
-      context.onTokenStream(msg)
+      // context.onTokenStream(msg)
       await this.callback(msg, context);
       Message.saveToDB(msg, context.conversation_id);
       await delay(500);
