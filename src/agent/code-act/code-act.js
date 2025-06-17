@@ -104,7 +104,13 @@ const completeCodeAct = async (task = {}, context = {}) => {
         if (!shouldContinue) {
           return result;
         }
-        // parse actions again
+        /**
+         * TODO: tow cases handle
+         * 1. The model return format is incorrect, parse action again
+         * 2. The max_tokens length is not enough, need to continue to supplement and improve
+         */
+        await memory.addMessage('user', "resolve action failed, Please regenerate correct xml content");
+        // TODO 处理 token 长度不够需要 continue 的场景
         await delay(500);
         retryCount++;
         totalRetryAttempts++;
@@ -163,6 +169,7 @@ const completeCodeAct = async (task = {}, context = {}) => {
       // 8. Exception handling
       console.error("An error occurred:", error);
       // use retryHandle to handle retry logic, pass in error message
+      await memory.addMessage("user", error.message);
       const { shouldContinue, result } = retryHandle(retryCount, totalRetryAttempts, maxRetries, maxTotalRetries, error.message);
       if (!shouldContinue) {
         return result;
