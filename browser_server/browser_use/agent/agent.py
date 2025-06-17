@@ -25,8 +25,7 @@ class BrowserAgent:
         
         # get extend prompt
         extend_prompt = self.prompts_extend[extend_prompt_id]
-        print(f"INFO  [system] system extend agent prompt:\n\n\n
-              {extend_prompt}\n\n\n")
+        print(f"INFO  [system] system extend agent prompt:\n\n\n{extend_prompt}\n\n\n")
         tool_calling_method = 'auto'
         if 'doubao' in model:
             tool_calling_method = 'raw'
