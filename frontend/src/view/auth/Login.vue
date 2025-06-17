@@ -252,9 +252,9 @@ const handleForgotPassword = async (values) => {
     //第一步 校验验证码
     let codeRes = null;
     if(isAbroad.value){
-      codeRes = await auth.verifySmsVerifyCode(values.phone, values.smsCode);
-    }else{
       codeRes = await auth.verifyEmailVerifyCode(values.email, values.code);
+    }else{
+      codeRes = await auth.verifySmsVerifyCode(values.phone, values.smsCode);
     }
     if(codeRes.code === 200){
       //重置密码
