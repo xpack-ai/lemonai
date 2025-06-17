@@ -9,8 +9,8 @@ from utils.request_util import parse_task_json
 def init():
     #  must be set OPENAI_API_KEY ENV
     os.environ["OPENAI_API_KEY"] = ""
-    # SKIP_LLM_API_KEY_VERIFICATION = true  ;this not work
-    # os.environ["SKIP_LLM_API_KEY_VERIFICATION"] = 'true'
+    # SKIP_LLM_API_KEY_VERIFICATION = true  ;this will skip the api key verification
+    # os.environ["SKIP_LLM_API_KEY_VERIFICATION"] = 'true' 
     # print(os.environ)
     return
     
@@ -34,7 +34,7 @@ async def browser_task(request: Request):
         end_time = datetime.datetime.now()
         response = create_response(
             200,
-            "Task completed",
+            "Task Finished",
             {
                 "time": datetime.datetime.now().isoformat(),
                 "time_cost": (end_time - start_time).total_seconds(),
@@ -45,7 +45,9 @@ async def browser_task(request: Request):
     except ConnectionError as e:
         return HTTPException(status_code=400, detail=str(e))
     except Exception as e:
+        print("[ERROR]     Exception:",e)
         return HTTPException(status_code=400, detail=str(e))
+        
 
     
 

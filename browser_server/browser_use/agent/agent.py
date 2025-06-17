@@ -4,14 +4,13 @@ from browser_use import Agent
 import os
 from pathlib import Path
 
+
 class BrowserAgent:
     def __init__(self):
         # agent prompt path
         self.prompts_base_path = Path(__file__).parent.parent / 'agent' / 'prompt'
         self.prompts_extend_path = self.prompts_base_path / 'extend'
-        # self.prompts_sys_path = self.prompts_base_path / 'system'
         self.prompts_extend = self._load_prompts(self.prompts_extend_path)
-        # self.prompts_sys = self._load_prompts(self.prompts_sys_path)
     
     def _load_prompts(self,prompt_files_path: Path):
         prompts = []
@@ -20,7 +19,7 @@ class BrowserAgent:
                 prompts.append(file.read())
         return prompts
 
-    def get_agent(self, task: str,model:str,api_key:str,base_url,extend_prompt_id:int=-1,browser_session = None,*args):
+    def get_agent(self, task: str,model:str,api_key:str,base_url,extend_prompt_id:int=-1,browser_session = None):
         # init llm
         print(f"INFO   [system] Init LLM model:{model}; api_key:**************** ; base_url:{base_url}")
         llm = ChatOpenAI(model=model, api_key=api_key, base_url=base_url,
@@ -28,11 +27,17 @@ class BrowserAgent:
                          )
         # get extend prompt
         extend_prompt = self.prompts_extend[extend_prompt_id]
-        # sys_prompt = self.prompts_sys[-1]
-        print(f"INFO    [system] agent prompt:{extend_prompt}")
-        return Agent(task=task, llm=llm, override_system_message=None,extend_system_message=extend_prompt,browser_session = browser_session,*args)
-
-
+        print(f"INFO    [system] system extend agent prompt:{extend_prompt}")
+        tool_calling_method = 'auto'
+        if 'doubao' in model:
+            tool_calling_method = 'raw'
+        return Agent(task=task, llm=llm,
+                      override_system_message=None,
+                      extend_system_message=extend_prompt,
+                      browser_session = browser_session,
+                      use_vision=False,
+                      tool_calling_method=tool_calling_method
+                      )
     def get_extend_prompt(self, prompt_id:int = 0):
         return self.prompts_extend[prompt_id]
 
