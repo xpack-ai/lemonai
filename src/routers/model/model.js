@@ -52,25 +52,24 @@ const { Op } = require("sequelize");
  *                   description: Message
  *                 
  */
-router.post("/", async ({ request, response }) => {
-    const body = request.body || {};
+router.post("/", async({ request, response}) => {
+  const body = request.body || {};
+  const { platform_id, model_id, model_name, group_name, model_types } = body;
 
-    const { platform_id, model_id, model_name, group_name,model_types } = body
+  const existingModel = await Model.findOne({ where: { model_id, platform_id } });
+  if (existingModel) {
+    return response.fail({}, "Model ID already exists");
+  }
 
-    const existingModel = await Model.findOne({ where: { model_id: model_id } });
-    if (existingModel) {
-        return response.error("Model ID already exists");
-    }
+  const model = await Model.create({
+    platform_id,
+    model_id,
+    model_name,
+    group_name,
+    model_types
+  });
 
-    const model = await Model.create({
-        platform_id: platform_id,
-        model_id: model_id,
-        model_name: model_name,
-        group_name: group_name,
-        model_types: model_types
-    });
-
-    return response.success(model);
+  return response.success(model);
 });
 
 // Get model list by platform id
@@ -110,13 +109,13 @@ router.post("/", async ({ request, response }) => {
  *                 
  */
 router.get("/list/:platform_id", async ({ params, response }) => {
-    const { platform_id } = params;
+  const { platform_id } = params;
 
-    const models = await Model.findAll({
-        where: { platform_id: platform_id }
-    });
+  const models = await Model.findAll({
+    where: { platform_id: platform_id }
+  });
 
-    return response.success(models);
+  return response.success(models);
 });
 
 // update model
@@ -155,23 +154,23 @@ router.get("/list/:platform_id", async ({ params, response }) => {
  */
 
 router.put("/:id", async ({ params, request, response }) => {
-    const { id } = params;
-    const body = request.body || {};
+  const { id } = params;
+  const body = request.body || {};
 
-    const { model_name, group_name,model_types } = body
+  const { model_name, group_name, model_types } = body
 
-    const model = await Model.update(
-        {
-            model_name: model_name,
-            group_name: group_name,
-            model_types: model_types
-        },
-        {
-            where: { id: id },
-        }
-    );
+  const model = await Model.update(
+    {
+      model_name: model_name,
+      group_name: group_name,
+      model_types: model_types
+    },
+    {
+      where: { id: id },
+    }
+  );
 
-    return response.success(model);
+  return response.success(model);
 });
 
 // Delete model
@@ -208,13 +207,13 @@ router.put("/:id", async ({ params, request, response }) => {
  *                   description: Message
  */
 router.delete("/:id", async ({ params, response }) => {
-    const { id } = params;
+  const { id } = params;
 
-    await Model.destroy({
-        where: { id: id },
-    });
+  await Model.destroy({
+    where: { id: id },
+  });
 
-    return response.success("Model deleted successfully");
+  return response.success("Model deleted successfully");
 });
 
 // get model list where platform is enabled
@@ -247,31 +246,31 @@ router.delete("/:id", async ({ params, response }) => {
  */
 router.get("/enabled", async ({ response }) => {
 
-    const platforms = await Platform.findAll({
-        where: {
-            [Op.or]: [
-                { is_enabled: true },
-                { is_subscribe: true }
-            ]
-        },
+  const platforms = await Platform.findAll({
+    where: {
+      [Op.or]: [
+        { is_enabled: true },
+        { is_subscribe: true }
+      ]
+    },
+  });
+  let allModels = [];
+  for (let platform of platforms) {
+    const models = await Model.findAll({
+      where: {
+        platform_id: platform.id,
+      },
     });
-    let allModels = [];
-    for(let platform of platforms){
-        const models = await Model.findAll({
-            where: {
-                platform_id: platform.id,
-            },
-        });
-        for(let model of models){
-            allModels.push({
-                ...model.dataValues,
-                platform_name: platform.name,
-                is_subscribe:platform.is_subscribe
+    for (let model of models) {
+      allModels.push({
+        ...model.dataValues,
+        platform_name: platform.name,
+        is_subscribe: platform.is_subscribe
 
-            });
-        }
+      });
     }
-    return response.success(allModels);
+  }
+  return response.success(allModels);
 });
 
 module.exports = exports = router.routes();

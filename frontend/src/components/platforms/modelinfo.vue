@@ -107,10 +107,10 @@ const rules = {
       type: 'array',
       message: t('setting.modelService.selectModelType'),
       trigger: 'change',
-      validator: (_, value) => {
-        if (!showModelTypes.value) return Promise.resolve(); // 跳过隐藏时的验证
-        return value && value.length > 0 ? Promise.resolve() : Promise.reject();
-      }
+      // validator: (_, value) => {
+      //   if (!showModelTypes.value) return Promise.resolve(); // 跳过隐藏时的验证
+      //   return value && value.length > 0 ? Promise.resolve() : Promise.reject();
+      // }
     }
   ]
 }
@@ -125,6 +125,12 @@ const handleOk = async () => {
     } else {
       formData.value.platform_id = props.platform_id
       const res = await service.insertModel(formData.value)
+      // console.log(res)
+      // Model already exists
+      if(res.code === 1){
+        message.error(t('setting.modelService.modelAlreadyExists'))
+        return
+      }
       emitter.emit('fresh-models', res)
       message.success(t('setting.modelService.addModelSuccess'))
     }
