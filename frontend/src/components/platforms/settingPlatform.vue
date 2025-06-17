@@ -11,7 +11,7 @@
     <template #title>
       <div style="display: flex; align-items: center; justify-content: start;">
         <span>{{ $t('setting.modelService.editProvider') }}</span>
-        <a-button type="text" danger>
+        <a-button type="text" danger class="delete-button">
           <delete-outlined @click="handleDelete"/>
         </a-button>
       </div>
@@ -219,5 +219,10 @@ defineExpose({
 
 :deep(.ant-form-item) {
   margin-bottom: 16px;
+}
+
+.delete-button{
+  margin-left: 5px;
+
 }
 </style>

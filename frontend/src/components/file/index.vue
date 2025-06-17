@@ -123,10 +123,13 @@ const highlightedContent = computed(() => {
   try {
     // console.log('highlightedContent',props.fileContent);
     if (!props.fileContent) {
+      console.log('file content',props.fileContent)
       return '';
     }
-    return hljs.highlight(props.fileContent, { language: detectedLanguage.value }).value;
-
+    // console.log('highlightedContent',props.fileContent);
+    if(!Array.isArray(props.fileContent)){
+      return hljs.highlight(props.fileContent, { language: detectedLanguage.value }).value;
+    }
   } catch (error) {
     console.error('Failed to highlight content:', error);
     return props.fileContent;
