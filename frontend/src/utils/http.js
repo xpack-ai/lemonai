@@ -53,6 +53,8 @@ instance.interceptors.response.use(
     
     if (res.config.url == '/api/file/read') {
       return res;
+    }else if(res.config.url == '/api/model'){
+      return res.data;
     }
     if (res.data.data) {
       return res.data.data;

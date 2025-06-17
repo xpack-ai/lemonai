@@ -36,9 +36,6 @@
           <!-- <a-select v-model:value="formData.provider_type"> -->
           <a-select v-model:value="OpenAI">
             <a-select-option value="OpenAI">OpenAI</a-select-option>
-            <!-- <a-select-option value="Gemini">Gemini</a-select-option>
-            <a-select-option value="Anthropic">Anthropic</a-select-option>
-            <a-select-option value="Azure OpenAI">Azure OpenAI</a-select-option> -->
           </a-select>
         </a-form-item>
 
@@ -90,16 +87,43 @@ const triggerFileInput = () => {
   fileInput.value.click()
 }
 
-const handleFileChange = (e) => {
-  const file = e.target.files[0]
+const handleFileChange = async (e) => {
+  const file = e.target.files[0];
   if (file) {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      formData.value.logo_url = e.target.result
+    // 检查文件是否为图片格式
+    const validImageTypes = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+    if (!validImageTypes.includes(file.type)) {
+      console.error('Invalid file type. Please select an image (PNG, JPEG, GIF, or WebP).');
+      return;
     }
-    reader.readAsDataURL(file)
+
+    // 使用 Promise 包装 FileReader
+    const loadImage = () => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          resolve(e.target.result);
+        };
+        reader.onerror = (error) => {
+          reject(error);
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+
+    try {
+      // 等待图片加载完成
+      const result = await loadImage();
+      formData.value.logo_url = result;
+
+      // 图片加载完成后再打印
+      console.log('Selected file:', file);
+      console.log('Form data:', formData.value);
+    } catch (error) {
+      console.error('Error loading image:', error);
+    }
   }
-}
+};
 
 const handleOk = async () => {
   try {
@@ -123,10 +147,14 @@ const handleCancel = () => {
 const handleDelete = async () => {
   try {
     // console.log(formData.value.id)
-    await service.deletePlatform(formData.value.id)
+    const res = await service.deletePlatform(formData.value.id)
+    console.log(res)
+    if(res.code===0){
+      message.success(t('setting.modelService.deletePlatformSuccess'))
+    }
     visible.value = false
     emitter.emit('fresh-pages')
-    // message.success(t('setting.modelService.deletePlatformSuccess'))
+    
   } catch (error) {
     console.error('Failed to delete platform:', error)
     // message.error(t('setting.modelService.deletePlatformFailed'))
