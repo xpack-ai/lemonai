@@ -58,7 +58,14 @@ onMounted(async () => {
   const urlParams = new URLSearchParams(queryString);
   if (urlParams.has('code')) {
     try {
-      await auth.googleAuth(urlParams.get('code'));
+      const isClient = import.meta.env.VITE_IS_CLIENT === 'true';
+      const redirectUri = isClient
+      ? 'http://localhost:3000/api/users/auth/google'
+      : 'http://localhost:5005/api/users/auth/google'; // Electron 主进程处理
+
+      // const redirectUri = 'http://localhost:5005/api/users/auth/google';
+      console.log("redirectUri",redirectUri)
+      await auth.googleAuth(urlParams.get('code'),redirectUri);
       percent.value = 100;
       message.success(t('auth.loginSuccessful'));
       setTimeout(() => router.push({ name: 'app' }), 500);

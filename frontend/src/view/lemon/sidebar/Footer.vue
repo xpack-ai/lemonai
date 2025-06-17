@@ -9,7 +9,10 @@
         <UserProFile />
       </div>
     </div>
-
+    <!-- 当前版本号 -->
+    <div class="version-info" @click="handleVersionInfo">
+      V {{ versionInfo.localVersion }}
+    </div>
   </div>
 </template>
 
@@ -23,6 +26,7 @@ import { useI18n } from 'vue-i18n'
 import User from '@/assets/sidebar/user.svg'
 import { useUserStore } from '@/store/modules/user.js'
 let { user,membership,points } = useUserStore();
+import versionService from '@/services/version';
 
 const router = useRouter();
 const opShow = ref(true);
@@ -86,6 +90,11 @@ const  isLogin = computed(() => {
     return false;
 });
 
+const handleVersionInfo = () => {
+ //https://github.com/hexdocom/lemonai/releases
+ window.open("https://github.com/hexdocom/lemonai/releases", '_blank');
+}
+
 //获取用户信息 getUserInfo
 async function getUserInfo() {
   //判断有没有登录
@@ -98,10 +107,22 @@ async function getUserInfo() {
   points = res.points;
 }
 
+const versionInfo = ref({
+  localVersion: '...',
+  latestVersion: '0.0.0',
+  isLatest: true,
+  updateUrl: 'https://github.com/yu-mengyun/vue-admin-template',
+  message: 'the current version is the latest version',
+});
+
 onMounted(() => {
   nextTick(() => {
     checkModel();
     getUserInfo();
+    versionService.getVersionInfo().then((res) => {
+    console.log(res);
+    versionInfo.value = res;
+  });
   });
 });
 </script>
@@ -171,6 +192,21 @@ onMounted(() => {
   width: 100%;
   justify-content: space-between;
 }
+
+ .version-info {
+  font-size: 12px;
+  color: #666;
+  margin-left: 10px;
+  padding: 2px 4px;
+  cursor: pointer;
+
+  &:hover {
+    color: #333;
+    background-color: #fff;
+    border-radius: 99999px;
+   
+  }
+ }
 
 .footer-button {
   background: none;

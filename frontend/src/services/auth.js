@@ -156,10 +156,10 @@ const service = {
   },
 
   //请求谷歌 校验 code
-  async googleAuth(code) {
+  async googleAuth(code, redirect_uri) {
     try {
       const uri = "/api/users/google-auth";
-      const response = await http.post(uri, { code });
+      const response = await http.post(uri, { code, redirect_uri });
       
       if (response.data && response.data.access_token) {
         localStorage.setItem('access_token', response.data.access_token);

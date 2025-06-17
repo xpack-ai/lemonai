@@ -81,17 +81,41 @@ router.post("/resetPassword", async (ctx) => {
 });
 
 router.get('/auth/google', async (ctx) => {
-  // 获取 query 参数对象
   const query = ctx.query;
-
-  // 将 query 对象转换为 URL 查询字符串
   const queryString = new URLSearchParams(query).toString();
 
-  // 拼接目标 URL（带上 hash 和查询参数）
-  const redirectUrl = `http://localhost:5005/#/auth/google${queryString ? '?' + queryString : ''}`;
+  // 读取环境变量，判断是不是客户端
+  // 注意：这里服务端要能读取 import.meta.env 需要相应配置，或者通过 process.env 传递
+  // 如果你用的是 Vite + SSR，可能要从 ctx.env 或者其他地方拿
+  // 这里假设你用 process.env.VITE_IS_CLIENT 替代
+  const isClient = process.env.VITE_IS_CLIENT === 'true';
+  console.log("isClient === ",isClient);
+  if (isClient) {
+    // 是客户端，返回 HTML 页面
+    const clientRedirectUrl = `http://localhost:51789/?${queryString}`;
 
-  ctx.redirect(redirectUrl);
+    ctx.set('Content-Type', 'text/html; charset=utf-8');
+    ctx.body = `
+      <html>
+        <head><title>登录成功</title></head>
+        <body>
+          <h2>登录成功，正在通知客户端，请稍候...</h2>
+          <script>
+            fetch("${clientRedirectUrl}", {
+              method: "GET",
+              mode: "no-cors"
+            }).catch(() => {});
+          </script>
+        </body>
+      </html>
+    `;
+  } else {
+    // 不是客户端，直接重定向到前端页面
+    const redirectUrl = `http://localhost:5005/#/auth/google${queryString ? '?' + queryString : ''}`;
+    ctx.redirect(redirectUrl);
+  }
 });
+
 
 
 

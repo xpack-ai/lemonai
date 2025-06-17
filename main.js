@@ -2,6 +2,7 @@
 
 const { app, BrowserWindow,ipcMain,shell } = require('electron');
 const path = require('path');
+const http = require('http');
 const { exec, spawn } = require('child_process');
 import { initDockerSetupService, checkAndRunDockerSetup, DOCKER_SETUP_DONE_KEY } from './dockerSetupService.js';
 
@@ -146,6 +147,53 @@ if (!gotTheLock) {
     }
   });
 
+
+
+
+
+  function startOAuthListener() {
+    const server = http.createServer((req, res) => {
+      const url = new URL(req.url, 'http://localhost:51789');
+      const code = url.searchParams.get('code');
+      const state = url.searchParams.get('state');
+  
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(`
+        <h2>登录完成，窗口可以关闭了</h2>
+        <script>window.close();</script>
+      `);
+  
+      handleOAuthCode(code, state);
+      server.close();
+    });
+  
+    server.listen(51789, () => {
+      console.log('OAuth监听服务启动，端口 51789');
+    });
+  }
+
+  function showMainWindow() {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) {
+        mainWindow.restore();    // 解除最小化
+      }
+      mainWindow.show();         // 显示窗口
+      mainWindow.focus();        // 让窗口获得焦点
+    }
+  }
+  
+  function handleOAuthCode(code, state) {
+    console.log('收到 OAuth code:', code, 'state:', state);
+    
+    if (mainWindow && mainWindow.webContents) {
+      mainWindow.webContents.send('oauth-login-success', { code, state });
+    }
+    showMainWindow();
+  }
+  
+
+
+
   // 将整个 then 回调函数标记为 async
   app.whenReady().then(async () => {
     console.log('Electron Main: App ready.');
@@ -215,21 +263,32 @@ if (!gotTheLock) {
     const createdWindow = createWindow(); // 获取创建的窗口实例
     console.log('Main window created.');
 
+
+
     // 运行 Docker 设置检查和流程
     checkAndRunDockerSetup(createdWindow);
     console.log('Docker setup check initiated.');
 
     // 其他 app ready 后续逻辑...
 
+    // 启动 OAuth 监听服务
+    startOAuthListener();
 
-    function isGoogleLoginUrl(url) {
-      // 简单判断是否是 Google 登录相关的URL，可以根据需求细化
-      return url.startsWith('https://accounts.google.com/o/oauth2') || url.includes('google.com/accounts') || url.includes('accounts.google.com');
-    }
+        function isAllowedRedirectUrl(url) {
+              const whitelist = [
+      //           'https://accounts.google.com/o/oauth2',
+      //           'https://accounts.google.com/',
+      //           'https://www.google.com/accounts',
+                'https://checkout.stripe.com'
+              ];
+            
+              return whitelist.some(allowed => url.startsWith(allowed));
+            }
+      
     
     // 拦截新窗口打开
     createdWindow.webContents.setWindowOpenHandler(({ url }) => {
-      if (isGoogleLoginUrl(url)) {
+      if (isAllowedRedirectUrl(url)) {
         // 对于谷歌登录链接，允许在应用内打开（action: 'allow'）
         return { action: 'allow' };
       }
@@ -245,7 +304,7 @@ if (!gotTheLock) {
     
     // 拦截页面内跳转
     createdWindow.webContents.on('will-navigate', (event, url) => {
-      if (isGoogleLoginUrl(url)) {
+      if (isAllowedRedirectUrl(url)) {
         // 对于谷歌登录相关的 URL，允许跳转，什么都不做
         return;
       }

@@ -74,6 +74,19 @@ const activeKey = ref('login');
 const loading = ref(false);
 
 
+onMounted(() => {
+  const isClient = import.meta.env.VITE_IS_CLIENT === 'true';
+  console.log("isClient === ",isClient);
+  if(window.electronAPI){
+    window.electronAPI.on('oauth-login-success', ({ code, state }) => {
+      console.log('收到 OAuth code:', code, state);
+      // 跳转到对应路由，假设你用的是 vue-router
+      // 这里用 location.hash 简单跳转，如果用 router 对象，替换为 router.push(...)
+      window.location.hash = `/auth/google?code=${code}&state=${state}`;
+    });
+  }
+})
+
 //判断是国内还是海外 VITE_REGION
 const isAbroad = computed(() => import.meta.env.VITE_REGION === 'abroad');
 
@@ -267,8 +280,11 @@ const handleForgotPassword = async (values) => {
 const handleGoogleLogin = () => {
   try {
     loading.value = true;
+    const isClient = import.meta.env.VITE_IS_CLIENT === 'true';
+    const redirectUri = isClient
+      ? 'http://localhost:3000/api/users/auth/google'
+      : 'http://localhost:5005/api/users/auth/google'; // Electron 主进程处理
     const clientId = '973572698649-hbp15ju1nhlsja1k2gbqktmrulk0hopp.apps.googleusercontent.com';
-    const redirectUri = encodeURIComponent(import.meta.env.VITE_GOOGLE_BACK_URL);
     const scope = encodeURIComponent('profile email');
     const responseType = 'code';
     const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&response_type=${responseType}&access_type=offline&prompt=consent`;

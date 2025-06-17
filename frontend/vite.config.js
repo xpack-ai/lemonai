@@ -1,15 +1,15 @@
 import { defineConfig, loadEnv } from 'vite';
-const env = loadEnv('development', process.cwd());
 import vue from '@vitejs/plugin-vue';
 import Components from 'unplugin-vue-components/vite';
 import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 import path from 'path';
 import svgLoader from 'vite-svg-loader';
 
-console.log(env);
-
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd()); // ✅ 根据 --mode 自动加载正确的 .env 文件
+
+  return {
   root: __dirname,
   base: './',
   build: {
@@ -45,5 +45,6 @@ export default defineConfig({
         ws: true,
       },
     },
-  },
+    },
+  };
 });
