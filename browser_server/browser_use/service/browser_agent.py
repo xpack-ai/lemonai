@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime
 from typing import Dict, Optional
 from browser_use.agent.views import AgentHistoryList
+from typing import Optional
 
 class BrowserAgentManager:
 
@@ -12,10 +13,10 @@ class BrowserAgentManager:
         self.browser_session = browser_factory.create_shared_session(headless=True)
         pass
 
-    async def run_task_only(self, task: str, model: str, api_key: str, base_url: str) -> str:
+    async def run_task_only(self, task: str, model: str, api_key: str, base_url: str,conversation_id:Optional[str] = None) -> str:
         try:
             uid = str(uuid.uuid4())
-            agent = browser_agent.get_agent(task=task,model=model,api_key=api_key,base_url=base_url,browser_session = self.browser_session)
+            agent = browser_agent.get_agent(task=task,model=model,api_key=api_key,base_url=base_url,browser_session = self.browser_session,conversation_id=conversation_id)
             history = await agent.run(max_steps=config['agent']['max_steps'])
             if len(self._format_history(history))!=0:
                 result = self._format_history(history)

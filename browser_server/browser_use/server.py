@@ -30,6 +30,7 @@ async def browser_task(request: Request):
             model=llm_config["model_name"],
             api_key=llm_config["api_key"],
             base_url=llm_config["api_url"],
+            conversation_id=task.conversation_id,
         )
         end_time = datetime.datetime.now()
         response = create_response(
