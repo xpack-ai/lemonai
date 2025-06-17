@@ -42,9 +42,10 @@ const WebSearchTool = {
      * @param {object} args - The arguments for the search.
      * @param {string} args.query - The search query.
      * @param {number} [args.num_results=3] - Optional number of results.
+     * @param {string} args.conversation_id
      * @returns {Promise<Object>} A promise resolving to a string containing the search results.
      */
-    execute: async ({ query, num_results = 3 }) => {
+    execute: async ({ query, num_results = 3, conversation_id = "" }) => {
         try {
             // 如果设置了，默认走设置
             let userSearchSetting = await UserSearchSetting.findOne()
@@ -86,7 +87,7 @@ const WebSearchTool = {
                     content = obj.content
                     break;
                 case 'Lemon':
-                    obj = await doLemonSearch(query, num_results)
+                    obj = await doLemonSearch(query, num_results, conversation_id)
                     json = obj.json
                     content = obj.content
                     break;
@@ -119,10 +120,11 @@ async function doTalivySearch(query, num_results) {
     return { json, content }
 }
 
-async function doLemonSearch(query, num_results) {
+async function doLemonSearch(query, num_results, conversation_id) {
     return sub_server_request('/api/sub_server/search', {
         query,
-        num_results
+        num_results,
+        conversation_id
     })
 }
 

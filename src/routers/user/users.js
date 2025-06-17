@@ -19,7 +19,7 @@ async function forwardRequest(ctx,method,path) {
 
   const result = await axios.request(config);
 
-  console.log("==== result ====",result);
+  // console.log("==== result ====",result);
   return result.data;
 }
 

@@ -36,6 +36,7 @@ router.get("/list", async (ctx) => {
         let conversation = await Conversation.findOne({ where: { conversation_id: item.source_id } })
         if (conversation) {
           item.conversation_title = conversation.dataValues.title
+          item.description = conversation.dataValues.title
         }
       } catch (e) {
 

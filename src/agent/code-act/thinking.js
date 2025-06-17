@@ -33,7 +33,7 @@ const thinking_server = async (requirement, context = {}) => {
   // If last message is assistant, return directly, support quickly playback and run action
   const message = messages[messages.length - 1];
   if (message && message.role === 'assistant') {
-    return message.content;
+    // return message.content;
   }
 
   let [{ prompt, content }, token_usage] = await sub_server_request('/api/sub_server/thinking', {
@@ -66,7 +66,7 @@ const thinking_local = async (requirement, context = {}) => {
   // If last message is assistant, return directly, support quickly playback and run action
   const message = messages[messages.length - 1];
   if (message && message.role === 'assistant') {
-    return message.content;
+    // return message.content;
   }
 
   // Use LLM thinking to instruct next action

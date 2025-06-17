@@ -396,6 +396,7 @@ export default {
         deletePlatformFailed: "Platform deletion failed",
         saveSuccess: "Save successfully",
         saveFailed: "Save failed",
+        modelAlreadyExists: "Add failed,Model ID already exists",
         platforms: {
           Anthropic: "Anthropic",
           ModelScope: "ModelScope",

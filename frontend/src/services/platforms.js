@@ -13,7 +13,7 @@ const service = {
   async insertPlatform(platformData) {
     const uri = `/api/platform`
     const response = await http.post(uri, platformData)
-    return response.data || {};
+    return response || {};
   },
 
   // 更新平台信息
@@ -48,7 +48,7 @@ const service = {
   async insertModel(modelData) {
     const uri = `/api/model`
     const response = await http.post(uri, modelData)
-    return response.data || {}
+    return response || {}
   },
 
   // 更新模型

@@ -135,7 +135,7 @@ router.put("/:platform_id", async ({ params, request, response }) => {
   const { platform_id } = params;
   const body = request.body || {};
 
-  const { api_key, api_url, name, is_enabled } = body
+  const { api_key, api_url, name, is_enabled,logo_url } = body
 
   const platform = await Platform.findOne({
     where: { id: platform_id }
@@ -148,7 +148,8 @@ router.put("/:platform_id", async ({ params, request, response }) => {
     name: name,
     api_key: api_key,
     api_url: api_url,
-    is_enabled: is_enabled
+    is_enabled: is_enabled,
+    logo_url: logo_url
   });
 
   return response.success(platform);

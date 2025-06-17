@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, ValidationError
 from fastapi import Request, HTTPException
-from typing import Optional
+from typing import Optional,Required
 
 """
 Standard TaskRequest
@@ -8,6 +8,7 @@ Standard TaskRequest
 class TaskRequest(BaseModel):
     prompt: str = Field(..., min_length=1)
     llm_config: dict = Field(..., description="include model_name, api_key, api_url")
+    conversation_id: Optional[str] = Field(None, description="conversation_id")
 
 async def parse_task_json(data: dict):
     """

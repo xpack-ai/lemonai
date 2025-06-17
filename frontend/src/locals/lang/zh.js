@@ -396,6 +396,7 @@
         deletePlatformFailed: "平台删除失败",
         saveSuccess: "保存成功",
         saveFailed: "保存失败",
+        modelAlreadyExists: "添加失败,模型ID已存在",
         platforms: {
           Anthropic: "Anthropic",
           ModelScope: "ModelScope 魔搭",

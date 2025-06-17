@@ -76,25 +76,57 @@ const triggerFileInput = () => {
   fileInput.value.click()
 }
 
-const handleFileChange = (e) => {
-  const file = e.target.files[0]
+const handleFileChange = async (e) => {
+  const file = e.target.files[0];
   if (file) {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      formData.value.logo_url = e.target.result
+    // 检查文件是否为图片格式
+    const validImageTypes = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+    if (!validImageTypes.includes(file.type)) {
+      console.error('Invalid file type. Please select an image (PNG, JPEG, GIF, or WebP).');
+      return;
     }
-    reader.readAsDataURL(file)
+
+    // 使用 Promise 包装 FileReader
+    const loadImage = () => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          resolve(e.target.result);
+        };
+        reader.onerror = (error) => {
+          reject(error);
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+
+    try {
+      // 
+      const result = await loadImage();
+      formData.value.logo_url = result;
+
+      // print
+      // console.log('Selected file:', file);
+      // console.log('Form data:', formData.value);
+    } catch (error) {
+      // console.error('Error loading image:', error);
+    }
   }
-}
+};
 
 const handleOk = async () => {
   try {
     // await formRef.value.validate()
     service.insertPlatform(formData.value).then((res) => {
-      // consolo.log(formData)
-      emit('add-platform', res)
-      emitter.emit('fresh-pages')
-      message.success(t('setting.modelService.addPlatformSuccess'))
+      // console.log(res)
+      if(res.id !== undefined){
+        message.success(t('setting.modelService.addPlatformSuccess'))
+        emit('add-platform', res)
+        emitter.emit('fresh-pages')
+      }else{
+        message.error(t('setting.modelService.addPlatformFailed'))
+      }
+      
     })
     visible.value = false
     resetForm()

@@ -35,11 +35,9 @@ const _fetchDefaultModel = async (type = 'assistant') => {
 };
 
 const getDefaultModel = async (type = 'assistant') => {
-  if (_defaultModelCache[type]) {
-    return _defaultModelCache[type];
-  }
+  // For subscribed models, always fetch fresh data
   const modelInfo = await _fetchDefaultModel(type);
-  if (modelInfo) {
+  if (modelInfo && !modelInfo.is_subscribe) {
     _defaultModelCache[type] = modelInfo;
   }
   return modelInfo;

@@ -1,6 +1,7 @@
 # 模型可用性测试
 方法：顺序执行测试
 测试工具：apifox
+
 ##  Deepseek V3
 ```bash
 curl --location --request POST 'http://localhost:9000/api/browser/task' \
@@ -183,12 +184,24 @@ curl --location --request POST 'http://localhost:9000/api/browser/task' \
 }'
 ```
 
-|            Model_name            | 是否可用 |                           报错信息                           |
-| :------------------------------: | :------: | :----------------------------------------------------------: |
-| doubao-1-5-thinking-pro-m-250428 |    ✅     |                                                              |
-|   doubao-seed-1-6-flash-250615   |    ✅     |                                                              |
-|    doubao-1-5-pro-32k-250115     |    ❌     | Error code: 400 - {'error': {'code': 'InvalidParameter', 'message': 'One or more parameters specified in the request are not valid. Request id: 0217497094655586283c13814d1e4b93d4cf7e4b38dad235ac510', 'param': '', 'type': 'BadRequest'}} |
-|     doubao-lite-128k-240828      |    ❌     | Error code: 400 - {'error': {'code': 'InvalidParameter', 'message': 'One or more parameters specified in the request are not valid. Request id: 0217497094655586283c13814d1e4b93d4cf7e4b38dad235ac510', 'param': '', 'type': 'BadRequest'}} |
-|        deepseek-v3-250324        |    ✅     |                                                              |
+|             Model_name              | 是否可用 | Function Call | Json_mode | 报错信息 | 备注                                      |
+| :---------------------------------: | :------: | :-----------: | :-------: | :------: | ----------------------------------------- |
+|  doubao-1-5-thinking-pro-m-250428   |    ✅     |       ✅       |     ❌     |  Bad_2   | 需要设置response_type为raw                |
+|       doubao-seed-1-6-250615        |    ✅     |       ✅       |     ✅     |          |                                           |
+|   doubao-seed-1-6-thinking-250615   |    ✅     |       ✅       |     ✅     |          |                                           |
+|    doubao-seed-1-6-flash-250615     |    ✅     |       ✅       |     ✅     |          |                                           |
+|      doubao-1-5-pro-32k-250115      |    ✅     |       ✅       |    X✅?    |  Bad_1   | 需要设置use_vision为False（不支持多模态） |
+|       doubao-lite-128k-240828       |    ✅     |       ✅       |    X✅?    |  Bad_1   | 效果比较差                                |
+|         deepseek-v3-250324          |    ✅     |       ✅       |    ❌?     |          |                                           |
+| deepseek-r1-distill-qwen-32b-250120 |    ✅     |       ❌       |    ❌?     |          |                                           |
 
-反馈：目前排除了Function Call的问题，doubao-1-5-pro-32k-250115 支持Function Call
+
+
+默认配置下报错信息表
+
+| 错误编号 | 详细信息模版                                                 | 备注 |
+| :------: | :----------------------------------------------------------- | :--: |
+|  Bad_1   | Error code: 400 - {'error': {'code': 'InvalidParameter', 'message': 'One or more parameters specified in the request are not valid. Request id: {id}', 'param': '', 'type': 'BadRequest'}} |      |
+|  Bad_2   | Error code: 400 - {'error': {'code': 'InvalidParameter', 'message': 'The parameter `response_format.type` specified in the request are not valid: `json_object` is not supported by this model. Request id: {id}', 'param': 'response_format.type', 'type': 'BadRequest'}} |      |
+|          |                                                              |      |
+

@@ -21,11 +21,9 @@ jobs:
         with:
           filters: |
             runtime_sandbox:
-              - 'containers/runtime/**'  # 监听 Dockerfile 和 VERSION 文件
-              - 'src/runtime/**'
+              - 'containers/runtime/VERSION'  # 只监听 VERSION 文件
             app:
-              - 'containers/app/**'      # 监听 Dockerfile 和 VERSION 文件
-              - 'src/app/**'
+              - 'containers/app/VERSION'      # 只监听 VERSION 文件
 
   build-and-push-runtime-sandbox:
     needs: check-changes

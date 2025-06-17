@@ -5,14 +5,14 @@ async function browser(action, uuid) {
   const host_port = 9000
   // Tips:Some times some models may need to use the question parameter instead of params.question,Such as Deepseek-V3,Qwen.
   let question = action.params.question;
-  if(question==="" || question===undefined){
+  if (question === "" || question === undefined) {
     question = action.params.params.question;
   }
-  
+
   const request = {
     method: 'POST',
     url: `http://${host}:${host_port}/api/browser/task`,
-    data: { prompt: question, llm_config: action.params.llm_config },
+    data: { prompt: question, llm_config: action.params.llm_config, conversation_id: action.params.conversation_id },
   };
 
   const response = await axios(request);
