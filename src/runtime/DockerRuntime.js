@@ -252,7 +252,9 @@ class DockerRuntime {
           api_url: model_info.base_url,
           api_key: model_info.api_key
         }
+        // llm_config.api_url='http://host.docker.internal:3002/api/agent/v1'
         action.params.llm_config = llm_config
+        action.params.conversation_id = context.conversation_id
         result = await this._call_docker_action(action, uuid)
         break;
       default:
