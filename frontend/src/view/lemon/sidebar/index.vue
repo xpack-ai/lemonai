@@ -39,8 +39,14 @@
                     <div class="chat-title">{{ chat.title }}</div>
                     <div class="chat-time">{{ formatTime(chat.update_at, t) }}</div>
                   </div>
+                  <div class="chat-last-message" :title="chat.last_message">{{ chat?.latest_message?.content }}</div>
                   <div class="chat-footer">
-                    <div class="chat-last-message" :title="chat.last_message">{{ chat?.latest_message?.content }}</div>
+                    <!--模型信息-->
+                    <div class="chat-model-info">
+                      <!-- 平台名称 platform_name -->
+                      <!-- 模型名称 model_name -->
+                      <div class="chat-model-name" v-if="chat.platform_name && chat.model_name">{{ chat.platform_name }} - {{ chat.model_name }}</div>
+                    </div>
                     <div class="more-options">
                       <a-tooltip :title="$t('lemon.sidebar.moreOptions')" placement="top" :arrow="false">
                         <More @click.stop="toggleDropdown(chat.conversation_id)" class="more-options-icon" />
@@ -571,9 +577,8 @@ const handleCancel = () => {
 .chat-item {
   display: flex;
   align-items: center;
-  padding: 0px 8px;
+  padding: 4px 8px;
   border-radius: 10px;
-  height: 56px;
   cursor: pointer;
   position: relative;
 
@@ -674,6 +679,12 @@ const handleCancel = () => {
   white-space: nowrap;
   font-size: 12px;
   color: #858481;
+}
+
+.chat-model-name{
+  font-size: 12px;
+  color: #34322d;
+  white-space: nowrap;
 }
 
 .chat-title {

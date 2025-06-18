@@ -15,6 +15,16 @@ const { user, membership, points } = storeToRefs(userStore);
 
 //获取用户信息 getUserInfo
 async function getUserInfo() {
+   //is_subscribe
+   //获取缓存中的 model_info
+   const model_info = localStorage.getItem('model_info');
+   if(model_info){
+    const model = JSON.parse(model_info);
+    if(!model.is_subscribe){
+      //不调用接口
+      return;
+    }
+  }
   let res = await userService.getUserInfo();
   //设置缓存
   membership.value = res.membership;

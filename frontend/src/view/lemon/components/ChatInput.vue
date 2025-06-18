@@ -108,7 +108,7 @@ const emit = defineEmits(['send'])
 const groupedOptions = computed(() => {
   const groups = {}
   modelList.value.forEach((model) => {
-    const group = model.group_name || '未分组'
+    const group = model.platform_name || ''
     if (!groups[group]) {
       groups[group] = []
     }
@@ -238,6 +238,8 @@ const handleSend = async () => {
 
     //  let model = modelList.value.find((model) => model.id == modelId)
     let model = modelList.value.find((model) => model.id == selectedModel.value)
+    //把model 信息 存到缓存中
+    localStorage.setItem('model_info', JSON.stringify(model))
     console.log(model)
     if(model.is_subscribe && !isLogin.value){
       handleNotification("/auth",t("auth.login"),t("auth.subscribeModel"))
