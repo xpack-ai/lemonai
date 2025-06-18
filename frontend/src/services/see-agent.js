@@ -118,14 +118,14 @@ function update(ch,conversationId) {
 
     console.log('=== ch === ', json);
     
-    // const messages = chatStore.messages;
-    const chat  = chatStore.list.find((c) => c.conversation_id == conversationId);
+    const messages = chatStore.messages;
+    // const chat  = chatStore.list.find((c) => c.conversation_id == conversationId);
     // console.log('=== current chat === ', chat);
-    if(!chat.messages){
-        chat.messages = []
-    }
-    const messages = chat.messages
-    chatStore.messages = chat.messages
+    // if(!chat.messages){
+        // chat.messages = []
+    // }
+    // const messages = chat.messages
+    // chatStore.messages = chat.messages
     const tempMessageIndex = findTemporaryAssistantMessage(messages);
 
     if (tempMessageIndex !== -1) {
