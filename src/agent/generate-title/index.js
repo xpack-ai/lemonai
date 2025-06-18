@@ -20,12 +20,13 @@ const generate_title = async (question, conversation_id) => {
 }
 
 const generate_title_server = async (question, conversation_id) => {
-    const [res, token_usage] = await sub_server_request('/api/sub_server/generate_title', {
+    // const [res, token_usage] = await sub_server_request('/api/sub_server/generate_title', {
+    const res = await sub_server_request('/api/sub_server/generate_title', {
         question,
         conversation_id
     })
 
-    await conversation_token_usage(token_usage, conversation_id)
+    // await conversation_token_usage(token_usage, conversation_id)
     return res
 };
 

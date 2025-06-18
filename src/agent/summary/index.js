@@ -20,12 +20,13 @@ const summary = async (goal, conversation_id, tasks) => {
 }
 
 const summary_server = async (goal, conversation_id, tasks) => {
-  let [res, token_usage] = await sub_server_request('/api/sub_server/summary', {
+  // let [res, token_usage] = await sub_server_request('/api/sub_server/summary', {
+  let res = await sub_server_request('/api/sub_server/summary', {
     goal,
     conversation_id,
     tasks
   })
-  await conversation_token_usage(token_usage, conversation_id)
+  // await conversation_token_usage(token_usage, conversation_id)
 
   return res
 };

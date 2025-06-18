@@ -43,12 +43,13 @@ const evaluate = async (requirement, result, conversation_id) => {
 }
 
 const evaluate_server = async (requirement, result, conversation_id) => {
-  const [res,token_usage] = await sub_server_request('/api/sub_server/evaluate', {
+  // const [res,token_usage] = await sub_server_request('/api/sub_server/evaluate', {
+  const res = await sub_server_request('/api/sub_server/evaluate', {
     requirement,
     result,
     conversation_id
   })
-  await conversation_token_usage(token_usage, conversation_id)
+  // await conversation_token_usage(token_usage, conversation_id)
 
   return res
 };

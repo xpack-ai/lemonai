@@ -18,12 +18,13 @@ const auto_reply = async (goal, conversation_id) => {
 }
 
 const auto_reply_server = async (goal, conversation_id) => {
-  let [res, token_usage] = await sub_server_request('/api/sub_server/auto_reply', {
+  // let [res, token_usage] = await sub_server_request('/api/sub_server/auto_reply', {
+  let res = await sub_server_request('/api/sub_server/auto_reply', {
     goal,
     conversation_id
   })
 
-  await conversation_token_usage(token_usage, conversation_id)
+  // await conversation_token_usage(token_usage, conversation_id)
 
   return res
 };

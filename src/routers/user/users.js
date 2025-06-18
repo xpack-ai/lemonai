@@ -1,35 +1,14 @@
 const router = require("koa-router")();
-const axios = require("axios");
-const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN || 'https://sub-server.lemonai.cc';
 
-
-
-//转发请求的函数
-async function forwardRequest(ctx,method,path) {
-  const url = `${SUB_SERVER_DOMAIN}/api/users/`+path;
-  const config = {
-    method: method,
-    maxBodyLength: Infinity,
-    url,
-    headers: {
-      authorization: ctx.headers['authorization'],
-    },
-    data: ctx.request.body,
-  };
-
-  const result = await axios.request(config);
-
-  // console.log("==== result ====",result);
-  return result.data;
-}
+const forwardRequest = require('@src/utils/sub_server_forward_request')
 
 router.get("/userinfo",async (ctx) => {
-  let res =  await forwardRequest(ctx, "GET", "userinfo")
+  let res =  await forwardRequest(ctx, "GET", "/api/users/userinfo")
   return ctx.body = res;
 })
 
 router.post("/google-auth", async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "google-auth")
+  let res =  await forwardRequest(ctx, "POST", "/api/users/google-auth")
   return ctx.body = res;
 });
 
@@ -37,47 +16,47 @@ router.post("/google-auth", async (ctx) => {
 
 //loginSMSCode
 router.post("/login-sms-code", async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "login-sms-code")
+  let res =  await forwardRequest(ctx, "POST", "/api/users/login-sms-code")
   return ctx.body = res;
 });
 
 //send-sms-code
 router.post("/send-sms-code", async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "send-sms-code")
+  let res =  await forwardRequest(ctx, "POST", "/api/users/send-sms-code")
   return ctx.body = res;
 });
 //verifySmsVerifyCode
 router.post("/verifySmsVerifyCode", async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "verifySmsVerifyCode")
+  let res =  await forwardRequest(ctx, "POST", "/api/users/verifySmsVerifyCode")
   return ctx.body = res;
 });
 ///api/users/updateUsername
 router.post("/updateUsername", async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "updateUsername")
+  let res =  await forwardRequest(ctx, "POST", "/api/users/updateUsername")
   return ctx.body = res;
 });
 
 router.post("/sendEmailVerifyCode", async (ctx) => {
-  let res =  await forwardRequest(ctx, "POST", "sendEmailVerifyCode")
+  let res =  await forwardRequest(ctx, "POST", "/api/users/sendEmailVerifyCode")
   return ctx.body = res;
 });
 
 router.post("/verifyEmailVerifyCode", async (ctx) => {
-  return ctx.body =  await forwardRequest(ctx, "POST", "verifyEmailVerifyCode")
+  return ctx.body =  await forwardRequest(ctx, "POST", "/api/users/verifyEmailVerifyCode")
 });
 
 router.post("/register", async (ctx) => {
-  return ctx.body =  await forwardRequest(ctx, "POST", "register")
+  return ctx.body =  await forwardRequest(ctx, "POST", "/api/users/register")
 });
 
 //login
 router.post("/login", async (ctx) => {
-  return ctx.body = await forwardRequest(ctx, "POST", "login")
+  return ctx.body = await forwardRequest(ctx, "POST", "/api/users/login")
 });
 
 //resetPassword
 router.post("/resetPassword", async (ctx) => {
-  return ctx.body =  await forwardRequest(ctx, "POST", "resetPassword")
+  return ctx.body =  await forwardRequest(ctx, "POST", "/api/users/resetPassword")
 });
 
 router.get('/auth/google', async (ctx) => {

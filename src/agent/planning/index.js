@@ -21,14 +21,15 @@ const planning = async (goal, files, previousResult, conversation_id) => {
 };
 
 const planning_server = async (goal, files, previousResult, conversation_id) => {
-  const [res, token_usage] = await sub_server_request('/api/sub_server/planning', {
+  // const [res, token_usage] = await sub_server_request('/api/sub_server/planning', {
+  const res = await sub_server_request('/api/sub_server/planning', {
     goal,
     files,
     previousResult,
     conversation_id
   })
 
-  await conversation_token_usage(token_usage, conversation_id)
+  // await conversation_token_usage(token_usage, conversation_id)
   return res
 };
 

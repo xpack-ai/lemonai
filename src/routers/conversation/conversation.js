@@ -8,6 +8,8 @@ const auto_generate_title = require('@src/agent/generate-title')
 const uuid = require("uuid");
 const { Op } = require("sequelize");
 
+const forwardRequest = require('@src/utils/sub_server_forward_request')
+
 // Create a new conversation
 /**
  * @swagger
@@ -147,7 +149,8 @@ router.get("/", async ({ response }) => {
  *                   type: string
  *                   description: Message
  */
-router.get("/:conversation_id", async ({ params, response }) => {
+router.get("/:conversation_id", async (ctx) => {
+  const { params, response } = ctx
   const { conversation_id } = params;
   try {
     const conversation = await Conversation.findOne({
@@ -155,6 +158,19 @@ router.get("/:conversation_id", async ({ params, response }) => {
     });
     if (!conversation) {
       return response.fail("Conversation does not exist");
+    }
+    if (conversation.dataValues.input_tokens === 0) {
+      try {
+        let res = await forwardRequest(ctx, 'GET', `/api/conversation/${conversation_id}`)
+        if (res.data) {
+          conversation.input_tokens = res.data.input_tokens
+          conversation.output_tokens = res.data.output_tokens
+        }
+        console.log(res.data)
+      } catch (e) {
+
+      }
+
     }
     return response.success(conversation);
   } catch (error) {
