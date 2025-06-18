@@ -287,10 +287,11 @@ onMounted(() => {
     // 过滤message为failure的消息
     emitter.emit('fullPreviewVisable-close');
     console.log('messageQueue', messageQueue);
+    console.log('message', message);
     const index = messageQueue.value.findIndex((item) => item.uuid === message.uuid);
     console.log('messageQueue_index', index);
     // "status": "failure",
-    if (index !== -1 && messageQueue.value[index].status !== 'failure') {
+    if (index !== -1) {
       msgQueryID.value = index;
       currentTime.value = message.timestamp || -1;
       preview.value = true;

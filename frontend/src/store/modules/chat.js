@@ -48,13 +48,12 @@ export const useChatStore = defineStore('chat', {
       this.status = 'done'
     },
     clearMessages() {
-      // console.log('clearMessages', this.messages);
       this.messages = [];
       this.isScrolledToBottom = true;
       this.status == "done";
     },
     async initConversation(conversationId) {
-      this.messages = [];
+      this.messages = []
       let res = await chat.messageList(conversationId);
       //循环 res
       res.forEach(item => {
@@ -219,6 +218,10 @@ export const useChatStore = defineStore('chat', {
     async unfavorite() {
       const result = await chat.unfavorite(this.conversationId);
       this.chat.is_favorite = false;
+    },
+    handleMessgaesByConversationId(conversationId){
+      console.log(this.list.find((c) => c.conversation_id == conversationId).messages)
+      return this.list.find((c) => c.conversation_id == conversationId).messages
     }
   },
   persist: true,

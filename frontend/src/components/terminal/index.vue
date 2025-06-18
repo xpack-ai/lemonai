@@ -32,7 +32,7 @@ const props = defineProps({
     default: false
   },
   content: {
-    type: String,
+    type: [Array,String],
     default: ''
   }
 })

@@ -3,7 +3,7 @@ import base64 from "@/utils/base64.js";
 const env = import.meta.env;
 console.log('env', env);
 
-const sse = (uri, options, onTokenStream = (answer, ch) => { }, onOpenStream = () => { }, answer, throttledScrollToBottom = () => { }, abortController = new AbortController()) => {
+const sse = (uri, options, onTokenStream = (answer, ch,conversation_id) => { }, onOpenStream = () => { }, answer, throttledScrollToBottom = () => { }, abortController = new AbortController(),conversationId) => {
   const nodeToken = localStorage.getItem('node_token');
   return new Promise((resolve, reject) => {
 
@@ -26,7 +26,7 @@ const sse = (uri, options, onTokenStream = (answer, ch) => { }, onOpenStream = (
       onmessage(ev) {
         const ch = decodeBase64(ev.data);
         content += ch;
-        onTokenStream(answer, ch); // 回调处理流式消息
+        onTokenStream(answer, ch,conversationId); // 回调处理流式消息
         throttledScrollToBottom();
       },
       onerror(err) {

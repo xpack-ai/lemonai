@@ -33,8 +33,7 @@ const fileConversationId = async (files, conversation_id) => {
 };
 
 async function sendMessage(question, conversationId, files) {
-    let fileIds = [];
-    console.log('当前文件files', files);
+    let fileIds = []; 
     if (files && files.length > 0) {
         fileIds = files.map(file => file.id);
         //   const dir_name = 'Conversation_' + this.context.conversation_id.slice(0, 6);  workspace_dir+dir_name+'upload'+filename
@@ -68,9 +67,13 @@ async function sendMessage(question, conversationId, files) {
 
     let pending = false;
 
-    const onTokenStream = (answer, ch) => {
+    const onTokenStream = (answer, ch,conversationId) => {
         if (ch && ch.startsWith('{') && ch.endsWith('}')) {
-            update(ch);
+            // 获取当前路由的conversationId
+            const currentConversationId = chatStore.conversationId
+            if(currentConversationId === conversationId){
+                update(ch,conversationId);
+            }
             return true;
         }
     };
@@ -82,7 +85,7 @@ async function sendMessage(question, conversationId, files) {
         console.log('throttledScrollToBottom');
     };
     const abortController = new AbortController();
-    sse(uri, options, onTokenStream, onOpenStream, answer, throttledScrollToBottom, abortController).then((res) => {
+    sse(uri, options, onTokenStream, onOpenStream, answer, throttledScrollToBottom, abortController,conversationId).then((res) => {
         return res;
     }).catch((error) => {
        
@@ -94,7 +97,7 @@ async function sendMessage(question, conversationId, files) {
     });
 }
 
-function update(ch) {
+function update(ch,conversationId) {
     let json;
     try {
         json = JSON.parse(ch);
@@ -104,8 +107,15 @@ function update(ch) {
     }
 
     console.log('=== ch === ', json);
-
-    const messages = chatStore.messages;
+    
+    // const messages = chatStore.messages;
+    const chat  = chatStore.list.find((c) => c.conversation_id == conversationId);
+    // console.log('=== current chat === ', chat);
+    if(!chat.messages){
+        chat.messages = []
+    }
+    const messages = chat.messages
+    chatStore.messages = chat.messages
     const tempMessageIndex = findTemporaryAssistantMessage(messages);
 
     if (tempMessageIndex !== -1) {
