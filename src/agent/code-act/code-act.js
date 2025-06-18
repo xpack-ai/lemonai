@@ -5,7 +5,6 @@ const LocalMemory = require("@src/agent/memory/LocalMemory");
 
 // Reflection module
 const reflection = require("@src/agent/reflection/index");
-const file = require("@src/routers/file");
 const MAX_RETRY_TIMES = 3;
 const MAX_TOTAL_RETRIES = 10; // add：max retries times 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -64,6 +63,8 @@ const retryHandle = (retryCount, totalRetryAttempts, maxRetries, maxTotalRetries
   return { shouldContinue: true };
 };
 
+const { checkConsecutiveAssistantXml, completeMessagesContent } = require("./message");
+
 /**
  * Execute code behavior until task completion or maximum retry times reached
  * @param {Object} task - Task object containing requirement and id
@@ -89,28 +90,36 @@ const completeCodeAct = async (task = {}, context = {}) => {
   while (true) {
     try {
       // 1. LLM thinking
-      const content = await thinking(requirement, context);
-      console.log("thinking.结果", content);
+      let content = await thinking(requirement, context);
+      // console.log("thinking.result", content);
 
       // 2. Parse actions
+      const messages = await memory.getMessages();
+      content = completeMessagesContent(messages);
       const actions = resolveActions(content);
       const action = actions[0];
       console.log("action", action);
 
-      // 3. Validate action
+      /**
+       * 3. Action parse failed
+       * ①. The max_tokens length is not enough, need to continue to supplement and improve
+       * ②. The model return format is incorrect, parse action again
+       */
       if (!action) {
         // use retryHandle to handle retry logic
         const { shouldContinue, result } = retryHandle(retryCount, totalRetryAttempts, maxRetries, maxTotalRetries);
         if (!shouldContinue) {
           return result;
         }
-        /**
-         * TODO: tow cases handle
-         * 1. The model return format is incorrect, parse action again
-         * 2. The max_tokens length is not enough, need to continue to supplement and improve
-         */
-        await memory.addMessage('user', "resolve action failed, Please regenerate correct xml content");
-        // TODO 处理 token 长度不够需要 continue 的场景
+
+        const status = checkConsecutiveAssistantXml(messages);
+        if (status === 'to be continue') {
+          continue;
+        }
+
+        // Feedback invalid format
+        await memory.addMessage('user', "resolve action failed, Please only generate valid xml format content");
+
         await delay(500);
         retryCount++;
         totalRetryAttempts++;

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const axios = require('axios')
+
 const resolveThinkingPrompt = require("./thinking.prompt");
 const resolveThinking = require("@src/utils/thinking");
 const { getDefaultModel } = require('@src/utils/default_model')
