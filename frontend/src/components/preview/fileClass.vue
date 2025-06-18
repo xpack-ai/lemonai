@@ -363,7 +363,7 @@ async function confirmBatchDownload() {
     batchDownload.value = false
     return
   }
-
+  console.log('selectedFiles', selectedFiles)
   // 创建 ZIP 文件
   const zip = new JSZip()
   const promises = selectedFiles.map(async (file) => {
@@ -376,9 +376,14 @@ async function confirmBatchDownload() {
       : fileTypeExtensions.document.includes(ext)
       ? 'application/octet-stream'
       : 'text/plain'
-    zip.file(fileName, fileContent, { binary: mimeType !== 'text/plain' })
+    let zipContent =  fileContent
+    if(mimeType === 'text/plain'){
+        //to String: some time the fileContent is not a string,such as json file,can be solve to object
+        zipContent = JSON.stringify(fileContent)
+    }
+    
+    zip.file(fileName, zipContent, { binary: mimeType !== 'text/plain' })
   })
-
   try {
     // 等待所有文件内容加载完成
     await Promise.all(promises)
