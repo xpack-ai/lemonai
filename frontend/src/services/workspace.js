@@ -24,7 +24,7 @@ const service = {
     const response = await http.post(baseUrl, {
       path: path
     },{},responseType);
-    console.log(response)
+    // console.log(response)
     return response.data|| '';
   }
 

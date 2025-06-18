@@ -44,7 +44,7 @@ const img = ref('')
 // Check if the file type is an image
 const isImageType = computed(() => {
     if (imageTypes.includes(props.url.split('.').pop().toLowerCase())){
-        console.log("getFile",props.url)
+        // console.log("getFile",props.url)
         workspaceService.getFile(props.filepath).then(res => {
             const imageURL = URL.createObjectURL(res); // blob -> url
             img.value = imageURL
