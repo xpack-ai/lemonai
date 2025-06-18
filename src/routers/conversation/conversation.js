@@ -99,6 +99,18 @@ router.get("/", async ({ response }) => {
     let new_conversations = []
     const conversations = await Conversation.findAll({ order: [['update_at', 'DESC']] });
     for (let conversation of conversations) {
+
+      if (conversation.model_id) {
+        try {
+          let model = await Model.findOne({ where: { id: conversation.model_id } })
+          let platform = await Platform.findOne({ where: { id: model.platform_id } })
+          conversation.dataValues.platform_name = platform.name
+          conversation.dataValues.model_name = model.model_name
+        } catch (e) {
+
+        }
+      }
+
       const latest_message = await Message.findOne({
         order: [['create_at', 'DESC']],
         where: {
