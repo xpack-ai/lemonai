@@ -218,10 +218,6 @@ export const useChatStore = defineStore('chat', {
     async unfavorite() {
       const result = await chat.unfavorite(this.conversationId);
       this.chat.is_favorite = false;
-    },
-    handleMessgaesByConversationId(conversationId){
-      console.log(this.list.find((c) => c.conversation_id == conversationId).messages)
-      return this.list.find((c) => c.conversation_id == conversationId).messages
     }
   },
   persist: true,

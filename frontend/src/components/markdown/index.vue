@@ -62,6 +62,7 @@ watch(
   }
 );
 
+
 // console.log("props", props.content);
 onMounted(() => {
   nextTick(() => {
@@ -175,6 +176,17 @@ onMounted(() => {
 
   tbody tr:last-child td {
     border-bottom: none;
+  }
+  // direct element
+  & > pre{
+    background: #272822;
+    padding: 12px;
+    border-radius: 8px;
+    code{
+      // color: #8b8b8b;
+      text-shadow: none;
+      
+    }
   }
 }
 </style>
