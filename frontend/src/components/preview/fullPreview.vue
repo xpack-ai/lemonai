@@ -253,12 +253,20 @@ watch(file, (newValue) => {
 function handleFileContent(content) {
   //this function is process differ file content,The output content format may not be correct
   // markdown file process
-  if (content.startsWith('```')) {
+  if (content.startsWith('```markdown')) {
     content = content.replace('```markdown', '').replace('```', '')
   }
   // html file process: `&lt;` to `<` ;  `&gt;` to `>`
   content = content.replaceAll('&lt;', '<').replaceAll('&gt;', '>')
+  content = processMdContent(content)
   return content
+}
+
+function processMdContent(content){
+    // code process markdown
+    content = content.replaceAll('````markdown', '').replaceAll('````','');
+    content = content.replace(/```markdown\n([\s\S]*)\n```/, '$1');
+    return content
 }
 
 // Check if file can be code format previewed
