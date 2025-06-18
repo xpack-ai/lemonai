@@ -8,12 +8,18 @@ import { computed, ref } from 'vue'
 import PptIcon from '@/assets/fileClass/ppt.svg?component'
 import TextIcon from '@/assets/fileClass/txt.svg?component'
 import CodeIcon from '@/assets/fileClass/code.svg?component'
+import workspaceService from '@/services/workspace'
 // import DefaultIcon from '@/assets/fileClass/default.svg?component'
 
 const props = defineProps({
     url: {
         type: String,
         default: ''
+    },
+    filepath: {
+        type: String,
+        default: '',
+        required: false
     }
 })
 
@@ -38,9 +44,11 @@ const img = ref('')
 // Check if the file type is an image
 const isImageType = computed(() => {
     if (imageTypes.includes(props.url.split('.').pop().toLowerCase())){
-        // TODO 图片文件 对URL处理获取图片Base64
-
-        img.value = ''
+        console.log("getFile",props.url)
+        workspaceService.getFile(props.filepath).then(res => {
+            const imageURL = URL.createObjectURL(res); // blob -> url
+            img.value = imageURL
+        })
         return true
     }
     return false

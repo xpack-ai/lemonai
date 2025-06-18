@@ -1,4 +1,3 @@
-
 <template>
     <a-modal :open="fileExplorerVisible" :footer="null" style="
         width: 600px; background-color: #fff; border-color: hsla(0, 0%, 100%, .05);
@@ -21,10 +20,8 @@
                 </div>
                 <div class="main">
                     <div class="classTitle">
-                        <div v-for="type in fileTypes" :key="type"
-                             class="classBtn"
-                             :class="chooseClassType === type ? 'active' : ''"
-                            @click="chooseClassType = type">
+                        <div v-for="type in fileTypes" :key="type" class="classBtn"
+                            :class="chooseClassType === type ? 'active' : ''" @click="chooseClassType = type">
                             {{ $t(`lemon.fileExplorer.fileTypes.${type}`) }}
                         </div>
                     </div>
@@ -32,28 +29,26 @@
                         <div v-for="(group, time) in fileListFilterByTimeAndType" :key="time" class="timeGroup">
                             <h3 class="timeTitle">{{ $t(`lemon.fileExplorer.timeGroups.${time}`) }}</h3>
                             <div class="fileList">
-                                <div v-for="file in group" :key="file.id" class="fileItem" @click="handleOpenFile(file)">
-                                    <fileSvg :url="file.url" class="svgItem" />
+                                <div v-for="file in group" :key="file.id" class="fileItem"
+                                    @click="handleOpenFile(file)">
+                                    <fileSvg :url="file.filename" :filepath="file.filepath" class="svgItem" />
                                     <div class="fileInfo">
                                         <!-- 文件名 -->
                                         <div class="fileNameContainer">
                                             <div class="fileNameDiv">
-                                                <span class="fileNameSpan">{{ file.filename.split('/').pop().endsWith('md') ?
-                                                    file.filename.split('/').pop().split('.')[0].split('\\').pop() : file.filename.split('/').pop().split('\\').pop()
+                                                <span class="fileNameSpan">{{
+                                                    file.filename.split('/').pop().endsWith('md') ?
+                                                        file.filename.split('/').pop().split('.')[0].split('\\').pop() :
+                                                    file.filename.split('/').pop().split('\\').pop()
                                                     }}</span>
                                             </div>
                                             <span class="time">{{ formatTimestamp(file.timestamp) }}</span>
                                         </div>
                                         <!-- 更多选项 -->
                                         <div class="moreOption" @click.stop>
-                                            <a-tooltip
-                                                placement="bottomRight"
-                                                :arrow="false"
-                                                color="#ffffff"
-                                                trigger="click"
-                                                :visible="tooltipVisible[file.id] || false"
-                                                @visibleChange="visible => handleTooltipVisibleChange(file.id, visible)"
-                                            >
+                                            <a-tooltip placement="bottomRight" :arrow="false" color="#ffffff"
+                                                trigger="click" :visible="tooltipVisible[file.id] || false"
+                                                @visibleChange="visible => handleTooltipVisibleChange(file.id, visible)">
                                                 <template #title>
                                                     <div class="custom-tooltip">
                                                         <div class="svg-tooltip" @click="handlePreview(file)">
@@ -106,7 +101,7 @@
                             <div class="fileList">
                                 <div v-for="file in group" :key="file.id" class="fileItem">
                                     <a-checkbox v-model:checked="file.selected" />
-                                    <fileSvg :type="file.filename.split('.').pop()" class="svgItem" />
+                                    <fileSvg :url="file.filename" class="svgItem" />
                                     <div class="timeContainer">
                                         <span class="fileName">{{ file.filename.split('/').pop() }}</span>
                                         <span class="time">{{ formatTimestamp(file.timestamp) }}</span>
@@ -127,6 +122,7 @@
             </div>
         </div>
     </a-modal>
+    <imgModal :url="imgUrl" :visible="imgVisable" @close="imgVisable = false"/>
 </template>
 
 <script setup>
@@ -146,6 +142,8 @@ import { viewList } from '@/utils/viewList'
 import { useChatStore } from '@/store/modules/chat'
 import { storeToRefs } from 'pinia';
 import workspaceService from '@/services/workspace'
+import imgModal from '../file/imgModal.vue'
+import fileUtil from '@/utils/file'
 const chatStore = useChatStore()
 const { agent, messages } = storeToRefs(chatStore);
 
@@ -156,6 +154,9 @@ const fileExplorerVisible = ref(false)
 const chooseClassType = ref('all')
 const clickDisable = ref(false)
 const tooltipVisible = ref({}) // 控制每个文件的 tooltip 可见性
+
+const imgUrl = ref('')
+const imgVisable = ref(false)
 
 const selectedAll = computed({
     get: () => {
@@ -171,16 +172,31 @@ const selectedAll = computed({
 const clickDowload = ref(false)
 
 const handleOpenFile = (file) => {
-    // TODO 照片直接预览 通过后缀来判断是否为照片
-    // TODO 其余文件可预览文件直接预览
-    emitter.emit('fullPreviewVisable', file)
+    if (fileUtil.imgType.includes(file.filename.split('.').pop())) {
+        workspaceService.getFile(file.filepath).then(res => {
+            imgUrl.value = URL.createObjectURL(res);
+            imgVisable.value = true;
+        })
+    }
+    else{
+        emitter.emit('fullPreviewVisable', file)
+    }
     fileExplorerVisible.value = false
+
 }
 
 const handlePreview = (file) => {
-    // 执行预览逻辑并关闭 tooltip
-    handleOpenFile(file)
+    if (fileUtil.imgType.includes(file.filename.split('.').pop())) {
+        workspaceService.getFile(file.filepath).then(res => {
+            imgUrl.value = URL.createObjectURL(res);
+            imgVisable.value = true;
+        })
+    } else {
+        // 执行预览逻辑并关闭 tooltip
+        handleOpenFile(file)
+    }
     tooltipVisible.value[file.id] = false
+
 }
 
 const toggleTooltip = (fileId) => {
@@ -195,7 +211,7 @@ const handleTooltipVisibleChange = (fileId, visible) => {
 const fileTypes = ['all', 'document', 'image', 'codeFile', 'link']
 
 const fileList = computed(() => {
-    return viewList.viewLocal(messages.value,false) 
+    return viewList.viewLocal(messages.value, false)
 })
 
 
@@ -301,7 +317,7 @@ async function handleFileDownload(file) {
     await workspaceService.getFile(file.filepath).then(res => {
         fileContent = res
     })
-    
+
     const blob = new Blob([fileContent], { type: 'text/plain' })
     const url = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
@@ -320,14 +336,14 @@ const selectAll = () => {
 const confirmBatchDownload = () => {
 
     if (clickDowload.value) return
-    
+
     const selectedFiles = Object.values(fileListFilterByTimeAndType.value)
         .flat()
         .filter(file => file.selected)
 
     if (selectedFiles.length > 0) {
         // TODO: Implement batch download logic
-        
+
 
     }
     batchDownload.value = false

@@ -2,28 +2,33 @@
     <div class="file-list" v-if="list.length"> 
         <div class="file-item" v-for="(file, index) in list" :key="index" @click="handleOpenFile(file)">
             <div class="file-icon">
-                <fileSvg :url="file?.filename"/>
+                <fileSvg :url="file?.filename" :filepath="file.filepath"/>
             </div>
             <div class="file-name">{{file.filename.split('\\').pop()}}</div>
         </div>
     </div>
+    <imgModal :url="imageUrl" v-model:visible="isModalVisible" @close="isModalVisible = false" />
 </template>
 <script setup>
-import { computed } from 'vue';
+import { computed,ref} from 'vue';
 import fileSvg from '@/components/fileClass/fileSvg.vue'
 import emitter from '@/utils/emitter';
-    const props = defineProps({
-        message: {
-          type: Array,
-          default: () => []
-        },
-      role: {
-        type: String,
-        default: 'assistant'
-      }
+import imgModal from '@/components/file/imgModal.vue'
+import fileUtil from '@/utils/file'
+import workspaceService from '@/services/workspace'
+const props = defineProps({
+    message: {
+      type: Array,
+      default: () => []
+    },
+  role: {
+    type: String,
+    default: 'assistant'
+  }
 
-    })
-
+})
+const isModalVisible = ref(false);
+const imageUrl = ref('');
 const list = computed(() => {
   let data = JSON.parse(JSON.stringify(props.message.meta.json));
   if (data) {
@@ -40,7 +45,14 @@ const list = computed(() => {
 
 // 打开文件
 const handleOpenFile = (file) => {
-  emitter.emit('fullPreviewVisable', file)
+  if(fileUtil.imgType.includes(file.filepath.split('.').pop())){
+    workspaceService.getFile(file.filepath).then(res => {
+      imageUrl.value = URL.createObjectURL(res);
+    })
+    isModalVisible.value = true;
+  }else{
+    emitter.emit('fullPreviewVisable', file)
+  }
 }
 </script>
 <style>

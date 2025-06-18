@@ -70,12 +70,13 @@ const http = {
   get(url, params) {
     return instance.get(url, { params: params });
   },
-  post(url, params, header = {}) {
+  post(url, params, header = {},responseType='json') {
     const options = {
       url,
       method: "POST",
       data: params,
       headers: Object.assign({ 'Content-Type': 'application/json' }, header),
+      responseType:responseType,
     }
     return instance.request(options);
   },

@@ -1,3 +1,5 @@
+const {getContentTypeByFileName} = require('@src/utils/file_type_response');
+
 const responseWrap = (response) => {
     response.success = function (data, msg = "成功", status = 200) {
       const res = {
@@ -20,7 +22,9 @@ const responseWrap = (response) => {
     };
   
     response.file = function (fileName, stream) {
-      response.set('Content-Type', 'text/csv; charset=utf-8')
+      // process Content-Type by file type
+      const contentType = getContentTypeByFileName(fileName)
+      response.set('Content-Type', contentType)
       response.set(
         'Content-Disposition',
         `attachment; filename=${encodeURIComponent(fileName)}`

@@ -1,4 +1,5 @@
 import http from '@/utils/http.js'
+import fileUtils from '@/utils/file'
 
 const service = {
   // 获取vscode地址
@@ -19,10 +20,11 @@ const service = {
    // 获取文件内容
    async getFile(path) {
     const baseUrl = `/api/file/read`;
+    const responseType = fileUtils.getFileReponseTypeByName(path)
     const response = await http.post(baseUrl, {
       path: path
-    });
-    // Check if response.data is a string; if so, return it, otherwise convert to string
+    },{},responseType);
+    console.log(response)
     return response.data|| '';
   }
 
