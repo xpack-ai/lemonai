@@ -66,6 +66,11 @@ const fields = {
     allowNull: false,
     defaultValue: 'done',
     comment: 'Status'
+  },
+  model_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    comment: 'model id',
   }
 };
 

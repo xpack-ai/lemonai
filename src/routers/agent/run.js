@@ -10,6 +10,7 @@ const File = require('@src/models/File')
 const path = require('path')
 const fs = require('fs').promises
 const { getDirpath } = require('@src/utils/electron');
+const { getDefaultModel } = require('@src/utils/default_model')
 const WORKSPACE_DIR = getDirpath(process.env.WORKSPACE_DIR || 'workspace');
 const activeAgents = new Map();
 
@@ -109,6 +110,9 @@ router.post("/run", async (ctx, next) => {
       title: title,
       status: 'running'
     });
+  } else {
+    const model_info = await getDefaultModel()
+    await Conversation.update({ model_id: model_info.model_id }, { where: { conversation_id } })
   }
 
   body.responseType = body.responseType || "sse";

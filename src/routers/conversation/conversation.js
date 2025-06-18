@@ -3,12 +3,14 @@ require("module-alias/register");
 
 const Conversation = require("@src/models/Conversation");
 const Message = require("@src/models/Message");
+const Model = require('@src/models/Model')
 const auto_generate_title = require('@src/agent/generate-title')
 
 const uuid = require("uuid");
 const { Op } = require("sequelize");
 
-const forwardRequest = require('@src/utils/sub_server_forward_request')
+const forwardRequest = require('@src/utils/sub_server_forward_request');
+const Platform = require("@src/models/Platform");
 
 // Create a new conversation
 /**
@@ -159,6 +161,18 @@ router.get("/:conversation_id", async (ctx) => {
     if (!conversation) {
       return response.fail("Conversation does not exist");
     }
+
+    if (conversation.model_id) {
+      try {
+        let model = await Model.findOne({ where: { id: conversation.model_id } })
+        let platform = await Platform.findOne({ where: { id: model.platform_id } })
+        conversation.dataValues.platform_name = platform.name
+        conversation.dataValues.model_name = model.model_name
+      } catch (e) {
+
+      }
+    }
+
     if (conversation.dataValues.input_tokens === 0) {
       try {
         let res = await forwardRequest(ctx, 'GET', `/api/conversation/${conversation_id}`)
