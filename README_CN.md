@@ -90,7 +90,7 @@ docker run -it --rm --pull=always \
   --add-host host.docker.internal:host-gateway \
   --volume /var/run/docker.sock:/var/run/docker.sock \
   --volume ~/.cache:/.cache \
-  --volume ${WORKSPACE_BASE:-$PWD/workspace}:/app/workspace \
+  --volume ${WORKSPACE_BASE:-$PWD/workspace}:/workspace \
   --volume ${WORKSPACE_BASE:-$PWD/data}:/app/data \
   --interactive \
   --tty \
