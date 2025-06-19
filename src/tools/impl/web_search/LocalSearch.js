@@ -395,9 +395,9 @@ class LocalSearchServer {
         //  判断当前平台
         switch (process.platform) {
             case 'win32':
-                return path.join(process.resourcesPath,'browsers/chromium/chrome-win/headless_shell.exe')
+                return path.join(process.resourcesPath,'browser/chromium/chrome-win/headless_shell.exe')
             case 'darwin':
-                return path.join(process.resourcesPath,'browsers/chromium/chrome-mac/headless_shell');
+                return path.join(process.resourcesPath,'browser/chromium/chrome-mac/headless_shell');
             default:
                 throw new Error('Unsupported platform');
         }
