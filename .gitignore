@@ -38,3 +38,5 @@ __pycache__
 # trae
 .trae
 
+# browser bin
+resources/browsers/chromium

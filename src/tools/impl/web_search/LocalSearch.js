@@ -1,5 +1,6 @@
 const {chromium} = require('playwright');
 const cheerio = require('cheerio');
+const path = require('path');
 
 class LocalSearchServer {
     constructor() {
@@ -11,7 +12,7 @@ class LocalSearchServer {
     maxConcurrentPages = 10; // 最大并发页面数
     activePages = 0; // 当前活跃页面数
     result = null; // 存储最近一次搜索结果
-
+    
     static getInstance() {
         if (!LocalSearchServer.instance) {
             LocalSearchServer.instance = new LocalSearchServer();
@@ -22,10 +23,18 @@ class LocalSearchServer {
     // 初始化全局 browser
     async initializeBrowser() {
         if (!this.browser) {
-            this.browser = await chromium.launch({
-                headless: true,
-                args: ['--no-sandbox'],
-            });
+            if(process.env.VITE_IS_CLIENT){ //客户端环境使用项目提供的浏览器
+                this.browser = await chromium.launch({
+                    headless: true,
+                    args: ['--no-sandbox'],
+                    executablePath: this.getExecutablePath()
+                });
+            }else{
+                this.browser = await chromium.launch({
+                    headless: true,
+                    args: ['--no-sandbox'],
+                });
+            }
             this.browser.on('disconnected', () => {
                 this.browser = null;
                 this.contexts.clear();
@@ -381,6 +390,19 @@ class LocalSearchServer {
         this.activePages = 0;
         this.result = null;
     }
+
+    getExecutablePath = ()=>{
+        //  判断当前平台
+        switch (process.platform) {
+            case 'win32':
+                return path.join(process.resourcesPath,'browsers/chromium/chrome-win/headless_shell.exe')
+            case 'darwin':
+                return path.join(process.resourcesPath,'browsers/chromium/chrome-mac/headless_shell');
+            default:
+                throw new Error('Unsupported platform');
+        }
+    }
 }
+
 
 module.exports = LocalSearchServer;

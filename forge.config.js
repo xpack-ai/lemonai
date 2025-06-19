@@ -29,7 +29,8 @@ module.exports = {
       "./data",
       "./cache",
       "./workspace",
-      "./.env"
+      "./.env",
+      "./resources/browsers" // copy browsers to resources
     ],
     // osxSign: {
     //   "hardenedRuntime": true,
