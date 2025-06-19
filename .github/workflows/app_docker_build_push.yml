@@ -34,6 +34,9 @@ jobs:
       DOCKERFILE: containers/runtime/Dockerfile
       VERSION_FILE: containers/runtime/VERSION # 新增：指定版本号文件路径
       PLATFORMS: linux/amd64,linux/arm64
+      # 更新阿里云镜像仓库信息
+      ALIYUN_REGISTRY: registry.cn-beijing.aliyuncs.com # 替换为你的阿里云镜像仓库地址
+      ALIYUN_NAMESPACE: hexdolemonai # 替换为你的阿里云命名空间
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -46,6 +49,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 新增：登录阿里云容器镜像服务
+      - name: Log in to Aliyun Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.ALIYUN_REGISTRY }}
+          username: ${{ secrets.ALIYUN_USERNAME }}
+          password: ${{ secrets.ALIYUN_PASSWORD }}
 
       - name: Get current date for dynamic tag
         id: date
@@ -62,8 +73,7 @@ jobs:
         # 如果文件不存在，你可能希望跳过构建或使用一个默认版本
         if: ${{ success() && !cancelled() && hashFiles(env.VERSION_FILE) }}
 
-        # 新增：清理 Buildx 缓存
-      - name: Clean up Docker Buildx cache (after build)
+      - name: Clean up Docker Buildx cache (before build)
         if: always() # 无论上一步成功失败都执行
         run: |
           echo "Cleaning up Buildx cache..."
@@ -80,16 +90,24 @@ jobs:
             echo "Error: Could not read runtime-sandbox version from file. Exiting."
             exit 1
           fi
-          echo "Building and pushing ${{ env.IMAGE_NAME }}:$RUNTIME_TAG for platforms [${{ env.PLATFORMS }}]"
+          # Docker Hub 标签
+          DOCKER_HUB_TAG=${{ env.IMAGE_NAME }}:$RUNTIME_TAG
+          DOCKER_HUB_LATEST_TAG=${{ env.IMAGE_NAME }}:latest
+          # 阿里云标签
+          ALIYUN_TAG=${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/lemon-runtime-sandbox:$RUNTIME_TAG
+          ALIYUN_LATEST_TAG=${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/lemon-runtime-sandbox:latest
+
+          echo "Building and pushing $DOCKER_HUB_TAG, $DOCKER_HUB_LATEST_TAG, $ALIYUN_TAG, $ALIYUN_LATEST_TAG for platforms [${{ env.PLATFORMS }}]"
           docker buildx build \
             --platform ${{ env.PLATFORMS }} \
-            --tag ${{ env.IMAGE_NAME }}:$RUNTIME_TAG \
-            --tag ${{ env.IMAGE_NAME }}:latest \
+            --tag $DOCKER_HUB_TAG \
+            --tag $DOCKER_HUB_LATEST_TAG \
+            --tag $ALIYUN_TAG \
+            --tag $ALIYUN_LATEST_TAG \
             -f ${{ env.DOCKERFILE }} \
             --push .
         # 只有成功读取到版本号才执行构建
         if: ${{ success() && steps.get_runtime_version.outputs.RUNTIME_VERSION != '' }}
-        # 新增：清理 Buildx 缓存
 
       - name: Clean up Docker Buildx cache (after build)
         if: always()
@@ -100,7 +118,6 @@ jobs:
           echo "Disk usage after cleanup:"
           df -h
 
-
   build-and-push-app:
     needs: check-changes
     if: ${{ needs.check-changes.outputs.app_changed == 'true' }}
@@ -110,6 +127,9 @@ jobs:
       APP_DOCKERFILE: containers/app/Dockerfile
       APP_VERSION_FILE: containers/app/VERSION # 新增：指定版本号文件路径
       PLATFORMS: linux/amd64,linux/arm64
+      # 更新阿里云镜像仓库信息
+      ALIYUN_REGISTRY: registry.cn-beijing.aliyuncs.com # 替换为你的阿里云镜像仓库地址
+      ALIYUN_NAMESPACE: hexdolemonai # 替换为你的阿里云命名空间
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -122,6 +142,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 新增：登录阿里云容器镜像服务
+      - name: Log in to Aliyun Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.ALIYUN_REGISTRY }}
+          username: ${{ secrets.ALIYUN_USERNAME }}
+          password: ${{ secrets.ALIYUN_PASSWORD }}
 
       - name: Get current date for dynamic tag
         id: date
@@ -136,7 +164,6 @@ jobs:
           echo "Detected app version: $VERSION"
         if: ${{ success() && !cancelled() && hashFiles(env.APP_VERSION_FILE) }}
 
-
       - name: Build and push app image
         run: |
           # 使用从文件中读取的版本号
@@ -145,11 +172,20 @@ jobs:
             echo "Error: Could not read app version from file. Exiting."
             exit 1
           fi
-          echo "Building and pushing ${{ env.APP_IMAGE_NAME }}:$APP_TAG for platforms [${{ env.PLATFORMS }}]"
+          # Docker Hub 标签
+          DOCKER_HUB_TAG=${{ env.APP_IMAGE_NAME }}:$APP_TAG
+          DOCKER_HUB_LATEST_TAG=${{ env.APP_IMAGE_NAME }}:latest
+          # 阿里云标签
+          ALIYUN_TAG=${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/lemon:$APP_TAG
+          ALIYUN_LATEST_TAG=${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_NAMESPACE }}/lemon:latest
+
+          echo "Building and pushing $DOCKER_HUB_TAG, $DOCKER_HUB_LATEST_TAG, $ALIYUN_TAG, $ALIYUN_LATEST_TAG for platforms [${{ env.PLATFORMS }}]"
           docker buildx build \
             --platform ${{ env.PLATFORMS }} \
-            --tag ${{ env.APP_IMAGE_NAME }}:$APP_TAG \
-            --tag ${{ env.APP_IMAGE_NAME }}:latest \
+            --tag $DOCKER_HUB_TAG \
+            --tag $DOCKER_HUB_LATEST_TAG \
+            --tag $ALIYUN_TAG \
+            --tag $ALIYUN_LATEST_TAG \
             -f ${{ env.APP_DOCKERFILE }} \
             --push .
         if: ${{ success() && steps.get_app_version.outputs.APP_VERSION != '' }}
