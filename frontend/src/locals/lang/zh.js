@@ -509,7 +509,9 @@
         saveBlacklistFailed: "黑名单保存失败",
         apiKeyRequired: "API密钥为空",
         accessKeyRequired: "访问密钥为空",
-        endpointRequired: "endpoint 为空"
+        endpointRequired: "endpoint 为空",
+        checkSearchEngineSuccess: "搜索测试成功",
+        checkSearchEngineFailed: "搜索测试失败",
       },
       mcpService: {
         title: "MCP服务",
