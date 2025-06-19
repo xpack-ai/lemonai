@@ -511,7 +511,9 @@ export default {
         saveBlacklistFailed: "Blacklist saving failed",
         apiKeyRequired: "API key is empty",
         accessKeyRequired: "Access key is empty",
-        endpointRequired: "Endpoint is empty"
+        endpointRequired: "Endpoint is empty",
+        checkSearchEngineSuccess: "search successful",
+        checkSearchEngineFailed: "search failed",
       },
       mcpService: {
         title: "MCP service",

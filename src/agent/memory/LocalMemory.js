@@ -9,13 +9,22 @@ fs.mkdirSync(cache_dir, { recursive: true }); // create directory, do nothing if
 class LocalMemory {
   constructor(options = {}) {
     this.options = options;
+    this.memory_dir = options.memory_dir;
+    if (this.memory_dir) {
+      const dir = path.resolve(cache_dir, this.memory_dir);
+      fs.mkdirSync(dir, { recursive: true }); // create directory, do nothing if it already exists
+    }
     this.key = options.key; // primary key ID
     console.log(`LocalMemory initialized with key: ${this.key}`);
   }
 
   _getFilePath() {
+    if (this.memory_dir) {
+      const dir = path.resolve(cache_dir, this.memory_dir);
+      return path.resolve(dir, `${this.key}.json`);
+    }
     // use this.key as the file name, store in the specified temporary directory
-    return path.join(cache_dir, `${this.key}.json`);
+    return path.resolve(cache_dir, `${this.key}.json`);
   }
 
   async _loadMemory() {

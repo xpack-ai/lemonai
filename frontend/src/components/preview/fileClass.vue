@@ -97,7 +97,10 @@
                                     <a-checkbox v-model:checked="file.selected" @change="updateSelectedAll" />
                                     <fileSvg :url="file.filepath" :filepath="file.filepath" class="svgItem" />
                                     <div class="timeContainer">
-                                        <span class="fileName">{{ file.filename.split('/').pop() }}</span>
+                                        <span class="fileName">{{ file.filename.split('/').pop().endsWith('md') ?
+                                                        file.filename.split('/').pop().split('.')[0].split('\\').pop() :
+                                                        file.filename.split('/').pop().split('\\').pop()
+                                                         }}</span>
                                         <span class="time">{{ formatTimestamp(file.timestamp) }}</span>
                                     </div>
                                 </div>

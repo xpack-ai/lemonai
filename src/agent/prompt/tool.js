@@ -2,10 +2,7 @@
  * 工具调用提示模板生成器
  * 根据工具目录中的工具定义生成工具调用的提示模板
  */
-const tools = require("@src/agent/tools/index.js");
-// 加载系统扩展工具
-const systemTools = require("@src/tools/index");
-Object.assign(tools, systemTools);
+const tools = require("@src/tools/index");
 
 /**
  * 生成工具列表的提示模板

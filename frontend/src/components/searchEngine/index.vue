@@ -170,9 +170,10 @@ const handleCheckApiKey = async () => {
   let res = await searchEngineService.checkSearchProvider(config)
   checkLoading.value = false
   if (res.status != "fail") {
-    message.success(res.message)
+    message.success(selectedConfig.value.provider_name+' '+ t('setting.searchService.checkSearchEngineSuccess'))
+    // message.success(res.message)
   } else {
-    message.error(res.message)
+    message.error(selectedConfig.value.provider_name+' '+ t('setting.searchService.checkSearchEngineFailed'))
   }
 }
 

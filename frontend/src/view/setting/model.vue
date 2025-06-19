@@ -250,7 +250,7 @@ const handleApiPlaceholder = computed(() => {
   if (choose_platform.value.name === 'Cloudsway') {
     return t('setting.modelService.akPlaceholder')
   }
-  return t('setting.modelService.apiAddressPlaceholder')
+  return t('setting.modelService.apiKeyPlaceholder')
 })
 const handlePlatform = (platform) => {
 
