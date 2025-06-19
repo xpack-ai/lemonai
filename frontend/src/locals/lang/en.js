@@ -138,6 +138,8 @@ export default {
       month: "Month",  
       select: "Select",
       paySuccess: "Payment successful!",
+      payFailed: "Payment failed, please try again later",
+      payCancel: "Payment canceled",
       payTimeout: "Payment timeout, please re-order",
       qrTitle: "Wechat scan to pay",
       qrTip: "Please use Wechat to scan the QR code to complete the payment",

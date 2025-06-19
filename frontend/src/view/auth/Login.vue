@@ -65,6 +65,11 @@ import register from './components/register.vue'
 import forgot from './components/forgot.vue'
 import smsLogin from './components/sms-login.vue'
 
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/modules/user.js'
+const userStore = useUserStore();
+const { user } = storeToRefs(userStore);
+
 const router = useRouter();
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
@@ -79,10 +84,11 @@ onMounted(() => {
   console.log("isClient === ",isClient);
   if(window.electronAPI){
     window.electronAPI.on('oauth-login-success', ({ code, state }) => {
-      console.log('收到 OAuth code:', code, state);
-      // 跳转到对应路由，假设你用的是 vue-router
-      // 这里用 location.hash 简单跳转，如果用 router 对象，替换为 router.push(...)
-      window.location.hash = `/auth/google?code=${code}&state=${state}`;
+      if  (user.value.id) {
+        window.location.href = '/';
+      }else{
+        window.location.hash = `/auth/google?code=${code}&state=${state}`;
+      }
     });
   }
 })
@@ -282,8 +288,8 @@ const handleGoogleLogin = () => {
     loading.value = true;
     const isClient = import.meta.env.VITE_IS_CLIENT === 'true';
     const redirectUri = isClient
-      ? 'http://localhost:3000/api/users/auth/google'
-      : 'http://localhost:5005/api/users/auth/google'; // Electron 主进程处理
+      ? import.meta.env.VITE_GOOGLE_REDIRECT_URI_ELECTRON// Electron 主进程处理
+      : 'http://localhost:5005/api/users/auth/google'; 
     const clientId = '973572698649-hbp15ju1nhlsja1k2gbqktmrulk0hopp.apps.googleusercontent.com';
     const scope = encodeURIComponent('profile email');
     const responseType = 'code';

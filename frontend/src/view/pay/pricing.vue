@@ -107,6 +107,7 @@ import membershipService from '@/services/membership'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
+import { message } from 'ant-design-vue'
 
 
 const billingType = ref('year')
@@ -127,6 +128,27 @@ const router = useRouter()
 const back = () => {
   router.push('/')
 }
+
+
+
+onMounted(() => {
+  const isClient = import.meta.env.VITE_IS_CLIENT === 'true';
+  if(window.electronAPI){
+    window.electronAPI.on('stripe-payment-success', ({ orderId,amount,currency,status }) => {
+      console.log("stripe-payment-success",orderId,amount,currency,status);
+      if(status === 'paid'){
+        message.success(t('member.paySuccess'));
+        router.push('/');
+      }else{
+        message.error(t('member.payFailed'));
+      }
+    });
+    //支付取消
+    window.electronAPI.on('stripe-payment-cancel', () => {
+      message.error(t('member.payCancel'));
+    });
+  }
+})
 
 const filteredPlans = computed(() => {
   console.log('filteredPlans', billingType.value,pricingPlans.value)

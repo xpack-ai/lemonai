@@ -8,12 +8,12 @@
             :sub-title="resultSubtitle"
           >
             <template #extra>
-              <a-button type="primary" @click="goHome">{{ $t('backHome') }}</a-button>
+              <a-button v-if="!fromClient" type="primary" @click="goHome">{{ $t('backHome') }}</a-button>
             </template>
           </a-result>
   
           <a-card v-if="showOrderInfo" :title="$t('orderInfo')" style="margin-top: 24px; text-align: left;">
-            <p><strong>{{ $t('orderId') }}：</strong>{{ order.metadata?.order_id || order.id }}</p>
+            <p><strong>{{ $t('orderId') }}：</strong>{{ order.order_sn }}</p>
             <p><strong>{{ $t('paymentAmount') }}：</strong>
               {{ order.amount_total && order.currency ? formatAmount(order.amount_total, order.currency) : $t('unknown') }}
             </p>
@@ -55,6 +55,12 @@
   
   const orderLoaded = ref(false)
   const showOrderInfo = ref(false)
+
+  //是否来自客户端
+  const fromClient = computed(() => {
+    const from = route.query.from
+    return from === 'desktop'
+  })
   
   function formatAmount(amount, currency) {
     if (!currency) return `${amount}（${t('unknownCurrency')}）`
@@ -132,8 +138,16 @@
           orderStatus.value = status
           if (terminalStates.includes(status)) {
             showOrderInfo.value = true
-            clearInterval(pollingTimer.value)
-            pollingTimer.value = null
+            //根据url 中的 参数 from 判断是否是客户端
+            if(orderStatus.value === 'paid'){
+              clearInterval(pollingTimer.value)
+              pollingTimer.value = null
+            }
+            const from = route.query.from
+            if(from === 'desktop' && orderStatus.value === 'paid'){
+              notifyClient("paid")
+            }
+
           }
         }
       } catch (err) {
@@ -175,10 +189,20 @@
     router.push('/')
   }
   
-  onMounted(fetchOrder)
+  onMounted(
+    () => {
+      fetchOrder()
+    }
+  )
   
   onBeforeUnmount(() => {
     if (pollingTimer.value) clearInterval(pollingTimer.value)
   })
+
+  //通知客户端 支付成功 使用自定义协议
+  const notifyClient = (status) => {
+    const deeplink = `lemonai://pay-result?orderId=${order.value.id}&amount=${order.value.amount_total}&currency=${order.value.currency}&status=${status}`
+    window.location.href = deeplink
+  }
   </script>
   

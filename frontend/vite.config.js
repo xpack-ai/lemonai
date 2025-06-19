@@ -11,7 +11,8 @@ export default defineConfig(({ mode }) => {
 
   return {
   root: __dirname,
-  base: './',
+  // 根据环境变量 VITE_IS_CLIENT 决定使用哪个 base 
+  base: env.VITE_IS_CLIENT === 'true' ? './' : '/', 
   build: {
     outDir: '../.vite/renderer/main_window', // 输出到 Electron Forge 期望的目录
     emptyOutDir: false

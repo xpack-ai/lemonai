@@ -138,6 +138,8 @@
       month: "月",
       select: "选择",
       paySuccess: "支付成功！",
+      payFailed: "支付失败，请稍后重试",
+      payCancel: "支付取消",
       payTimeout: "支付超时，请重新下单",
       qrTitle: "微信扫码支付",
       qrTip: "请使用微信扫码完成支付",

@@ -18,7 +18,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
       'setup-status',
       'start-setup-process',
       'oauth-code',
-      'oauth-login-success'  // 新增允许的通道
+      'oauth-login-success',
+      'stripe-payment-success',
+      'stripe-payment-cancel'
     ];
     if (validOnChannels.includes(channel)) {
       const subscription = (event, ...args) => callback(...args);
@@ -37,7 +39,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
       'setup-status',
       'start-setup-process',
       'oauth-code',
-      'oauth-login-success'  // 保持与 on 的白名单一致
+      'oauth-login-success',
+      'stripe-payment-success',
+      'stripe-payment-cancel'
     ];
     if (validOnChannels.includes(channel)) {
       ipcRenderer.removeListener(channel, callback);

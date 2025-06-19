@@ -1,5 +1,5 @@
 import path from 'path';
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 
 const routes = [
   {
@@ -45,6 +45,13 @@ const routes = [
     path: "/pay/success",
     name: "paySuccess",
     component: () => import("@/view/pay/paySuccess.vue"),
+    meta: { verify: true }
+  },
+  {
+    //desktop 重定向
+    path: "/desktop/redirect",
+    name: "desktopRedirect",
+    component: () => import("@/view/desktop/redirect.vue"),
     meta: { verify: true }
   },
   {
@@ -106,13 +113,16 @@ const routes = [
   }
 ]
 
+
 const router = createRouter({
-  history: createWebHashHistory(),
+  //判断是不是 客户端 如果是客户端则使用 createWebHashHistory 否则使用 createWebHistory
+  history: import.meta.env.VITE_IS_CLIENT === 'true' ? createWebHashHistory() : createWebHistory(),
   routes,
 });
 
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('access_token');
+  console.log("import.meta.env.VITE_IS_CLIENT === ",import.meta.env.VITE_IS_CLIENT);
   const { meta = {} } = to;
   // If route requires authentication and no token exists, redirect to login
   // if (meta.verify && !token) {

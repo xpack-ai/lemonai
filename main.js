@@ -3,6 +3,7 @@
 const { app, BrowserWindow,ipcMain,shell } = require('electron');
 const path = require('path');
 const http = require('http');
+const { URL } = require('url'); // Node.js 的 URL 类
 const { exec, spawn } = require('child_process');
 import { initDockerSetupService, checkAndRunDockerSetup, DOCKER_SETUP_DONE_KEY } from './dockerSetupService.js';
 
@@ -35,6 +36,7 @@ if (app && app.getPath) {
   console.log("ELECTRON.APP.USER.PATH", dataUserPath);
   process.env.LEMON_AI_PATH = dataUserPath;
 }
+
 
 // 防止多实例
 const gotTheLock = app.requestSingleInstanceLock();
@@ -147,50 +149,90 @@ if (!gotTheLock) {
     }
   });
 
+  let deeplinkUrl = '';
 
+  const isMac = process.platform === 'darwin';
+  const isWin = process.platform === 'win32';
 
-
-
-  function startOAuthListener() {
-    const server = http.createServer((req, res) => {
-      const url = new URL(req.url, 'http://localhost:51789');
-      const code = url.searchParams.get('code');
-      const state = url.searchParams.get('state');
-  
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(`
-        <h2>登录完成，窗口可以关闭了</h2>
-        <script>window.close();</script>
-      `);
-  
-      handleOAuthCode(code, state);
-      server.close();
-    });
-  
-    server.listen(51789, () => {
-      console.log('OAuth监听服务启动，端口 51789');
-    });
+  // 注册协议（Windows 要指定 exe）
+  if (!app.isDefaultProtocolClient('lemonai')) {
+    if (isWin) {
+      app.setAsDefaultProtocolClient('lemonai', process.execPath, []);
+    } else {
+      app.setAsDefaultProtocolClient('lemonai');
+    }
   }
 
-  function showMainWindow() {
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) {
-        mainWindow.restore();    // 解除最小化
+  // 单实例锁
+const gotLock = app.requestSingleInstanceLock();
+
+if (!gotLock) {
+  app.quit();
+} else {
+  if (isWin) {
+    // Windows：通过 argv 获取协议参数
+    app.on('second-instance', (event, argv) => {
+      const urlArg = argv.find(arg => arg.startsWith('lemonai://'));
+      if (urlArg) {
+        deeplinkUrl = urlArg;
+        if (mainWindow) {
+          mainWindow.webContents.send('open-url', urlArg);
+          mainWindow.focus();
+        }
       }
-      mainWindow.show();         // 显示窗口
-      mainWindow.focus();        // 让窗口获得焦点
-    }
+    });
   }
-  
-  function handleOAuthCode(code, state) {
-    console.log('收到 OAuth code:', code, 'state:', state);
-    
-    if (mainWindow && mainWindow.webContents) {
-      mainWindow.webContents.send('oauth-login-success', { code, state });
-    }
-    showMainWindow();
+
+  if (isMac) {
+    // macOS：使用 open-url 事件
+    // 处理 macOS 的协议打开事件
+    app.on('open-url', (event, url) => {
+      event.preventDefault();
+      console.log('🍋 Received lemonai:// URL:', url);
+
+      const parsedUrl = new URL(url);
+      const pathname = parsedUrl.pathname;
+      const host = parsedUrl.hostname; // lemonai://xxx 里 xxx 是 hostname（兼容 path）
+      const target = host || pathname.replace(/^\//, '');
+
+      const sendToRenderer = (channel, data) => {
+        if (mainWindow) {
+          mainWindow.webContents.send(channel, data);
+        } else {
+          deeplinkUrl = JSON.stringify({ channel, data }); // 👈 保存事件类型+数据
+        }
+      };
+
+      switch (target) {
+        case 'auth': {
+          const code = parsedUrl.searchParams.get('code');
+          const state = parsedUrl.searchParams.get('state');
+          sendToRenderer('oauth-login-success', { code, state });
+          break;
+        }
+
+        case 'pay-result': {
+          const orderId = parsedUrl.searchParams.get('orderId');
+          const amount = parsedUrl.searchParams.get('amount');
+          const currency = parsedUrl.searchParams.get('currency');
+          const status = parsedUrl.searchParams.get('status');
+          console.log('收到支付成功消息',orderId,amount,currency,status);
+          sendToRenderer('stripe-payment-success', { orderId,amount,currency,status });
+          break;
+        }
+
+        case 'payment-cancelled': {
+          sendToRenderer('stripe-payment-cancel', {});
+          break;
+        }
+
+        default: {
+          console.warn('⚠️ Unknown deep link target:', target);
+        }
+      }
+    });
   }
-  
+}
 
 
 
@@ -271,15 +313,12 @@ if (!gotTheLock) {
 
     // 其他 app ready 后续逻辑...
 
-    // 启动 OAuth 监听服务
-    startOAuthListener();
-
         function isAllowedRedirectUrl(url) {
               const whitelist = [
       //           'https://accounts.google.com/o/oauth2',
       //           'https://accounts.google.com/',
       //           'https://www.google.com/accounts',
-                'https://checkout.stripe.com'
+      //           'https://checkout.stripe.com'
               ];
             
               return whitelist.some(allowed => url.startsWith(allowed));
