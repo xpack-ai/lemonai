@@ -19,13 +19,9 @@ move chromium to project resources
 for Mac:
 
 ```
-cp -r ~/Library/Caches/ms-playwright/chromium_headless_shell-*/* resources/browsers/chromium/
+cp -r ~/Library/Caches/ms-playwright/chromium_headless_shell-*/* resources/browser/chromium/
 ```
 
-for windows:
-
-```
-xcopy %USERPROFILE%\AppData\Local\ms-playwright\chromium_headless_shell-* resources\browsers\chromium /E /I
-```
+for windows is the same
 
 and complie your project

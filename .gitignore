@@ -39,4 +39,4 @@ __pycache__
 .trae
 
 # browser bin
-resources/browsers/chromium
+resources/browser/chromium
