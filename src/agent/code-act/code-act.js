@@ -78,7 +78,8 @@ const completeCodeAct = async (task = {}, context = {}) => {
   const maxTotalRetries = context.max_total_retries || MAX_TOTAL_RETRIES; // use context or default value
 
   // Initialize memory and runtime
-  const memory = new LocalMemory({ key: id });
+  const memory_dir = context.conversation_id.slice(0, 6);
+  const memory = new LocalMemory({ memory_dir: memory_dir, key: id });
   context.memory = memory;
   memory._loadMemory();
   // @ts-ignore

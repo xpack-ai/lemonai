@@ -73,10 +73,11 @@ class TaskManager {
   }
 
   async setTasks(tasks) {
+    const prefix = (Date.now() / 1000).toFixed(0);
+    let index = 1;
     this.tasks = tasks.map(item => {
       item.requirement = item.description;
-      const rand_value = (Math.random() * 1000).toString()
-      item.id = item.id || `${Date.now()}_${rand_value}`
+      item.id = item.id || `${prefix}_000${index++}`
       item.status = item.status || 'pending'; // Default status
       return item
     })

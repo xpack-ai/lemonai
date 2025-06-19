@@ -51,6 +51,7 @@ const resolveTemplate = async (template, value = {}) => {
 const fs = require('fs');
 const path = require('path');
 const loadTemplate = async (filename) => {
+  // TODO: Support user custom template | template in db
   const filepath = path.resolve(__dirname, '../template', filename);
   const template = fs.readFileSync(filepath, 'utf8');
   return template
