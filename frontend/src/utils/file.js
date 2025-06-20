@@ -1,7 +1,7 @@
 
 
 const imgType = ['png','jpg','svg','jpeg','gif','webp','bmp']
-const blobTypeDict = ['png','jpg','svg','jpeg','gif','webp','bmp','pdf']
+const blobTypeDict = ['png','jpg','svg','jpeg','gif','webp','bmp','pdf','xlsx','docx']
 
 // 
 function getFileReponseTypeByName(filename){

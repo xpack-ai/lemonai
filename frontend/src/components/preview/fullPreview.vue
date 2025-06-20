@@ -112,7 +112,7 @@
       </div>
 
 
-      <div class="content">
+      <div class="content" :class="isFullPreview&&canOfficePreview ? 'fullPreview' : null">
         <!-- Loading-->
         <div v-if="contentLoading"
              style="height: 100%;display: flex;justify-content: center;align-items: center">
@@ -127,6 +127,7 @@
         <!-- Source code rendering -->
         <CodeViewer v-else-if="canCodePreview" :file-path="file.filepath" :file-content="content"/>
         <!--  TODO office 文件预览 PDF Excel DOC DOCX-->
+        <OfficeViewer v-else-if="canOfficePreview" :filename="file.filepath" :content="content"/>
         <!-- 无法预览的格式 -->
         <div v-else class="no-preview">
           <div class="detail">
@@ -136,7 +137,7 @@
                 <fileSvg :url="file?.filepath" class="file-type"/>
               </div>
               <div class="file-info">
-                <div class="file-name">{{ file.filepath.split("/").pop() }}</div>
+                <div class="file-name">{{ file.filepath.split("/").pop().split("\\").pop() }}</div>
                 <div class="file-type">{{ $t('lemon.fullPreview.fileTypePresentation') }}</div>
               </div>
             </div>
@@ -185,7 +186,7 @@ import {storeToRefs} from 'pinia';
 import {viewList} from '@/utils/viewList'
 import MarkdownIt from 'markdown-it';
 import html2pdf from 'html2pdf.js';
-
+import OfficeViewer from '@/components/preview/office.vue'
 const chatStore = useChatStore();
 
 const {agent, messages} = storeToRefs(chatStore);
@@ -204,8 +205,8 @@ const moreOptionsTooltipVisible = ref(false)
 const downloadTooltipVisible = ref(false)
 const canBeMd = ref(false)
 const canBeHtml = ref(false)
-const codePreviewType = ref(['js', 'ts', 'py', 'json', 'html', 'htm', 'css', 'md', 'xml', 'java', 'c', 'cpp', 'cc', 'cxx', 'h', 'rb', 'go', 'sql', 'yaml', 'yml', 'php', 'sh', 'bash', 'cs', 'rs', 'kt', 'scala', 'pl', 'swift', 'r', 'm', 'dart', 'lua']);
-const officePreviewType = ref(['pdf','excel','doc','docx'])
+const codePreviewType = ref(['js', 'ts', 'py', 'json', 'html', 'htm', 'css', 'md', 'xml', 'java', 'c', 'cpp', 'cc', 'cxx', 'h', 'rb', 'go', 'sql', 'yaml', 'yml', 'php', 'sh', 'bash', 'cs', 'rs', 'kt', 'scala', 'pl', 'swift', 'r', 'm', 'dart', 'lua','txt']);
+const officePreviewType = ref(['pdf']) // TODO ,'xlsx','docx'])
 // Local file list
 const fileList = ref([])
 
@@ -226,7 +227,7 @@ watch(currentIndex, (newValue) => {
 // file name
 const fileName = ref('')
 //
-watch(file, (newValue) => {
+watch(file, async (newValue) => {
   //content is loading
   contentLoading.value = true
   canBeMd.value = file.value.filepath?.split('.').pop() === 'md'
@@ -234,8 +235,17 @@ watch(file, (newValue) => {
   // update fileName
   fileName.value = newValue.filename?.endsWith('.md') ? newValue.filename.split('.')[0] : newValue.filename
   fileName.value = fileName.value.split('\\').pop()
-
-  // if (canCodePreview.value || canOfficePreview.value) {   TODO add office preview process
+  // office preview
+  if (canOfficePreview.value){
+    await workspaceService.getFile(newValue.filepath).then(async (res) => { 
+      content.value = res
+      content.value = await content.value.arrayBuffer()
+      console.log(content.value)
+      console.log(typeof content.value)
+      
+    })
+  }
+  // code preview
   if(canCodePreview.value){
     workspaceService.getFile(newValue.filepath).then((res) => {
       //将res 转为str
@@ -248,6 +258,8 @@ watch(file, (newValue) => {
   // loaded
   contentLoading.value = false
 })
+
+
 
 // file content process
 function handleFileContent(content) {
@@ -553,6 +565,10 @@ emitter.on('fullPreviewVisable-close', () => {
       }
 
     }
+    .fullPreview{
+      width: 100%!important;
+      max-width: 100%!important;
+    }
   }
 }
 
@@ -563,7 +579,7 @@ emitter.on('fullPreviewVisable-close', () => {
   top: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
+  width: 100% !important;
   max-width: 100% !important;
 
   .fullpreview-container {
@@ -646,4 +662,6 @@ emitter.on('fullPreviewVisable-close', () => {
 }
 </style>
 
-<style scoped></style>
+<style scoped>
+
+</style>
