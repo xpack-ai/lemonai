@@ -147,6 +147,7 @@ export default {
       billingYearly: "Annual",
       qrError: "QR code generation failed, please try again later",
       noPlanForBilling: "No available plans for billing",
+      alreadyCurrentMember: "Already a current member",
     },
     //主界面
     lemon: {

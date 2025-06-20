@@ -113,12 +113,6 @@ async function getUserInfo() {
   points.value = res.points;
 }
 
-onMounted(() => {
-  getUserInfo();
-    getPointsTransactionList()
-})
-
-
 //分页
 const page = ref(1)
 const pageSize = ref(5)
@@ -133,6 +127,27 @@ const loading = ref(false)
 
 const isModalVisible = ref(false)
 const rechargeProducts = ref([])
+
+onMounted(() => {
+  getUserInfo();
+  getPointsTransactionList()
+  if(window.electronAPI){
+    window.electronAPI.on('stripe-payment-success', ({ orderId,amount,currency,status }) => {
+      console.log("stripe-payment-success",orderId,amount,currency,status);
+      if(status === 'paid'){
+        message.success(t('member.paySuccess'));
+        router.push('/');
+      }else{
+        message.error(t('member.payFailed'));
+      }
+    });
+    //支付取消
+    window.electronAPI.on('stripe-payment-cancel', () => {
+      message.error(t('member.payCancel'));
+    });
+  }
+})
+
 
 //返回积分类型对应的名称
 //FREE: 免费积分, MONTHLY: 月度积分, PURCHASED_ADDON: 购买附加积分, GIFTED_ADDON: 赠送附加积分, FEEDBACK_ADDON: 反馈的附加积分
@@ -158,7 +173,7 @@ const handleBuy = async (item) => {
   if(isAbroad.value){
     let res = await membershipService.createStripePointPurchaseOrder(item.id)
         //url 跳转到 url 不是新页面打开
-    // window.location.href = res.url; 
+    window.location.href = res.url; 
     loading.value = false
   }else{
 
@@ -175,7 +190,6 @@ const handleBuy = async (item) => {
     // message.error("生成二维码失败，请稍后重试")
     console.error("二维码生成失败", res)
   }
-  //checkOrderStatus 轮询 orderSn
   console.log(res)
   }
 }

@@ -147,6 +147,7 @@
       billingYearly: "年付",
       qrError: "生成二维码失败，请稍后重试",
       noPlanForBilling: "暂无该计费方式的产品",
+      alreadyCurrentMember:"已开通该会员"
     },
     //主界面
     lemon: {

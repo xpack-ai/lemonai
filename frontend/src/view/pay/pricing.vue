@@ -74,11 +74,12 @@
                 :loading="loading"
                 type="primary"
                 size="large"
+                :disabled="isMember"
                 block
                 :class="{ 'popular-btn': plan.popular }"
-                @click="pay(plan)"
+                @click="handleClick(plan)"
               >
-                {{ $t('member.select') }} {{ plan.name }}
+                {{ isMember ? $t('member.alreadyCurrentMember') : $t('member.select') + ' ' + plan.name }}
               </a-button>
             </div>
           </a-card>
@@ -107,6 +108,13 @@ import membershipService from '@/services/membership'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
+
+
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/store/modules/user.js'
+const userStore = useUserStore();
+const { user, membership, points } = storeToRefs(userStore);
+
 import { message } from 'ant-design-vue'
 
 
@@ -130,6 +138,11 @@ const back = () => {
 }
 
 
+//如果已经是会员 则不能购买
+const isMember = computed(() => {
+  //membership?.planName 
+  return membership.value?.planName
+})
 
 onMounted(() => {
   const isClient = import.meta.env.VITE_IS_CLIENT === 'true';

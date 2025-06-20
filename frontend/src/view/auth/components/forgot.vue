@@ -130,6 +130,9 @@ const forgotForm = reactive({
 const smsCountdown = ref(0)
 let smsTimer = null
 
+const emailCountdown = ref(0)
+let emailTimer = null
+
 
 const isForgotValid = computed(() => {
   const passwordValid =
@@ -179,6 +182,14 @@ function sendEmailCode() {
   }
   auth.sendEmailVerification(forgotForm.email)
   // 模拟发送验证码
+  emailCountdown.value = 60
+  emailTimer = setInterval(() => {
+    emailCountdown.value--
+    if (emailCountdown.value <= 0) {
+      clearInterval(emailTimer)
+      emailTimer = null
+    }
+  }, 1000)
   message.success(t('auth.codeSent'))
 }
 
