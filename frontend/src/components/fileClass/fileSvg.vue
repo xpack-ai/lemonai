@@ -6,12 +6,10 @@
 <script setup>
 import { computed, ref } from 'vue'
 import PptIcon from '@/assets/fileClass/ppt.svg?component'
-import XlsxIcon from '@/assets/fileClass/xls.svg?component'
 import TextIcon from '@/assets/fileClass/txt.svg?component'
 import CodeIcon from '@/assets/fileClass/code.svg?component'
 import ImageIcon from '@/assets/fileClass/image.svg?component'
 import workspaceService from '@/services/workspace'
-
 // import DefaultIcon from '@/assets/fileClass/default.svg?component'
 const imageTypes = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'webp']
 const props = defineProps({
@@ -34,10 +32,6 @@ const fileTypes = {
     ppt: {
         extensions: ['ppt', 'pptx','pdf'],
         component: PptIcon
-    },
-    xlsx:{
-        extensions: ['xlsx'],
-        component: XlsxIcon
     },
     text: {
         extensions: ['txt', 'md'],
