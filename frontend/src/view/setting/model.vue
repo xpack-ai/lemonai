@@ -205,6 +205,7 @@ const handleOk =  async () => {
   if (!selectedModel.value) {
     //setting.modelService.selectCheckModel
     message.error(t('setting.modelService.selectCheckModel'))
+    return
   }
   //checkApiAvailability
 
@@ -217,9 +218,20 @@ const handleOk =  async () => {
   })
   checkLoading.value = false
   if(res.status){
-    message.success(res.message)
+    //res.message : LLM API call succeeded start
+    message.success(t('setting.modelService.apiCallSucceeded'))
   }else{
-    message.error(res.message)
+    //`LLM API call failed, HTTP status: ${response.status}, error: ${errorText}`
+    if(res.message.startsWith('LLM API call failed')){
+      let resposneContent = res.message.replace('LLM API call failed', t('setting.modelService.apiCallFailed'))
+      message.error(resposneContent)
+    }else if(res.message.startsWith('LLM API call timed out')){
+      let resposneContent = res.message.replace('LLM API call timed out', t('setting.modelService.apiCallTimeout'))
+      message.error(resposneContent)
+    }else if(res.message.startsWith('Network or other error occurred during LLM API call')){
+      let resposneContent = res.message.replace('Network or other error occurred during LLM API call', t('setting.modelService.unknownError'))
+      message.error(resposneContent)
+    }
   }
 }
 
@@ -240,7 +252,6 @@ const handleShowCheckButton = computed(() => {
   return choose_platform.value.name.toLocaleString() === 'Ollama'
 })
 const handleApiTitle = computed(() => {
-  console.log(choose_platform.value.name)
   if (choose_platform.value.name === 'Cloudsway') {
     return t('setting.modelService.ak')
   }
@@ -525,7 +536,7 @@ emitter.on('fresh-pages', (value) => {
 }
 
 .provider-info::-webkit-scrollbar {
-  width: 4px;
+  width: 2px;
   background-color: transparent;
   opacity: 0;
   transition: opacity 0.3s ease;

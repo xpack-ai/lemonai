@@ -179,6 +179,10 @@
         favorite: "添加到收藏",
         unfavorite: "取消收藏"
       },
+      // 输入框
+      input:{
+        chooseModel: "选择模型",
+      },
       //消息对话列表页
       message: {
         runCommand: "执行 bash 命令",
@@ -340,10 +344,10 @@
         addPlatform: "添加",
         save: "保存",
         defaultPlatformDescription: "默认平台模型由系统提供，无需配置",
-        apiKey: "API密钥",
+        apiKey: "API 密钥",
         apiKeyPlaceholder: "请输入API密钥",
-        ak: "Access Key",
-        akPlaceholder: "请输入 Access Key",
+        ak: "Access 密钥",
+        akPlaceholder: "请输入 Access 密钥",
         getApiKey: "点击此处获取密钥",
         check: "检查",
         selectCheckModel: "请选择检查的模型",
@@ -399,6 +403,10 @@
         saveSuccess: "保存成功",
         saveFailed: "保存失败",
         modelAlreadyExists: "添加失败,模型ID已存在",
+        apiCallSucceeded: "连接测试成功",
+        apiCallFailed: "连接测试失败",
+        apiCallTimeout: "连接测试超时",
+        unknownError: "未知错误",
         platforms: {
           Anthropic: "Anthropic",
           ModelScope: "ModelScope 魔搭",

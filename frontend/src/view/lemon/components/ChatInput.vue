@@ -33,7 +33,7 @@
                   </template>
                 </a-button>
               </a-upload>
-              <a-select class="model-select" @change="changeModel" v-model:value="selectedModel" placeholder="请选择模型"
+              <a-select class="model-select" @change="changeModel" v-model:value="selectedModel" :placeholder="$t('lemon.input.chooseModel')"
                 style="width: 200px" :options="groupedOptions" optionLabelProp="label"
                 :fieldNames="{ label: 'label', value: 'value', options: 'options' }">
                 <template #option="{ label, value, logo_url }">
@@ -118,8 +118,6 @@ const groupedOptions = computed(() => {
     options,
   }))
 })
-
-
 
 const changeModel = async (modelId) => {
   let model = modelList.value.find((model) => model.id == modelId)
