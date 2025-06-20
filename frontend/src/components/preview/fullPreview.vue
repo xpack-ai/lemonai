@@ -206,7 +206,7 @@ const downloadTooltipVisible = ref(false)
 const canBeMd = ref(false)
 const canBeHtml = ref(false)
 const codePreviewType = ref(['js', 'ts', 'py', 'json', 'html', 'htm', 'css', 'md', 'xml', 'java', 'c', 'cpp', 'cc', 'cxx', 'h', 'rb', 'go', 'sql', 'yaml', 'yml', 'php', 'sh', 'bash', 'cs', 'rs', 'kt', 'scala', 'pl', 'swift', 'r', 'm', 'dart', 'lua','txt']);
-const officePreviewType = ref(['pdf']) // TODO ,'xlsx','docx'])
+const officePreviewType = ref(['pdf','xlsx']) // TODO ,,'docx'])
 // Local file list
 const fileList = ref([])
 
