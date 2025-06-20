@@ -16,8 +16,7 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
         wget curl sudo apt-utils git jq tmux bash curl ca-certificates file lsof zip unzip \
-        libgl1-mesa-glx \
-        libasound2-plugins libatomic1 && \
+        libatomic1 && \
     # Remove packages with CVEs and no updates yet, if present
     (apt-get remove -y libaom3 || true) && \
     (apt-get remove -y libjxl0.7 || true) && \
