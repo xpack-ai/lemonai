@@ -60,6 +60,7 @@ The last step is always to deliver to the user
 
 # OUTPUT FORMAT
 
+---
 **【Absolute Rule】** Your response must strictly begin and end with this format. No text is allowed outside of this format.
 ## [Content of Phase 1]
 - [Task 1]
@@ -67,6 +68,7 @@ The last step is always to deliver to the user
 ## [Content of Phase 2]
 - [Task 1]
 - [And so on...]
+---
 
 [Previous results]
 {previous}
