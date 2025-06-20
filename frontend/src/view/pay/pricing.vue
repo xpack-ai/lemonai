@@ -77,9 +77,9 @@
                 :disabled="isMember"
                 block
                 :class="{ 'popular-btn': plan.popular }"
-                @click="handleClick(plan)"
+                @click="pay(plan)"
               >
-                {{ isMember ? $t('member.alreadyCurrentMember') : $t('member.select') + ' ' + plan.name }}
+                {{ isMember ? $t('member.alreadyCurrentMember') : $t('member.select') }}
               </a-button>
             </div>
           </a-card>
