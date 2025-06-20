@@ -24,12 +24,11 @@ class LocalSearchServer {
     async initializeBrowser() {
         if (!this.browser) {
             let isClinet = ['t','1','T'].includes(process.env.VITE_IS_CLIENT.slice(0, 1)); // ture|1|True
-            if(isClinet){ //客户端环境使用项目提供的浏览器
-                console.log('使用项目提供的浏览器');
+            if(isClinet){ //the client use browser of projects
                 this.browser = await chromium.launch({
                     headless: true,
                     args: ['--no-sandbox'],
-                    executablePath: this.getExecutablePath()
+                    executablePath: this.getExecutablePath() // browser executable path
                 });
             }else{
                 this.browser = await chromium.launch({

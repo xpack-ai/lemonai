@@ -198,6 +198,10 @@ export default {
         botInitialResponse: "Hello, I have received your request, I am analyzing this problem. Please wait.",
         botInitialPlan: "Planning in progress"
       },
+      // 输入框
+      input:{
+        chooseModel: "choose model",
+      },
       //侧边栏
       sidebar: {
         newTask: "New task",
@@ -400,6 +404,10 @@ export default {
         saveSuccess: "Save successfully",
         saveFailed: "Save failed",
         modelAlreadyExists: "Add failed,Model ID already exists",
+        apiCallSucceeded: "LLM API call succeeded",
+        apiCallFailed: "LLM API call failed",
+        apiCallTimeout: "LLM API call timed out",
+        unknownError:  "unknown error",
         platforms: {
           Anthropic: "Anthropic",
           ModelScope: "ModelScope",

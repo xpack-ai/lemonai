@@ -4,7 +4,9 @@ const path = require('path');
 // ensure the temporary directory exists
 const { getDirpath } = require('@src/utils/electron');
 const cache_dir = getDirpath('Caches/memory');
-fs.mkdirSync(cache_dir, { recursive: true }); // create directory, do nothing if it already exists
+fs.mkdirSync(cache_dir, { recursive: true });
+
+const { json2xml } = require("@src/utils/format");
 
 class LocalMemory {
   constructor(options = {}) {
@@ -12,7 +14,7 @@ class LocalMemory {
     this.memory_dir = options.memory_dir;
     if (this.memory_dir) {
       const dir = path.resolve(cache_dir, this.memory_dir);
-      fs.mkdirSync(dir, { recursive: true }); // create directory, do nothing if it already exists
+      fs.mkdirSync(dir, { recursive: true });
     }
     this.key = options.key; // primary key ID
     console.log(`LocalMemory initialized with key: ${this.key}`);
@@ -52,11 +54,18 @@ class LocalMemory {
     }
   }
 
-  async addMessage(role, content, action_type = '', memorized = false) {
+  async addMessage(role, content, action_type = '', memorized = false, meta = {}) {
     // 1. load message list
     const messages = await this._loadMemory();
     // 2. add new message
-    messages.push({ role, content, action_type, memorized });
+    const { action = {}, status = 'success' } = meta;
+    if (role === 'user' && memorized) {
+      const full_memory_info = Object.assign(action, {
+        status, result: content
+      })
+      meta.action_memory = meta.action_memory || json2xml(full_memory_info)
+    }
+    messages.push({ role, content, action_type, memorized, meta });
     // 3. save message list
     await this._saveMemory(messages);
   }
@@ -89,11 +98,12 @@ class LocalMemory {
     // 2. extract content
     const list = [];
     for (const message of messages) {
-      const { action_type = '', memorized } = message;
+      const { action_type = '', memorized, meta = {} } = message;
       if (!memorized) {
         continue; // skip non-memorized message
       }
-      list.push(`${action_type.toUpperCase()}: ${message.content}`);
+      const action_memory = meta.action_memory || `${action_type.toUpperCase()}: ${message.content}`
+      list.push(action_memory);
     }
     return list.join('\n');
   }

@@ -73,15 +73,6 @@ jobs:
         # 如果文件不存在，你可能希望跳过构建或使用一个默认版本
         if: ${{ success() && !cancelled() && hashFiles(env.VERSION_FILE) }}
 
-      - name: Clean up Docker Buildx cache (before build)
-        if: always() # 无论上一步成功失败都执行
-        run: |
-          echo "Cleaning up Buildx cache..."
-          docker buildx prune -f --all # 强制清理所有 Buildx 缓存
-          docker system prune -f --all # 额外清理未使用的 Docker 对象 (镜像、容器、卷、网络)
-          echo "Disk usage after cleanup:"
-          df -h
-
       - name: Build and push runtime-sandbox image
         run: |
           # 使用从文件中读取的版本号
@@ -108,15 +99,6 @@ jobs:
             --push .
         # 只有成功读取到版本号才执行构建
         if: ${{ success() && steps.get_runtime_version.outputs.RUNTIME_VERSION != '' }}
-
-      - name: Clean up Docker Buildx cache (after build)
-        if: always()
-        run: |
-          echo "Cleaning up Buildx cache..."
-          docker buildx prune -f --all
-          docker system prune -f --all
-          echo "Disk usage after cleanup:"
-          df -h
 
   build-and-push-app:
     needs: check-changes
