@@ -179,11 +179,22 @@ class DockerRuntime {
 
   async handle_memory(result, action, memory) {
     const type = action.type;
-    const memorized_type = new Set(['read_file']);
+    const tool = tools[type];
+    const memorized_type = new Set(['read_file', "write_code", "terminal_run"]);
     if (result.status === 'success') {
-      console.log('DockerRuntime.handle_memory.memory logging user prompt');
+      const content = result.content || result.stderr;
+      // handle memory
       const memorized = memorized_type.has(type)
-      await memory.addMessage('user', result.content || result.stderr, action.type, memorized);
+      let action_memory = ""
+      if (memorized && tool && tool.resolveMemory) {
+        action_memory = tool.resolveMemory(action, content);
+      }
+      const meta = {
+        action,
+        action_memory,
+        status: 'success'
+      }
+      await memory.addMessage('user', content, action.type, memorized, meta);
     }
     return memory;
   }
@@ -200,7 +211,7 @@ class DockerRuntime {
     const uuid = uuidv4();
     // action running message
     const tool = tools[type];
-    if (tool.getActionDescription) {
+    if (tool && tool.getActionDescription) {
       const description = await tool.getActionDescription(params);
       const value = {
         uuid: uuid,
