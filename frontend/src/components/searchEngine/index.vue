@@ -28,7 +28,7 @@
                             :placeholder="$t('setting.searchService.endpointPlaceholder')" :disabled="loading"
                             @change="handleSave"/>
         </div>
-        <a-button class="save-button" @click="handleCheckApiKey" :loading="checkLoading">{{
+        <a-button v-show="selectedTemplate!==`Lemon`" class="save-button" @click="handleCheckApiKey" :loading="checkLoading">{{
             $t('setting.modelService.check')
           }}
         </a-button>
