@@ -85,12 +85,13 @@ const thinking_local = async (requirement, context = {}) => {
   if (prompt) {
     await memory.addMessage('user', prompt);
   }
-  await memory.addMessage('assistant', content);
 
   if (content && content.startsWith('<think>')) {
     const { thinking: _, content: output } = resolveThinking(content);
+    await memory.addMessage('assistant', output);
     return output;
   }
+  await memory.addMessage('assistant', content);
   return content;
 }
 
