@@ -38,7 +38,7 @@ const { resolveMarkdown } = require("@src/utils/markdown");
 const resolveThinking = require("@src/utils/thinking");
 
 const planning_local = async (goal, files, previousResult, conversation_id) => {
-  const planning_prompt = await resolvePlanningPromptBP(goal, files, previousResult);
+  const planning_prompt = await resolvePlanningPromptBP(goal, files, previousResult,conversation_id);
   const markdown = await call(planning_prompt, conversation_id, 'assistant', { temperature: 0 });
   if (markdown && markdown.startsWith('<think>')) {
     const { thinking: _, content: output } = resolveThinking(markdown);

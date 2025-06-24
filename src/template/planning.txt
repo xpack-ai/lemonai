@@ -30,6 +30,8 @@ If [User Requirement] is in English, then the output language must be in English
 - **Measurability:** Task descriptions must be clear to easily determine their completion status.
 5. **Adaptive Principle:** You should automatically adjust the granularity of task decomposition according to the complexity of the User Requirement. For simple and clear requirements, a highly summarized plan should be provided.
 
+{experiencePrompt}
+
 # Workflow
 
 You must strictly follow the process below:
