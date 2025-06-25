@@ -65,6 +65,9 @@ const retryHandle = (retryCount, totalRetryAttempts, maxRetries, maxTotalRetries
 
 const { checkConsecutiveAssistantXml, completeMessagesContent } = require("./message");
 
+// const MAX_CONTENT_LENGTH = 1e5;
+const MAX_CONTENT_LENGTH = 5 * 1e4;
+
 /**
  * Execute code behavior until task completion or maximum retry times reached
  * @param {Object} task - Task object containing requirement and id
@@ -107,6 +110,16 @@ const completeCodeAct = async (task = {}, context = {}) => {
        * ②. The model return format is incorrect, parse action again
        */
       if (!action) {
+
+        // 超出最大长度
+        console.log("content.length", content.length, MAX_CONTENT_LENGTH);
+        if (content.length > MAX_CONTENT_LENGTH) {
+          return {
+            status: "failure",
+            comments: `模型输出异常, 停止任务`,
+          }
+        }
+
         // use retryHandle to handle retry logic
         const { shouldContinue, result } = retryHandle(retryCount, totalRetryAttempts, maxRetries, maxTotalRetries);
         if (!shouldContinue) {

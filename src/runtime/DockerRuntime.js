@@ -20,6 +20,10 @@ const docker = new Docker(dockerOptions);
 const Message = require('@src/utils/message');
 
 const tools = require("../tools/index.js");
+const mcp_tool = require("@src/mcp/tool");
+// @ts-ignore
+tools['mcp_tool'] = mcp_tool;
+
 const { v4: uuidv4 } = require("uuid");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

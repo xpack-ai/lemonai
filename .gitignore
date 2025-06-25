@@ -31,6 +31,9 @@ out
 Caches
 *.pyc
 
+# ignore mcp-local
+mcp-local.json
+
 # python 
 .venv
 __pycache__
