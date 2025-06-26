@@ -1,15 +1,13 @@
-# README_CN
+# Lemon AI 是首个全栈、开源、基于代理的 AI 框架，为 Manus & Genspark AI 等平台提供了一个完全本地化的替代方案。它具备集成的代码解释器虚拟机沙箱，以实现安全执行。
 
 <div align=center>
   <img src="./public/img/Lemon_logo.png" width="400">
 </div>
-
-Lemon 提供 macOS 和 Windows 桌面应用程序，你可以在官网 [www.lemonai.cc](https://www.lemonai.cc) 进行下载。
-
 <p align="center">
   <a href="https://lemon-11.gitbook.io/lemon-docs">快速了解 Lemon AI</a> ·
   <a href="https://lemon-11.gitbook.io/lemon-docs/kai-fa-bu-shu-zhi-nan/docker-kuai-su-bu-shu">Docker快速部署</a> ·
   <a href="https://lemon-11.gitbook.io/lemon-docs">文档</a> ·
+  <a href="https://www.lemonai.cc">下载macOS 和 Windows 桌面应用程序</a> ·
 </p>
 
 <p align="center">
@@ -17,7 +15,10 @@ Lemon 提供 macOS 和 Windows 桌面应用程序，你可以在官网 [www.lemo
   <a href="./README_CN.md"><img alt="简体中文版自述文件" src="https://img.shields.io/badge/简体中文-d9d9d9"></a>
 </p>
 
-Lemon 是一款开源的General AI Agent通用智能体，能够从需求计划到成果交付全流程自动化，它通过独立思考和系统规划，在虚拟环境中灵活调用各类工具，如编写并执行代码、智能浏览网页、操作网页应用、命令执行等。Lemon 擅长将复杂任务系统化分解并有序执行，自动分析任务、安排步骤优先级、动态调整计划，并实时跟踪进度。旨在助力用户高效完成各类任务。
+Lemon AI 是首个全栈、开源、基于代理的 AI 框架，为 Mnus & Genspark AI 等平台提供了一个完全本地化的替代方案。它具备集成的代码解释器虚拟机沙箱，以实现安全执行。
+Lemon AI能够进行深度研究、网页浏览、实际编码和数据分析，且完全在本地硬件上运行。它通过Ollama支持规划、行动、反思和记忆功能，所使用的本地LLMs（如DeepSeek、Qwen、Llama、Gemma）确保了完全隐私，且无需依赖云。
+为了增强安全性，Lemon AI在本地虚拟机沙盒内运行。该沙盒通过安全处理所有代码编写、执行和编辑任务，来保护您的机器文件和操作系统。
+此外，Lemon AI 还提供灵活性，可通过领先的云模型（如 Claude、GPT、Gemini 和 Grok）的 API 来配置增强的结果。
 
 ### 功能与特点
 
