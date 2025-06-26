@@ -20,6 +20,12 @@ Lemon AI能够进行深度研究、网页浏览、实际编码和数据分析，
 为了增强安全性，Lemon AI在本地虚拟机沙盒内运行。该沙盒通过安全处理所有代码编写、执行和编辑任务，来保护您的机器文件和操作系统。
 此外，Lemon AI 还提供灵活性，可通过领先的云模型（如 Claude、GPT、Gemini 和 Grok）的 API 来配置增强的结果。
 
+<a href="https://youtu.be/OmU_4rrZUHE?si=iseqOl5TV2n2kovy">
+  <figure>
+    <img src="./public/img/githubvideo.png" alt="">
+  </figure>
+</a>
+
 ### 功能与特点
 
 * **复杂任务解决**：Lemon能够解决各类复杂多变的任务，包括但不限于市场调研、文件处理、旅行规划和数据分析。它通过独立思考和系统规划，在虚拟环境中灵活调用各类工具，如编写并执行代码、智能浏览网页、操作网页应用等。
