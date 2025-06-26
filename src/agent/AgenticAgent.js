@@ -37,6 +37,7 @@ class AgenticAgent {
     this.context = context;
     this.onTokenStream = context.onTokenStream;
     this.is_stop = false;
+    this.mcp_server_ids = context.mcp_server_ids || [];
   }
 
   async run(goal) {

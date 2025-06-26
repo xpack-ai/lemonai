@@ -7,12 +7,12 @@
       </div> -->
     </div>
     <div class="welcome-content">
-      <h1>{{ $t('lemon.welcome.greeting', { username }) }}</h1>
-      <p>{{ $t('lemon.welcome.question') }}</p>
+      <h1>{{ $t("lemon.welcome.greeting", { username }) }}</h1>
+      <p>{{ $t("lemon.welcome.question") }}</p>
       <ChatInput @send="handleWelcomeInput" />
     </div>
     <!--  -->
-    <Sample @sampleClick="sampleClick"/>
+    <Sample @sampleClick="sampleClick" />
     <!-- 案例
     <div class="case-container">
       <div class="category-tabs">
@@ -34,34 +34,33 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import Suggestion from './Suggestion.vue';
-import Sample from './Sample.vue';
-import ChatInput from './ChatInput.vue';
-import { useChatStore } from '@/store/modules/chat';
-import seeAgent from '@/services/see-agent';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import emitter from '@/utils/emitter';
-import fileServices from '@/services/files'; 
+import { ref } from "vue";
+import Suggestion from "./Suggestion.vue";
+import Sample from "./Sample.vue";
+import ChatInput from "./ChatInput.vue";
+import { useChatStore } from "@/store/modules/chat";
+import seeAgent from "@/services/see-agent";
+import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import emitter from "@/utils/emitter";
+import fileServices from "@/services/files";
 
 const chatStore = useChatStore();
 const router = useRouter();
 const { t } = useI18n();
 
 const props = defineProps({
-  username: String
+  username: String,
 });
-
 
 const sampleClick = (item) => {
   //触发 changeMessageText 修改数据
-  emitter.emit('changeMessageText', item.content);
+  emitter.emit("changeMessageText", item.content);
 };
 
 const handleWelcomeInput = async (value) => {
-  console.log('handleWelcomeInput', value);
-  const { text,files } = value;
+  console.log("handleWelcomeInput", value);
+  const { text, files, mcp_server_ids } = value;
   const result = await chatStore.createConversation(text);
   const { conversation_id } = result;
   if (conversation_id) {
@@ -69,9 +68,8 @@ const handleWelcomeInput = async (value) => {
     router.push(`/lemon/${conversation_id}`);
   }
   // seeAgent.sendMessage(text)
-  await seeAgent.sendMessage(text,conversation_id,files);
+  await seeAgent.sendMessage(text, conversation_id, files, mcp_server_ids);
 };
-
 </script>
 
 <style lang="scss" scoped>
@@ -92,7 +90,6 @@ const handleWelcomeInput = async (value) => {
     font-size: 32px;
     color: #34322d;
     margin: 0px !important;
-
   }
 
   p {
@@ -173,7 +170,7 @@ const handleWelcomeInput = async (value) => {
     background: #e9e9e9;
   }
 }
-.case-container{
+.case-container {
   margin-top: 92px;
   padding-left: 2.5rem;
   padding-right: 2.5rem;
@@ -181,34 +178,34 @@ const handleWelcomeInput = async (value) => {
 }
 
 @media (max-width: 768px) {
-  .case-container{
-    padding-left: 2px!important;
-    padding-right: 2px!important;
+  .case-container {
+    padding-left: 2px !important;
+    padding-right: 2px !important;
   }
 }
 
 .category-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: .75rem;
+  gap: 0.75rem;
   justify-content: center;
   &::-webkit-scrollbar {
     display: none;
   }
 }
-.case-title{
-    border: 0 solid #e5e7eb;
-    box-sizing: border-box;
-    outline: none;
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-    margin: 0;
-    margin-top: 1.25rem;
-    margin-bottom: 1.25rem;
-    text-align: center;
-    font-size: .875rem;
-    line-height: 1.25rem;
-    color:#b9b9b7;
+.case-title {
+  border: 0 solid #e5e7eb;
+  box-sizing: border-box;
+  outline: none;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  margin: 0;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #b9b9b7;
 }
 
 .tab {
@@ -216,9 +213,9 @@ const handleWelcomeInput = async (value) => {
   border-radius: 999999px;
   border: 1px solid #0000000f;
   color: #858481;
-  font-size: .875rem;
+  font-size: 0.875rem;
   line-height: 1.25rem;
-  
+
   text-decoration: none;
   white-space: nowrap;
 
@@ -233,13 +230,13 @@ const handleWelcomeInput = async (value) => {
   }
 }
 
-.icon{
+.icon {
   font-size: 18px;
   font-weight: 700;
   color: #111827;
   padding-top: 20px;
 
-  img{
+  img {
     width: 24px;
     height: 24px;
     margin-right: 8px;
@@ -247,14 +244,14 @@ const handleWelcomeInput = async (value) => {
 }
 
 @media screen and (max-width: 768px) {
-  .welcome-header{
+  .welcome-header {
     height: 48px;
     position: sticky;
     top: 0;
     background-color: #f8f8f7;
     z-index: 1;
   }
-  .icon{
+  .icon {
     display: none;
   }
 }

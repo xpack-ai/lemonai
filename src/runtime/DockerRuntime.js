@@ -278,8 +278,8 @@ class DockerRuntime {
           console.log('DockerRuntime.execute_action.tool', tool.name, params);
           const execute = tool.execute;
           params.conversation_id = context.conversation_id
-          const execute_result = await execute(params);
-          // console.log('LocalRuntime.execute_action.tool.execute', execute_result);
+          const execute_result = await execute(params, uuid, context);
+          console.log(`${tool.name}.call.result`, execute_result);
           const { content, meta = {} } = execute_result;
           result = { uuid, status: 'success', content, memorized: tool.memorized || false, meta };
         } else {

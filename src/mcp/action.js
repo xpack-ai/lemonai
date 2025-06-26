@@ -3,20 +3,20 @@ require('dotenv').config();
 
 const resolveServers = require("@src/mcp/server");
 
-const resolveServer = async (name) => {
-  const servers = await resolveServers();
+const resolveServer = async (name, context = {}) => {
+  const servers = await resolveServers(context);
   const server = servers.find(server => server.name === name);
   return server;
 }
 
 const mcp_client = require('@src/mcp/client');
 
-const mcpToolActionCall = async (params = {}) => {
+const mcpToolActionCall = async (params = {}, context = {}) => {
   console.log(JSON.stringify(params, null, 2))
   const { name, arguments } = params;
   const args = typeof arguments === 'string' ? JSON.parse(arguments) : arguments;
   const [serverName, toolName] = name.split('__');
-  const server = await resolveServer(serverName);
+  const server = await resolveServer(serverName, context);
   const options = {
     server: server,
     name: toolName,
@@ -30,15 +30,4 @@ const mcpToolActionCall = async (params = {}) => {
 }
 
 module.exports = mcpToolActionCall
-
-const run = async () => {
-  const action = {
-    "name": "howtocook-mcp__mcp_howtocook_whatToEat",
-    "arguments": "{\"peopleCount\":3}",
-    "conversation_id": "06b34bbd-5131-4c83-b6e4-4d25dddcc327"
-  }
-  const result = await mcpToolActionCall(action);
-  console.log(result);
-  process.exit(0);
-}
 // run();

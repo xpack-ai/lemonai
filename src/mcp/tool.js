@@ -18,10 +18,10 @@ const mcp_tool = {
   },
   memorized: true,
   getActionDescription({ name, arguments }) {
-    return `mcp 工具调用: ${name} ${JSON.stringify(arguments)}`;
+    return `${name} ${JSON.stringify(arguments)}`;
   },
-  async execute(action, uuid) {
-    const result = await mcpToolCall(action);
+  async execute(action, uuid, context = {}) {
+    const result = await mcpToolCall(action, context);
     // return result;
     return {
       uuid,

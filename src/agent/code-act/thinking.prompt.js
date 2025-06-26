@@ -15,7 +15,7 @@ const resolveThinkingPrompt = async (requirement = '', context = {}) => {
   const { reflection = '', goal = '' } = context;
   const memory = await describeLocalMemory(context);
   const tools = await resolveToolPrompt(); // system tools
-  const servers = await resolveServers();
+  const servers = await resolveServers(context);
   const mcpToolsPrompt = await resolveMcpServerPrompt(servers); // mcp server tools
   // console.log("mcpToolsPrompt", mcpToolsPrompt);
   const uploadFileDescription = describeUploadFiles(context.files || []);

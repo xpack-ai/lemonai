@@ -4,14 +4,14 @@
       <LoadingOutlined />
       <span style="margin-left: 5px;">{{ command }} {{ information }}</span>
     </div>
-  <div class="observation" :class="status" @click="togglePreview" v-else>
-    <div class="observation-details" v-if="information">
-      <div class="command-output">
-        <component :is="svgHash[action.meta.action_type]" />
-        <div class="command-output-text">{{ command }} {{ information }}</div>
+    <div class="observation" :class="status" @click="togglePreview" v-else>
+      <div class="observation-details" v-if="information">
+        <div class="command-output">
+          <component :is="svgHash[action.meta.action_type]" />
+          <div class="command-output-text">{{ command }} {{ information }}</div>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -40,32 +40,34 @@ const actionTypeDescriptions = {
   terminal_run: t('lemon.message.runCommand'),
   read_code: t('lemon.message.readFile'),
   write_code: t('lemon.message.editFile'),
-  browser:  t('lemon.message.browsing'),
+  browser: t('lemon.message.browsing'),
   web_search: t('lemon.message.searching'),
   read_file: t('lemon.message.readFile'),
+  mcp_tool: 'MCP'
 };
 const svgHash = {
   browse: Browse,
   write_code: Edit,
   terminal_run: Bash,
   read_code: Edit,
-  read_file:  Edit,
+  read_file: Edit,
   web_search: Browse,
   browser: Browse,
 };
 
 const command = computed(() => {
-  return `${actionTypeDescriptions[props.action.meta.action_type]}`;
+  return `${actionTypeDescriptions[props.action.meta.action_type]}` || '';
 });
 
 const information = computed(() => {
-  if (props.action.meta.action_type == 'terminal_run'){
+  if (props.action.meta.action_type == 'terminal_run') {
     return props.action.content[0]
   }
   return props.action.content
 });
 
 const togglePreview = () => {
+  console.log('preview.props', props);
   emitter.emit('preview', { message: props.action });
 };
 </script>

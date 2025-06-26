@@ -25,11 +25,15 @@ router.post("/", async ({ request, response }) => {
   return response.success(mcp_server);
 });
 
-// Get mcp server list
 router.get("/", async ({ response }) => {
   const mcp_servers = await McpServer.findAll({ order: [['create_at', 'DESC']] });
   return response.success(mcp_servers);
 });
+
+router.get("/active", async ({ response }) => {
+  const mcp_servers = await McpServer.findAll({ where: { activate: true } });
+  return response.success(mcp_servers);
+})
 
 // update mcp server
 router.put("/:mcp_server_id", async ({ params, request, response }) => {

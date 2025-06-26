@@ -63,5 +63,9 @@ export interface Tool {
    * @returns A Promise resolving to a string result that the LLM can understand and use.
    *          Should handle potential errors internally or throw errors that the agent can catch.
    */
-  execute: (args: Record<string, any>) => Promise<ActionResult>;
+  execute: (
+    args: Record<string, any>,
+    uuid: string,
+    context: any
+  ) => Promise<ActionResult>;
 }
