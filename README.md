@@ -1,16 +1,14 @@
 
-# README
+# Lemon AI​ is the first ​full-stack, open-source, agentic AI framework, offering a ​fully local alternative​ to platforms like Manus & Genspark AI. It features an integrated Code Interpreter VM sandbox for safe execution.​​
 
 <div align=center>
   <img src="./public/img/Lemon_logo.png" width="400">
 </div>
-
-Lemon provides macOS and Windows desktop applications, available for download on our official website: [www.lemonai.cc](https://www.lemonai.cc).
-
 <p align="center">
   <a href="https://lemon-11.gitbook.io/lemonai">Get to know Lemon AI quickly</a> ·
   <a href="https://lemon-11.gitbook.io/lemonai/development-deployment-guidelines/docker-quick-deployment">Docker Quick Deployment</a> ·
   <a href="https://lemon-11.gitbook.io/lemonai/">Documentation</a> ·
+  <a href="https://lemonai.cc/">Download the desktop app for macOS & Windows</a> ·
 </p>
 
 <p align="center">
@@ -18,7 +16,13 @@ Lemon provides macOS and Windows desktop applications, available for download on
   <a href="./README_CN.md"><img alt="简体中文版自述文件" src="https://img.shields.io/badge/简体中文-d9d9d9"></a>
 </p>
 
-Lemon is an open-source General AI Agent capable of automating the entire process from requirement planning to result delivery. It can independently think and systematically plan, flexibly invoking various tools in a virtual environment, such as writing and executing code, intelligently browsing the web, operating web applications, and executing commands. Lemon excels at systematically breaking down complex tasks and executing them in an orderly manner, automatically analyzing tasks, prioritizing steps, dynamically adjusting plans, and tracking progress in real time. Its goal is to help users efficiently complete all kinds of tasks.
+**Lemon AI​** is the first **​full-stack, open-source, agentic AI framework**, offering a **​fully local alternative​** to platforms like **Manus & Genspark AI. It features an integrated Code Interpreter VM sandbox for safe execution**.​​
+
+**​Lemon AI empowers deep research, web browsing, viable coding, and data analysis – running entirely on your local hardware.​​** It supports ​**planning, action, reflection, and memory​** functionalities using **​local LLMs**​ (like DeepSeek, Qwen, Llama, Gemma) via **Ollama**, ensuring **​complete privacy and zero cloud dependency.**
+
+For enhanced security, Lemon AI operates within a ​**local Virtual Machine (VM) sandbox.** This sandbox **​protects your machine's files and operating system​** by safely handling all code writing, execution, and editing tasks.
+
+Additionally, Lemon AI provides the **​flexibility to configure enhanced results**​ using APIs from leading cloud models like **​Claude, GPT, Gemini, and Grok.**
 
 <figure><img src="./public/img/example.png" alt=""><figcaption></figcaption></figure>
 
