@@ -1,5 +1,5 @@
 
-# Lemon AI​ is the first ​full-stack, open-source, agentic AI framework, offering a ​fully local alternative​ to platforms like Manus & Genspark AI. It features an integrated Code Interpreter VM sandbox for safe execution.​​
+# Lemon AI​ is the first Full-stack, Open-source, Agentic AI framework, offering a ​fully local alternative​ to platforms like Manus & Genspark AI. It features an integrated Code Interpreter VM sandbox for safe execution.​​
 
 <div align=center>
   <img src="./public/img/Lemon_logo.png" width="400">
@@ -24,7 +24,11 @@ For enhanced security, Lemon AI operates within a ​**local Virtual Machine (VM
 
 Additionally, Lemon AI provides the **​flexibility to configure enhanced results**​ using APIs from leading cloud models like **​Claude, GPT, Gemini, and Grok.**
 
-<figure><img src="./public/img/example.png" alt=""><figcaption></figcaption></figure>
+<a href="https://youtu.be/OmU_4rrZUHE?si=iseqOl5TV2n2kovy">
+  <figure>
+    <img src="./public/img/githubvideo.png" alt="">
+  </figure>
+</a>
 
 ### function and characteristic
 
