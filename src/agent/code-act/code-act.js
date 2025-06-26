@@ -97,11 +97,17 @@ const completeCodeAct = async (task = {}, context = {}) => {
       let content = await thinking(requirement, context);
       // console.log("thinking.result", content);
 
-      // 2. Parse actions
+      // 2. Parse Action
+      // try to parse action directly avoid llm don't continue
+      const actions = await resolveActions(content);
+      let action = actions[0];
       const messages = await memory.getMessages();
-      content = completeMessagesContent(messages);
-      const actions = resolveActions(content);
-      const action = actions[0];
+      if (!action) {
+        // Try to parse action again with all previous assistant messages
+        content = completeMessagesContent(messages);
+        const actions = resolveActions(content);
+        action = actions[0];
+      }
       console.log("action", action);
 
       /**

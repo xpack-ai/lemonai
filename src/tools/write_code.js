@@ -27,10 +27,11 @@ const WriteCode = {
    * @returns 
    */
   resolveMemory(action = {}, content) {
+    const filepath = action.params.origin_path || action.params.path;
     const memory = {
       type: 'write_code',
       status: 'success',
-      path: action.params.path
+      path: filepath
     }
     return json2xml(memory);
   }

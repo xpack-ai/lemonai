@@ -242,6 +242,7 @@ class DockerRuntime {
     switch (type) {
       case 'write_code':
         if (action.params.path) {
+          action.params.origin_path = action.params.path;
           action.params.path = path.join(dir_name, action.params.path)
         }
         result = await this.write_code(action, uuid);

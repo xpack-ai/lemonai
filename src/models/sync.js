@@ -12,7 +12,8 @@ const UserSearchSettingTable = require('./UserSearchSetting');
 const LLMLogs = require('./LLMLogs');
 const Task = require('./Task');
 const Message = require('./Message');
-const Experience = require('./Experience')
+const Experience = require('./Experience');
+const McpServer = require('./McpServer');
 
 const tableSync = async () => {
   await Conversation.sync({ alter: true });
@@ -26,7 +27,8 @@ const tableSync = async () => {
   await LLMLogs.sync({ alter: true });
   await Task.sync({ alter: true });
   await Message.sync({ alter: true });
-  await Experience.sync({ alter: true })
+  await Experience.sync({ alter: true });
+  await McpServer.sync({ alter: true });
 }
 
 const dataSync = async () => {

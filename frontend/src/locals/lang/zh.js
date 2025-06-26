@@ -550,7 +550,12 @@
         argsPlaceholder: "arg1\narg2",
         env: "环境变量",
         envPlaceholder: "KEY1=VALUE1\nKEY2=VALUE2",
-        mcpServer: "MCP服务器"
+        mcpServer: "MCP服务器",
+        import: "从 JSON 导入",
+        importServer: "服务器 JSON 配置",
+        deleteConfirmTitle: "删除确认",
+        deleteConfirmContent: "确定要删除这个服务器吗",
+        noServerSelected: "当前没有选中的服务器",
       },
       experience: {
         title: "经验库",

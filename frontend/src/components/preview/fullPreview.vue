@@ -4,24 +4,22 @@
       <div class="header">
         <div class="title-container">
           <div class="title">
-            <fileSvg :url="file?.filename" class="file-type"/>
+            <fileSvg :url="file?.filename" class="file-type" />
             <span>{{ fileName }}</span>
           </div>
         </div>
 
         <div class="btns">
-          <a-tooltip placement="bottom" :arrow="false" color="#ffffff" trigger="click" 
-                     overlayClassName="tooltip-com" v-model:open="downloadTooltipVisible">
+          <a-tooltip placement="bottom" :arrow="false" color="#ffffff" trigger="click" overlayClassName="tooltip-com"
+            v-model:open="downloadTooltipVisible">
             <template #title>
               <div class="custom-tooltip">
-                <div class="svg-tooltip"
-                     @click="handleFileDownload(file); downloadTooltipVisible = false">
-                  <downloadSvgDown/>
+                <div class="svg-tooltip" @click="handleFileDownload(file); downloadTooltipVisible = false">
+                  <downloadSvgDown />
                   {{ $t('lemon.fullPreview.download') }}
                 </div>
-                <div class="svg-tooltip" v-if="canBeMd"
-                     @click="handleExportPDF(); downloadTooltipVisible = false">
-                  <pdfExportSvg/>
+                <div class="svg-tooltip" v-if="canBeMd" @click="handleExportPDF(); downloadTooltipVisible = false">
+                  <pdfExportSvg />
                   {{ $t('lemon.fullPreview.exportToPDF') }}
                 </div>
 
@@ -34,26 +32,24 @@
               </div>
             </template>
             <button class="icon-bt">
-              <downloadSvg/>
+              <downloadSvg />
             </button>
           </a-tooltip>
 
-          <a-tooltip v-if="!isFullPreview" :arrow='false' overStyle="font-size:10px"
-                     overlayClassName="tooltip-tips">
+          <a-tooltip v-if="!isFullPreview" :arrow='false' overStyle="font-size:10px" overlayClassName="tooltip-tips">
             <template #title>
               <span class="tips-text">{{ $t('lemon.fullPreview.maximize') }}</span>
             </template>
             <button class="icon-bt" @click="isFullPreview = true">
-              <maxMizeSvg/>
+              <maxMizeSvg />
             </button>
           </a-tooltip>
-          <a-tooltip v-if="isFullPreview" :arrow='false' overStyle="font-size:10px"
-                     overlayClassName="tooltip-tips">
+          <a-tooltip v-if="isFullPreview" :arrow='false' overStyle="font-size:10px" overlayClassName="tooltip-tips">
             <template #title>
               <span class="tips-text">{{ $t('lemon.fullPreview.minimize') }}</span>
             </template>
             <button class="icon-bt" @click="isFullPreview = false">
-              <minMizeSvg/>
+              <minMizeSvg />
             </button>
           </a-tooltip>
 
@@ -63,7 +59,7 @@
               <span class="tips-text">{{ $t('lemon.fullPreview.previous') }}</span>
             </template>
             <button class="icon-bt" @click="currentIndex--" :class="currentIndex > 0 ? null : 'disableBtn'">
-              <leftSvg/>
+              <leftSvg />
             </button>
           </a-tooltip>
           <a-tooltip :arrow='false' overStyle="font-size:10px" overlayClassName="tooltip-tips">
@@ -71,33 +67,31 @@
               <span class="tips-text">{{ $t('lemon.fullPreview.next') }}</span>
             </template>
             <button class="icon-bt" @click="currentIndex++"
-                    :class="currentIndex < fileList.length - 1 ? null : 'disableBtn'" >
-              <rightSvg/>
+              :class="currentIndex < fileList.length - 1 ? null : 'disableBtn'">
+              <rightSvg />
             </button>
           </a-tooltip>
           <a-tooltip placement="bottom" :arrow="false" color="#ffffff" trigger="click" v-if="!canOfficePreview"
-                     overlayClassName="tooltip-com" v-model:open="moreOptionsTooltipVisible">
+            overlayClassName="tooltip-com" v-model:open="moreOptionsTooltipVisible">
             <template #title>
-              <div class="custom-tooltip more-tooltip" >
-                <div class="svg-tooltip" 
-                     @click="handleCopyContent(content); moreOptionsTooltipVisible = false">
-                  <copySvg/>
+              <div class="custom-tooltip more-tooltip">
+                <div class="svg-tooltip" @click="handleCopyContent(content); moreOptionsTooltipVisible = false">
+                  <copySvg />
                   {{ $t('lemon.fullPreview.copy') }}
                 </div>
-                <div class="svg-tooltip" v-if="rendering"
-                     @click="rendering = false; moreOptionsTooltipVisible = false">
-                  <codeSvg/>
+                <div class="svg-tooltip" v-if="rendering" @click="rendering = false; moreOptionsTooltipVisible = false">
+                  <codeSvg />
                   {{ $t('lemon.fullPreview.code') }}
                 </div>
                 <div class="svg-tooltip" v-if="canBeMd && !rendering || canBeHtml && !rendering"
-                     @click="rendering = true; moreOptionsTooltipVisible = false">
-                  <eyeSvg/>
+                  @click="rendering = true; moreOptionsTooltipVisible = false">
+                  <eyeSvg />
                   {{ $t('lemon.fullPreview.preview') }}
                 </div>
               </div>
             </template>
             <button class="icon-bt">
-              <moreOptionsSvg/>
+              <moreOptionsSvg />
             </button>
           </a-tooltip>
           <a-tooltip :arrow='false' overStyle="font-size:10px" overlayClassName="tooltip-tips">
@@ -105,36 +99,35 @@
               <span class="tips-text">{{ $t('lemon.fullPreview.close') }}</span>
             </template>
             <button class="icon-bt icon-tip" @click="isFullPreview = false; fullPreviewVisable = false">
-              <closeSvg/>
+              <closeSvg />
             </button>
           </a-tooltip>
         </div>
       </div>
 
 
-      <div class="content" :class="isFullPreview&&canOfficePreview ? 'fullPreview' : null">
+      <div class="content" :class="isFullPreview && canOfficePreview ? 'fullPreview' : null">
         <!-- Loading-->
-        <div v-if="contentLoading"
-             style="height: 100%;display: flex;justify-content: center;align-items: center">
-          <a-spin tip="loading ..." style="color: #8b8b8b"/>
+        <div v-if="contentLoading" style="height: 100%;display: flex;justify-content: center;align-items: center">
+          <a-spin tip="loading ..." style="color: #8b8b8b" />
         </div>
         <!-- Markdown rendering -->
-        <MarkDown v-else-if="rendering && canBeMd" :content="content"/>
+        <MarkDown v-else-if="rendering && canBeMd" :content="content" />
         <!-- Html rendering -->
         <iframe v-else-if="rendering && canBeHtml" :srcdoc="content" class="html-render-iframe"
-                 frameborder="0"></iframe>
+          frameborder="0"></iframe>
         <!-- sandbox="allow-scripts" -->
         <!-- Source code rendering -->
-        <CodeViewer v-else-if="canCodePreview" :file-path="file.filepath" :file-content="content"/>
+        <CodeViewer v-else-if="canCodePreview" :file-path="file.filepath" :file-content="content" />
         <!--  TODO office 文件预览 PDF Excel DOC DOCX-->
-        <OfficeViewer v-else-if="canOfficePreview" :filename="file.filepath" :content="content"/>
+        <OfficeViewer v-else-if="canOfficePreview" :filename="file.filepath" :content="content" />
         <!-- 无法预览的格式 -->
         <div v-else class="no-preview">
           <div class="detail">
             <div class="detail-info">
               <div class="icon">
                 <!-- 预览图标 -->
-                <fileSvg :url="file?.filepath" class="file-type"/>
+                <fileSvg :url="file?.filepath" class="file-type" />
               </div>
               <div class="file-info">
                 <div class="file-name">{{ file.filepath.split("/").pop().split("\\").pop() }}</div>
@@ -147,7 +140,7 @@
             {{ $t('lemon.fullPreview.downloadToView') }}
           </div>
           <a-button class="download-bt" @click="handleFileDownload(file)">
-            <downloadSvg/>
+            <downloadSvg />
             <span class="text">{{ $t('lemon.fullPreview.download') }}</span>
           </a-button>
         </div>
@@ -158,10 +151,10 @@
 </template>
 
 <script setup>
-import {ref, onMounted, onUnmounted, watch, computed} from 'vue'
-import {useI18n} from 'vue-i18n'
+import { ref, onMounted, onUnmounted, watch, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import emitter from '@/utils/emitter'
-import {message} from 'ant-design-vue'
+import { message } from 'ant-design-vue'
 // Import SVGs
 import fileSvg from '@/components/fileClass/fileSvg.vue'
 import downloadSvg from '@/assets/filePreview/download.svg'
@@ -181,18 +174,18 @@ import eyeSvg from '@/assets/filePreview/eye.svg'
 import MarkDown from '@/components/markdown/index.vue'
 import CodeViewer from '@/components/file/index.vue'
 import workspaceService from '@/services/workspace'
-import {useChatStore} from '@/store/modules/chat'
-import {storeToRefs} from 'pinia';
-import {viewList} from '@/utils/viewList'
+import { useChatStore } from '@/store/modules/chat'
+import { storeToRefs } from 'pinia';
+import { viewList } from '@/utils/viewList'
 import MarkdownIt from 'markdown-it';
 import html2pdf from 'html2pdf.js';
 import OfficeViewer from '@/components/preview/office.vue'
 const chatStore = useChatStore();
 
-const {agent, messages} = storeToRefs(chatStore);
+const { agent, messages } = storeToRefs(chatStore);
 
 
-const {t} = useI18n()
+const { t } = useI18n()
 
 // Define states
 const fullPreviewVisable = ref(false)
@@ -205,14 +198,14 @@ const moreOptionsTooltipVisible = ref(false)
 const downloadTooltipVisible = ref(false)
 const canBeMd = ref(false)
 const canBeHtml = ref(false)
-const codePreviewType = ref(['js', 'ts', 'py', 'json', 'html', 'htm', 'css', 'md', 'xml', 'java', 'c', 'cpp', 'cc', 'cxx', 'h', 'rb', 'go', 'sql', 'yaml', 'yml', 'php', 'sh', 'bash', 'cs', 'rs', 'kt', 'scala', 'pl', 'swift', 'r', 'm', 'dart', 'lua','txt']);
-const officePreviewType = ref(['pdf','xlsx','docx']) // TODO ,,'docx'])
+const codePreviewType = ref(['js', 'ts', 'py', 'json', 'html', 'htm', 'css', 'md', 'xml', 'java', 'c', 'cpp', 'cc', 'cxx', 'h', 'rb', 'go', 'sql', 'yaml', 'yml', 'php', 'sh', 'bash', 'cs', 'rs', 'kt', 'scala', 'pl', 'swift', 'r', 'm', 'dart', 'lua', 'txt']);
+const officePreviewType = ref(['pdf', 'xlsx', 'docx']) // TODO ,,'docx'])
 // Local file list
 const fileList = ref([])
 
 watch(() => messages.value, (newValue) => {
-      fileList.value = viewList.viewLocal(newValue, true)
-    }, {immediate: true}
+  fileList.value = viewList.viewLocal(newValue, true)
+}, { immediate: true }
 )
 
 
@@ -236,17 +229,17 @@ watch(file, async (newValue) => {
   fileName.value = newValue.filename?.endsWith('.md') ? newValue.filename.split('.')[0] : newValue.filename
   fileName.value = fileName.value.split('\\').pop()
   // office preview
-  if (canOfficePreview.value){
-    await workspaceService.getFile(newValue.filepath).then(async (res) => { 
+  if (canOfficePreview.value) {
+    await workspaceService.getFile(newValue.filepath).then(async (res) => {
       content.value = res
       content.value = await content.value.arrayBuffer()
       console.log(content.value)
       console.log(typeof content.value)
-      
+
     })
   }
   // code preview
-  if(canCodePreview.value){
+  if (canCodePreview.value) {
     workspaceService.getFile(newValue.filepath).then((res) => {
       //将res 转为str
       let resString = typeof res === 'string' ? res : JSON.stringify(res);
@@ -274,11 +267,11 @@ function handleFileContent(content) {
   return content
 }
 
-function processMdContent(content){
-    // code process markdown
-    // content = content.replaceAll('````markdown', '').replaceAll('````','');
-    // content = content.replace(/```markdown\n([\s\S]*)\n```/, '$1');
-    return content
+function processMdContent(content) {
+  // code process markdown
+  // content = content.replaceAll('````markdown', '').replaceAll('````','');
+  // content = content.replace(/```markdown\n([\s\S]*)\n```/, '$1');
+  return content
 }
 
 // Check if file can be code format previewed
@@ -304,20 +297,20 @@ function handleCopyContent(content) {
   }
 
   navigator.clipboard.writeText(content)
-      .then(() => {
-        message.success(t('lemon.fullPreview.contentCopied'))
-      })
-      .catch((err) => {
-        // console.error('Copy failed:', err)
-        message.error(t('lemon.fullPreview.copyFailed'))
-      })
+    .then(() => {
+      message.success(t('lemon.fullPreview.contentCopied'))
+    })
+    .catch((err) => {
+      // console.error('Copy failed:', err)
+      message.error(t('lemon.fullPreview.copyFailed'))
+    })
 }
 
 // Download file
 function handleFileDownload(file) {
   const fileName = file.filepath.split('/').pop()
   const fileContent = content.value
-  const blob = new Blob([fileContent], {type: 'text/plain'})
+  const blob = new Blob([fileContent], { type: 'text/plain' })
   const url = window.URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
@@ -358,13 +351,13 @@ function handleExportPDF() {
   const opt = {
     margin: 10,
     filename: fileName.value.split(".")[0] + '.pdf',
-    image: {type: 'jpeg', quality: 0.98},
+    image: { type: 'jpeg', quality: 0.98 },
     html2canvas: {
       scale: 2,
       useCORS: true,
       windowHeight: 842 // A4 height in pixels (297mm * 2.83)
     },
-    jsPDF: {unit: 'mm', format: 'a4', orientation: 'portrait'},
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     pagebreak: {
       mode: ['css', 'legacy'],
       avoid: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'ul', 'ol', 'li']
@@ -565,9 +558,10 @@ emitter.on('fullPreviewVisable-close', () => {
       }
 
     }
-    .fullPreview{
-      width: 100%!important;
-      max-width: 100%!important;
+
+    .fullPreview {
+      width: 100% !important;
+      max-width: 100% !important;
     }
   }
 }
@@ -584,7 +578,7 @@ emitter.on('fullPreviewVisable-close', () => {
 
   .fullpreview-container {
     .content {
-      max-width: 768px;
+      /* max-width: 768px; */
       margin: auto;
     }
   }
@@ -663,6 +657,4 @@ emitter.on('fullPreviewVisable-close', () => {
 }
 </style>
 
-<style scoped>
-
-</style>
+<style scoped></style>

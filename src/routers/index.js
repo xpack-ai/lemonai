@@ -24,7 +24,8 @@ const modules = [
   'points_transaction',
   'recharge_product',
   'version',
-  'order'
+  'order',
+  'mcp_server'
 ];
 
 for (const module of modules) {
