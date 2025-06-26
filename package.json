@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@dqbd/tiktoken": "^1.0.21",
+    "@modelcontextprotocol/sdk": "^1.13.0",
     "@playwright/test": "^1.52.0",
     "axios": "^1.9.0",
     "chai": "^4.3.4",
@@ -47,7 +48,8 @@
     "sqlite3": "^5.1.7",
     "supertest": "^7.1.0",
     "swagger-jsdoc": "^6.2.8",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "which": "^5.0.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.8.1",

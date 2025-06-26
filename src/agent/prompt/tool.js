@@ -39,6 +39,7 @@ ${toolDescription}
 <tool_call_guidelines>
 Follow these guidelines regarding tool calls
 - The conversation history, or tool_call history may refer to tools that are no longer available. NEVER call tools that are not explicitly provided.
+- Pay Attention: Assuming that the information obtained by mcp_tool is more accurate, please use mcp_tool first to obtain accurate information before generating and creating.
 - You MUST only use the tools explicitly provided in the tool list. Do not treat file names or code functions as tool names. The available tool names:
 - ${Object.keys(tools).join('\n  - ')}
 </tool_call_guidelines>

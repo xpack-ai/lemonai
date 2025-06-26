@@ -1,9 +1,10 @@
-// @ts-ignore
-const fs = require('fs').promises;
-// @ts-ignore
-const path = require('path');
+
 const { write_code: util_write_code } = require('./utils/tools');
 const tools = require("@src/tools/index.js");
+const mcp_tool = require("@src/mcp/tool");
+// @ts-ignore
+tools['mcp_tool'] = mcp_tool;
+
 const { v4: uuidv4 } = require("uuid");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -66,7 +67,7 @@ class LocalRuntime {
 
     // action running message
     const tool = tools[type];
-    if (tool.getActionDescription) {
+    if (tool && tool.getActionDescription) {
       const description = await tool.getActionDescription(params);
       // @ts-ignore
       const value = {

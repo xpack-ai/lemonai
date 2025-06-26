@@ -247,6 +247,10 @@ class AgenticAgent {
       try {
         // Pass the current task and memory to completeCodeAct
         const result = await completeCodeAct(task, this.context);
+        // when one task failure, all stop
+        if (result.status === 'failure') {
+          return;
+        }
         // Update task status to completed and log
         await this.taskManager.updateTaskStatus(task.id, 'completed', { result: result.content, memorized: result.memorized || '' });
 
