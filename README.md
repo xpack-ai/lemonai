@@ -127,7 +127,7 @@ We welcome your contribution to lemon to help improve lemon. Include: submit cod
 
 * [GitHub Issues](https://github.com/hexdocom/Lemon/issues).Best for: bugs you encounter using Lemon.AI, and feature proposals. See our [Contribution Guide](https://github.com/hexdocom/lemon/blob/main/CONTRIBUTING.md).
 * [X(Twitter)](https://x.com/LemonAI_cc). Best for: sharing your applications and hanging out with the community.
-* [commercial license]（[service@hexdo.com](mailto:service@hexdo.com)）. Business consulting on commercial use licensing lemon.
+* commercial license（[service@hexdo.com](mailto:service@hexdo.com)）. Business consulting on commercial use licensing lemon.
 
 ### Security disclosure
 
