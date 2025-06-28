@@ -123,6 +123,10 @@ docker run -it --rm --pull=always \
 * [Discord](https://discord.gg/nQVE5mBy)。👉：分享您的应用程序并与社区交流。
 * 商业许可。👉：有关商业用途许可 Lemon的商业咨询。
 
+### Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=hexdocom/lemonai&type=Date)](https://www.star-history.com/#hexdocom/lemonai&Date)
+
 ### 安全问题
 
 ---
