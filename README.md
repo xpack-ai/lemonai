@@ -130,6 +130,10 @@ We welcome your contribution to lemon to help improve lemon. Include: submit cod
 * [Discord](https://discord.gg/nQVE5mBy). Best for: sharing your applications and hanging out with the community.
 * commercial license（[service@hexdo.com](mailto:service@hexdo.com)）. Business consulting on commercial use licensing lemon.
 
+### Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=hexdocom/lemonai&type=Date)](https://www.star-history.com/#hexdocom/lemonai&Date)
+
 ### Security disclosure
 
 To protect your privacy, please avoid posting security issues on GitHub. Instead, send your questions to [service@hexdo.com](mailto:service@hexdo.com) and we will provide you with a more detailed answer.
