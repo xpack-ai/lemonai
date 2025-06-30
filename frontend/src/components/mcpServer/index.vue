@@ -7,11 +7,7 @@
           <template #icon><ImportOutlined /></template>
           从 JSON 导入
         </a-button>
-        <a-button
-          type="primary"
-          @click="handleAddServer"
-          style="margin-left: 8px"
-        >
+        <a-button type="primary" @click="handleAddServer" style="margin-left: 8px">
           <template #icon><PlusOutlined /></template>
           添加服务器
         </a-button>
@@ -20,20 +16,11 @@
 
     <div class="main-content">
       <div class="server-list-panel">
-        <ServerList
-          :servers="mcpServerList"
-          :selectedServerId="chooseMCPServer?.id"
-          @select="handleMcpServer"
-        />
+        <ServerList :servers="mcpServerList" :selectedServerId="chooseMCPServer?.id" @select="handleMcpServer" />
       </div>
       <div class="server-settings-panel">
         <template v-if="chooseMCPServer">
-          <ServerSettings
-            :server="chooseMCPServer"
-            @update:server="handleUpdateServer"
-            @save="handleMCPServerSave"
-            @delete="handleMCPServerDelete"
-          />
+          <ServerSettings :server="chooseMCPServer" @update:server="handleUpdateServer" @save="handleMCPServerSave" @delete="handleMCPServerDelete" />
         </template>
         <div v-else class="no-server-placeholder">
           <div class="placeholder-content">
@@ -48,13 +35,7 @@
       </div>
     </div>
 
-    <a-modal
-      v-model:visible="importModalVisible"
-      title="从 JSON 导入"
-      @ok="handleImportOk"
-      :ok-text="'OK'"
-      :cancel-text="'Cancel'"
-    >
+    <a-modal v-model:visible="importModalVisible" title="从 JSON 导入" @ok="handleImportOk" :ok-text="'OK'" :cancel-text="'Cancel'">
       <p>请粘贴单个服务器的 JSON 配置, 示例如下</p>
       <pre>{{ exampleJson }}</pre>
       <a-textarea v-model:value="importJsonText" placeholder="" :rows="10" />
@@ -67,11 +48,7 @@ import { ref, onMounted, watch, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import { message } from "ant-design-vue";
-import {
-  PlusOutlined,
-  CodeOutlined,
-  ImportOutlined,
-} from "@ant-design/icons-vue";
+import { PlusOutlined, CodeOutlined, ImportOutlined } from "@ant-design/icons-vue";
 import ServerList from "./ServerList.vue";
 import ServerSettings from "./ServerSettings.vue";
 import { useServerStore } from "@/store/modules/server";
@@ -112,11 +89,11 @@ const handleMCPServerDelete = (serverId) => {
 
 const handleAddServer = () => {
   const newServer = {
-    name: t("setting.mcpService.newServer"),
+    name: t("setting.mcpService.title"),
     description: "",
     activate: false,
     type: "stdio",
-    command: "uvx",
+    command: "",
     registryUrl: "",
     args: [],
     env: {},
@@ -149,18 +126,13 @@ const handleImportOk = () => {
 watch(
   mcpServerList,
   (newServers, oldServers) => {
-    if (
-      !chooseMCPServer.value ||
-      !newServers.some((s) => s.id === chooseMCPServer.value.id)
-    ) {
+    if (!chooseMCPServer.value || !newServers.some((s) => s.id === chooseMCPServer.value.id)) {
       chooseMCPServer.value = newServers[0] || null;
     }
 
     // If a new server was added, select it.
     if (newServers.length > oldServers.length) {
-      const newServer = newServers.find(
-        (ns) => !oldServers.some((os) => os.id === ns.id)
-      );
+      const newServer = newServers.find((ns) => !oldServers.some((os) => os.id === ns.id));
       if (newServer) {
         chooseMCPServer.value = newServer;
       }
@@ -230,6 +202,7 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   height: 100%;
+  padding: 50px;
   .placeholder-content {
     text-align: center;
     color: rgba(0, 0, 0, 0.25);
