@@ -1,15 +1,15 @@
 <template>
   <div class="mcp-manager-container">
     <div class="top-action-bar">
-      <h2 class="title">MCP 服务器</h2>
+      <h2 class="title">MCP Service</h2>
       <div class="actions">
         <a-button @click="showImportModal">
           <template #icon><ImportOutlined /></template>
-          从 JSON 导入
+          Import from JSON
         </a-button>
         <a-button type="primary" @click="handleAddServer" style="margin-left: 8px">
           <template #icon><PlusOutlined /></template>
-          添加服务器
+          Add MCP Server
         </a-button>
       </div>
     </div>
@@ -27,16 +27,13 @@
             <div class="placeholder-icon">
               <CodeOutlined />
             </div>
-            <p class="placeholder-text">
-              {{ $t("setting.mcpService.noServerSelected") }}
-            </p>
+            <p class="placeholder-text">No MCP Server Selected</p>
           </div>
         </div>
       </div>
     </div>
 
-    <a-modal v-model:visible="importModalVisible" title="从 JSON 导入" @ok="handleImportOk" :ok-text="'OK'" :cancel-text="'Cancel'">
-      <p>请粘贴单个服务器的 JSON 配置, 示例如下</p>
+    <a-modal v-model:visible="importModalVisible" title="Import from JSON" @ok="handleImportOk" :ok-text="'OK'" :cancel-text="'Cancel'">
       <pre>{{ exampleJson }}</pre>
       <a-textarea v-model:value="importJsonText" placeholder="" :rows="10" />
     </a-modal>
@@ -63,10 +60,13 @@ const importModalVisible = ref(false);
 const importJsonText = ref("");
 
 const exampleServer = {
-  name: "amap",
-  url: "https://mcp.amap.com/sse?key=AMAP_KEY",
-  type: "sse",
+  mcpServers: {
+    "amap-amap-sse": {
+      url: "https://mcp.amap.com/sse?key=amap_key",
+    },
+  },
 };
+
 const exampleJson = JSON.stringify(exampleServer, null, 2);
 
 const handleMcpServer = (server) => {
@@ -89,7 +89,7 @@ const handleMCPServerDelete = (serverId) => {
 
 const handleAddServer = () => {
   const newServer = {
-    name: t("setting.mcpService.title"),
+    name: "MCP Server",
     description: "",
     activate: false,
     type: "stdio",
@@ -107,18 +107,67 @@ const showImportModal = () => {
   importJsonText.value = "";
 };
 
+const resolveMcpServerType = (server) => {
+  const { url, command } = server;
+  if (url.includes("sse")) {
+    return "sse";
+  } else if (command.startsWith("npx") || command.startsWith("uvx")) {
+    return "stdio";
+  } else if (url.includes("mcp")) {
+    return "streamableHttp";
+  }
+  return "stdio";
+};
+
 const handleImportOk = () => {
   try {
-    const serverData = JSON.parse(importJsonText.value);
-    if (!serverData.name) {
-      message.error(t("setting.mcpService.importError.nameRequired"));
-      return;
+    const importData = JSON.parse(importJsonText.value);
+
+    if (importData.mcpServers) {
+      const servers = importData.mcpServers;
+      let serversAddedCount = 0;
+      for (const serverName in servers) {
+        if (Object.prototype.hasOwnProperty.call(servers, serverName)) {
+          const serverConfig = servers[serverName];
+          if (!serverConfig.url) {
+            console.warn(`Server "${serverName}" in import data is missing a 'url' property. Skipping.`);
+            continue;
+          }
+
+          const type = resolveMcpServerType(serverConfig);
+
+          const newServer = {
+            name: serverName,
+            description: serverConfig.description || "",
+            activate: false,
+            url: serverConfig.url,
+            type: type,
+            command: type === "stdio" ? serverConfig.command : "",
+            args: serverConfig.args || [],
+            env: serverConfig.env || {},
+          };
+          addServer(newServer);
+          serversAddedCount++;
+        }
+      }
+
+      if (serversAddedCount > 0) {
+        message.success(`Success import ${serversAddedCount} mcp servers.`);
+      } else {
+        message.warn("No valid server configuration found in the imported data.");
+      }
+    } else {
+      if (!importData.name) {
+        message.error("Name is required.");
+        return;
+      }
+      addServer(importData);
+      message.success("Success import mcp server.");
     }
-    addServer(serverData);
+
     importModalVisible.value = false;
-    message.success(t("setting.mcpService.importSuccess"));
   } catch (e) {
-    message.error(t("setting.mcpService.importError.invalidJson"));
+    message.error("Invalid JSON format.");
     console.error("JSON parsing error:", e);
   }
 };
@@ -130,7 +179,6 @@ watch(
       chooseMCPServer.value = newServers[0] || null;
     }
 
-    // If a new server was added, select it.
     if (newServers.length > oldServers.length) {
       const newServer = newServers.find((ns) => !oldServers.some((os) => os.id === ns.id));
       if (newServer) {
