@@ -108,7 +108,7 @@ const showImportModal = () => {
 };
 
 const resolveMcpServerType = (server) => {
-  const { url, command } = server;
+  const { url = "", command = "" } = server;
   if (url.includes("sse")) {
     return "sse";
   } else if (command.startsWith("npx") || command.startsWith("uvx")) {
@@ -129,11 +129,6 @@ const handleImportOk = () => {
       for (const serverName in servers) {
         if (Object.prototype.hasOwnProperty.call(servers, serverName)) {
           const serverConfig = servers[serverName];
-          if (!serverConfig.url) {
-            console.warn(`Server "${serverName}" in import data is missing a 'url' property. Skipping.`);
-            continue;
-          }
-
           const type = resolveMcpServerType(serverConfig);
 
           const newServer = {
