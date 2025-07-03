@@ -4,11 +4,15 @@
       <h2 class="title">MCP Service</h2>
       <div class="actions">
         <a-button @click="showImportModal">
-          <template #icon><ImportOutlined /></template>
+          <template #icon>
+            <ImportOutlined />
+          </template>
           Import from JSON
         </a-button>
         <a-button type="primary" @click="handleAddServer" style="margin-left: 8px">
-          <template #icon><PlusOutlined /></template>
+          <template #icon>
+            <PlusOutlined />
+          </template>
           Add MCP Server
         </a-button>
       </div>
@@ -42,7 +46,6 @@
 
 <script setup>
 import { ref, onMounted, watch, computed } from "vue";
-import { useI18n } from "vue-i18n";
 import { storeToRefs } from "pinia";
 import { message } from "ant-design-vue";
 import { PlusOutlined, CodeOutlined, ImportOutlined } from "@ant-design/icons-vue";
@@ -50,7 +53,6 @@ import ServerList from "./ServerList.vue";
 import ServerSettings from "./ServerSettings.vue";
 import { useServerStore } from "@/store/modules/server";
 
-const { t } = useI18n();
 const serverStore = useServerStore();
 const { servers: mcpServerList } = storeToRefs(serverStore);
 const { addServer, updateServer, deleteServer, fetchServers } = serverStore;
@@ -99,7 +101,6 @@ const handleAddServer = () => {
     env: {},
   };
   addServer(newServer);
-  // The list will update, and the watch effect will handle selection
 };
 
 const showImportModal = () => {
@@ -168,27 +169,28 @@ const handleImportOk = () => {
 };
 
 watch(
-  mcpServerList,
+  () => [...mcpServerList.value],
   (newServers, oldServers) => {
-    if (!chooseMCPServer.value || !newServers.some((s) => s.id === chooseMCPServer.value.id)) {
-      chooseMCPServer.value = newServers[0] || null;
-    }
-
     if (newServers.length > oldServers.length) {
-      const newServer = newServers.find((ns) => !oldServers.some((os) => os.id === ns.id));
-      if (newServer) {
-        chooseMCPServer.value = newServer;
+      const addedServer = newServers.find((ns) => !oldServers.some((os) => os.id === ns.id));
+      if (addedServer) {
+        chooseMCPServer.value = addedServer;
+        return;
       }
     }
+
+    const selectedServerExists = chooseMCPServer.value && newServers.some((s) => s.id === chooseMCPServer.value.id);
+    if (!selectedServerExists) {
+      chooseMCPServer.value = newServers[0] || null;
+    }
   },
-  { deep: true }
+  {
+    deep: true,
+  }
 );
 
-onMounted(async () => {
-  await fetchServers();
-  if (mcpServerList.value.length > 0 && !chooseMCPServer.value) {
-    chooseMCPServer.value = mcpServerList.value[0];
-  }
+onMounted(() => {
+  fetchServers();
 });
 </script>
 
@@ -246,6 +248,7 @@ onMounted(async () => {
   justify-content: center;
   height: 100%;
   padding: 50px;
+
   .placeholder-content {
     text-align: center;
     color: rgba(0, 0, 0, 0.25);

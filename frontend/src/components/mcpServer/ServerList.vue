@@ -1,16 +1,14 @@
 <template>
   <div class="mcp-server-menu">
     <div v-if="!servers || servers.length === 0" class="no-servers-info"></div>
-    <div v-for="server in servers" :key="server.id" class="menu-item" :class="{ 'menu-item-selected': server.id === selectedServerId }" @click="$emit('select', server)">
+    <div v-for="server in servers" :key="server.id" class="menu-item"
+      :class="{ 'menu-item-selected': server.id === selectedServerId }" @click="$emit('select', server)">
       <CodeOutlined />
-      <span class="menu-item-lable">{{ server.name }}</span>
-      <span
-        class="menu-item-status"
-        :class="{
-          'menu-item-status-on': server.activate,
-          'menu-item-status-off': !server.activate,
-        }"
-      ></span>
+      <span class="menu-item-label">{{ server.name }}</span>
+      <span class="menu-item-status" :class="{
+        'menu-item-status-on': server.activate,
+        'menu-item-status-off': !server.activate,
+      }"></span>
     </div>
   </div>
 </template>
@@ -58,7 +56,7 @@ defineProps({
   background: #f0f0f0;
 }
 
-.menu-item-lable {
+.menu-item-label {
   margin-left: 10px;
   font-size: 14px;
   flex-grow: 1;
