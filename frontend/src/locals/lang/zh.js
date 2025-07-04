@@ -102,6 +102,9 @@ export default {
   },
   //会员
   member: {
+    selectPaymentMethod: "选择支付方式",
+    payWithCard: "使用银行卡 / Stripe 支付",
+    payWithWeChat: "使用微信支付",
     freePlan: '免费',
     expirationDate: '到期时间：',
     upgrade: '升级',
