@@ -188,7 +188,7 @@ class DockerRuntime {
     if (result.status === 'success') {
       const content = result.content || result.stderr;
       // handle memory
-      const memorized = memorized_type.has(type)
+      const memorized = memorized_type.has(type) || (result.memorized || false);
       let action_memory = ""
       if (memorized && tool && tool.resolveMemory) {
         action_memory = tool.resolveMemory(action, content);
