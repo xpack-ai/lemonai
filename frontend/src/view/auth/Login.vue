@@ -161,10 +161,16 @@ const resendCode = async () => {
     }
   }
   localStorage.setItem('lastSendTime', now.toString());
-  await auth.sendEmailVerification(verifyEmail.value);
   loading.value = true;
-  verifyForm.code = '';
-  message.info(t('auth.codeResent'));
+  await auth.sendEmailVerification(verifyEmail.value);
+  if (res.code === 200) {
+      verifyForm.code = '';
+      message.info(t('auth.codeResent'));
+      loading.value = false;
+  } else {
+    message.error(res.message);
+    loading.value = false;
+  }
 };
 
 const toHome = () => {
