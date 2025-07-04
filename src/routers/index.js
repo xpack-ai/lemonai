@@ -25,7 +25,8 @@ const modules = [
   'recharge_product',
   'version',
   'order',
-  'mcp_server'
+  'mcp_server',
+  'dev'
 ];
 
 for (const module of modules) {

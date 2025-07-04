@@ -59,7 +59,7 @@
                 <template #overlay>
                   <a-menu :selectedKeys="mcpMenuSelectedKeys" multiple class="mcp-server-menu" @click="handleMcpMenuClick">
                     <a-menu-item key="disable">
-                      <span>不启用 MCP</span>
+                      <span>Close MCP</span>
                     </a-menu-item>
                     <a-menu-divider />
                     <a-menu-item v-for="server in mcpServers" :key="server.id" class="mcp-server-item">
@@ -149,6 +149,7 @@ const mcpMenuSelectedKeys = computed(() => {
 const handleMcpMenuClick = ({ key }) => {
   if (key === "disable") {
     selectedMcpServerIds.value = [];
+    localStorage.setItem("selectedMcpServerIds", JSON.stringify(selectedMcpServerIds.value));
     return;
   }
   const index = selectedMcpServerIds.value.indexOf(key);
