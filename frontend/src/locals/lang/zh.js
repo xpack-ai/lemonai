@@ -152,6 +152,16 @@ export default {
     noPlanForBilling: "暂无该计费方式的产品",
     alreadyCurrentMember: "已开通该会员"
   },
+  payment: {
+    stripe: {
+      title: 'Stripe',
+      description: '支持 Visa / Mastercard / 国际信用卡'
+    },
+    wechat: {
+      title: '微信支付',
+      description: '扫码支付，实时到账，推荐国内用户'
+    }
+  },
   //主界面
   lemon: {
     // 首页
