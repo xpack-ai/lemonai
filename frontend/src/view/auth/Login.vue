@@ -162,7 +162,7 @@ const resendCode = async () => {
   }
   localStorage.setItem('lastSendTime', now.toString());
   loading.value = true;
-  await auth.sendEmailVerification(verifyEmail.value);
+  const res = await auth.sendEmailVerification(verifyEmail.value);
   if (res.code === 200) {
       verifyForm.code = '';
       message.info(t('auth.codeResent'));
