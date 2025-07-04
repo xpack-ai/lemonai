@@ -115,7 +115,7 @@ const { t } = useI18n();
 import auth from '@/services/auth';
 const emit = defineEmits(['toLogin','handleForgotPassword']);
 
-const isAbroad = computed(() => import.meta.env.VITE_REGION === 'abroad');
+const isAbroad = ref(true)
 
 // 忘记密码表单
 const forgotForm = reactive({

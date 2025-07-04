@@ -73,7 +73,7 @@
     </div>
 </template>
 <script setup>
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import google from '@/assets/svg/google.svg';
 import { MobileOutlined } from '@ant-design/icons-vue';
 //判断是国内还是海外 VITE_REGION
@@ -91,7 +91,7 @@ const loginForm = reactive({
     remember: false
 });
 
-const isAbroad = computed(() => import.meta.env.VITE_REGION === 'abroad');
+const isAbroad = ref(true)
 const isLoginValid = computed(() => {
   const hasPassword = !!loginForm.password;
 

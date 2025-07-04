@@ -103,7 +103,7 @@ import { message } from 'ant-design-vue';
 import { MobileOutlined } from '@ant-design/icons-vue';
 //判断是国内还是海外 VITE_REGION
 import { useI18n } from 'vue-i18n';
-const isAbroad = computed(() => import.meta.env.VITE_REGION === 'abroad');
+const isAbroad = ref(true)
 const { t } = useI18n();
 import auth from '@/services/auth';
 const emit = defineEmits(['toLogin','handleRegister','handleGoogleRegister']);
