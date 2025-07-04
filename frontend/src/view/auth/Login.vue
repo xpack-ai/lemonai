@@ -217,11 +217,11 @@ const handleRegister = async (values) => {
       throw new Error(t('auth.passwordTooShort'));
     }
     if(isAbroad.value){
-      activeKey.value = 'verify';
       verifyEmail.value = values.email;
       const res = await auth.sendEmailVerification(values.email);
       if (res.code === 200) {
         message.success(t('auth.codeSent'));
+        activeKey.value = 'verify';
       } else {
         message.error(res.message);
       }

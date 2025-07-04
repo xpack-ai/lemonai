@@ -118,7 +118,7 @@ const { user, membership, points } = storeToRefs(userStore);
 import { message } from 'ant-design-vue'
 
 
-const billingType = ref('year')
+const billingType = ref('month')
 const billingOptions = [
   { label: t('member.billingMonthly'), value: 'month' },
   { label: t('member.billingYearly'), value: 'year' },
