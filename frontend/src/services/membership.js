@@ -24,19 +24,21 @@ const service = {
     return res
   },
 
-  ///strip/create_point_purchase_order
-  async createStripeOrder(planId) {
+  ///strip/create_mambership_plan_order
+  async createStripeOrder(planId,from_client) {
     const uri = '/api/payment/strip/create_mambership_plan_order'
     const res = await http.post(uri, {
-      membership_plan_id:planId
+      membership_plan_id:planId,
+       from_client: from_client
     })
     return res
   },
   //stripe/create_point_purchase_order
-  async createStripePointPurchaseOrder(product_id) {
+  async createStripePointPurchaseOrder(product_id,from_client) {
     const uri = '/api/payment/strip/create_point_purchase_order'
     const res = await http.post(uri, {
-      product_id: product_id
+      product_id: product_id,
+       from_client: from_client
     })
     return res
   },

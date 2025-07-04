@@ -213,7 +213,9 @@ const handlePayment = async (method) => {
 
   try {
     if (method === 'stripe') {
-      const res = await membershipService.createStripeOrder(plan.id)
+      //判断是不是客户端
+      let from_client = import.meta.env.VITE_IS_CLIENT === 'true' ? 'desktop' : 'web'
+      const res = await membershipService.createStripeOrder(plan.id,from_client)
       if (res?.url) {
         window.location.href = res.url
       } else {

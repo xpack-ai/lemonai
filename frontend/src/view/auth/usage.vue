@@ -223,7 +223,8 @@ const handlePayment = async (method) => {
   loading.value = true
 
   if(method === 'stripe'){
-    let res = await membershipService.createStripePointPurchaseOrder(selectedPlan.value.id)
+    let from_client = import.meta.env.VITE_IS_CLIENT === 'true' ? 'desktop' : 'web'
+    let res = await membershipService.createStripePointPurchaseOrder(selectedPlan.value.id,from_client)
     window.location.href = res.url; 
     loading.value = false
   }else{
