@@ -1,6 +1,6 @@
 const router = require("koa-router")();
 const axios = require("axios");
-const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN || 'https://sub-server.lemonai.cc';
+const SUB_SERVER_DOMAIN = process.env.SUB_SERVER_DOMAIN || 'https://app.lemonai.ai';
 const forwardRequest = require('@src/utils/sub_server_forward_request')
 
 
