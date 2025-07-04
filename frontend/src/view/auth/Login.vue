@@ -94,7 +94,7 @@ onMounted(() => {
 })
 
 //判断是国内还是海外 VITE_REGION
-const isAbroad = computed(() => import.meta.env.VITE_REGION === 'abroad');
+const isAbroad = ref(true)
 
 
 
@@ -211,7 +211,7 @@ const handleRegister = async (values) => {
     }
     const phoneRegex = /^1[3-9]\d{9}$/
     if (!phoneRegex.test(values.phone) && !isAbroad.value) {
-      throw new Error(t('auth.pleaseEnterValidPhone'));
+      throw new Error(t('auth.pleaseInputValidPhone'));
     }
     if (values.password.length < 6) {
       throw new Error(t('auth.passwordTooShort'));
