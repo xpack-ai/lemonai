@@ -46,7 +46,7 @@
         <span>{{ $t("setting.mcpService.command") }}</span>
         <a-input v-model:value="server.command" :placeholder="$t('setting.mcpService.commandPlaceholder')" class="text-item input" />
       </div>
-      <div v-if="startsWithNpx || startsWithUvx" class="mcp-server-content-main-source mcp-server-content-main-item">
+      <div v-if="false" class="mcp-server-content-main-source mcp-server-content-main-item">
         <span>{{ $t("setting.mcpService.packageSource") }}</span>
         <a-radio-group v-if="startsWithNpx" v-model:value="server.registryUrl" name="radioGroup" class="input radio">
           <a-radio value="">{{ $t("setting.mcpService.default") }}</a-radio>
@@ -74,8 +74,8 @@
         </a-radio-group>
       </div>
       <div v-if="server.type === 'sse' || server.type === 'streamableHttp'" class="mcp-server-content-main-url mcp-server-content-main-item">
-        <span>URL</span>
-        <a-input v-model:value="server.url" :placeholder="$t('setting.mcpService.urlPlaceholder')" class="text-item input" @update:value="handleUpdateServer({ url: $event })" />
+        <span>{{ $t("setting.mcpService.url") }}</span>
+        <a-input v-model:value="server.url" :placeholder="$t('setting.mcpService.url')" class="text-item input" @update:value="handleUpdateServer({ url: $event })" />
       </div>
       <div class="mcp-server-content-main-args mcp-server-content-main-item">
         <span>{{ $t("setting.mcpService.args") }}</span>
@@ -135,7 +135,7 @@ const handleActivateChange = async (checked) => {
   if (checked) {
     const isValid = await validateServerConnection();
     if (!isValid) {
-      message.error("MCP connection failed");
+      message.error(t("mcpService.connectionFailed"));
       emit("update:server", { ...props.server, activate: false });
       return;
     }

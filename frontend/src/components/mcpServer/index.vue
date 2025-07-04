@@ -1,19 +1,19 @@
 <template>
   <div class="mcp-manager-container">
     <div class="top-action-bar">
-      <h2 class="title">MCP Service</h2>
+      <h2 class="title">{{ $t("setting.mcpService.title") }}</h2>
       <div class="actions">
         <a-button @click="showImportModal">
           <template #icon>
             <ImportOutlined />
           </template>
-          Import from JSON
+          {{ $t("setting.mcpService.importFromJson") }}
         </a-button>
         <a-button type="primary" @click="handleAddServer" style="margin-left: 8px">
           <template #icon>
             <PlusOutlined />
           </template>
-          Add MCP Server
+          {{ $t("setting.mcpService.addMcpServer") }}
         </a-button>
       </div>
     </div>
@@ -31,13 +31,19 @@
             <div class="placeholder-icon">
               <CodeOutlined />
             </div>
-            <p class="placeholder-text">No MCP Server Selected</p>
+            <p class="placeholder-text">{{ $t("setting.mcpService.noServerSelected") }}</p>
           </div>
         </div>
       </div>
     </div>
 
-    <a-modal v-model:visible="importModalVisible" title="Import from JSON" @ok="handleImportOk" :ok-text="'OK'" :cancel-text="'Cancel'">
+    <a-modal
+      v-model:visible="importModalVisible"
+      :title="$t('setting.mcpService.importModalTitle')"
+      @ok="handleImportOk"
+      :ok-text="$t('setting.mcpService.ok')"
+      :cancel-text="$t('setting.mcpService.cancel')"
+    >
       <pre>{{ exampleJson }}</pre>
       <a-textarea v-model:value="importJsonText" placeholder="" :rows="10" />
     </a-modal>
@@ -49,10 +55,12 @@ import { ref, onMounted, watch, computed } from "vue";
 import { storeToRefs } from "pinia";
 import { message } from "ant-design-vue";
 import { PlusOutlined, CodeOutlined, ImportOutlined } from "@ant-design/icons-vue";
+import { useI18n } from "vue-i18n";
 import ServerList from "./ServerList.vue";
 import ServerSettings from "./ServerSettings.vue";
 import { useServerStore } from "@/store/modules/server";
 
+const { t } = useI18n();
 const serverStore = useServerStore();
 const { servers: mcpServerList } = storeToRefs(serverStore);
 const { addServer, updateServer, deleteServer, fetchServers } = serverStore;
@@ -148,22 +156,22 @@ const handleImportOk = () => {
       }
 
       if (serversAddedCount > 0) {
-        message.success(`Success import ${serversAddedCount} mcp servers.`);
+        message.success(t("mcpService.importSuccess", { count: serversAddedCount }));
       } else {
-        message.warn("No valid server configuration found in the imported data.");
+        message.warn(t("mcpService.noValidServer"));
       }
     } else {
       if (!importData.name) {
-        message.error("Name is required.");
+        message.error(t("mcpService.nameRequired"));
         return;
       }
       addServer(importData);
-      message.success("Success import mcp server.");
+      message.success(t("mcpService.importSuccessSingle"));
     }
 
     importModalVisible.value = false;
   } catch (e) {
-    message.error("Invalid JSON format.");
+    message.error(t("mcpService.invalidJson"));
     console.error("JSON parsing error:", e);
   }
 };
