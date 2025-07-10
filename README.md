@@ -1,125 +1,85 @@
+<div align="center">
 
-# Lemon AI​ is the first Full-stack, Open-source, Agentic AI framework, offering a ​fully local alternative​ to platforms like Manus & Genspark AI. It features an integrated Code Interpreter VM sandbox for safe execution.​​
+![Intro](./docs/assets/xpack/intro-bg.png)
 
-<div align=center>
-  <img src="./public/img/Lemon_logo.png" width="400">
+[Introduction](#introduction) • [Quickstart](#quickstart) • [Popular Tasks](#popular-tasks)
+
 </div>
-<p align="center">
-  <a href="https://lemon-11.gitbook.io/lemonai">Get to know Lemon AI quickly</a> ·
-  <a href="https://lemon-11.gitbook.io/lemonai/development-deployment-guidelines/docker-quick-deployment">Docker Quick Deployment</a> ·
-  <a href="https://lemon-11.gitbook.io/lemonai/">Documentation</a> ·
-  <a href="https://lemonai.cc/">Download the desktop app for macOS & Windows</a> ·
-  <a href="https://deepwiki.com/hexdocom/lemonai">DeepWiki</a> 
-</p>
 
 <p align="center">
   <a href="./README.md"><img alt="README in English" src="https://img.shields.io/badge/English-d9d9d9"></a>
   <a href="./README_CN.md"><img alt="简体中文版自述文件" src="https://img.shields.io/badge/简体中文-d9d9d9"></a>
 </p>
 
-**Lemon AI​** is the first **​full-stack, open-source, agentic AI framework**, offering a **​fully local alternative​** to platforms like **Manus & Genspark AI. It features an integrated Code Interpreter VM sandbox for safe execution**.​​
+## Introduction
 
-**​Lemon AI empowers deep research, web browsing, viable coding, and data analysis – running entirely on your local hardware.​​** It supports ​**planning, action, reflection, and memory​** functionalities using **​local LLMs**​ (like DeepSeek, Qwen, Llama, Gemma) via **Ollama**, ensuring **​complete privacy and zero cloud dependency.**
+This repository showcases the powerful integration of **Lemon AI** with **XPack.AI**, demonstrating how you can extend the capabilities of your AI agent by connecting to thousands of ready-to-use tools worldwide. Building upon the robust foundation of [Lemon AI](https://lemonai.cc/) - the world's first full-stack open-source agentic AI framework - this project provides a practical example of configuring its Model Context Protocol (MCP) service to leverage XPack's extensive service marketplace.
 
-For enhanced security, Lemon AI operates within a ​**local Virtual Machine (VM) sandbox.** This sandbox **​protects your machine's files and operating system​** by safely handling all code writing, execution, and editing tasks.
+## What is Lemon AI?
 
-Additionally, Lemon AI provides the **​flexibility to configure enhanced results**​ using APIs from leading cloud models like **​Claude, GPT, Gemini, and Grok.**
+[Lemon AI](https://lemonai.cc/) is the first **full-stack, open-source, agentic AI framework**, offering a **fully local alternative** to platforms like Manus & Genspark AI. It features an integrated Code Interpreter VM sandbox for safe execution, empowering deep research, web browsing, viable coding, and data analysis – running entirely on your local hardware.
 
-<a href="https://youtu.be/OmU_4rrZUHE?si=iseqOl5TV2n2kovy">
-  <figure>
-    <img src="./public/img/githubvideo.png" alt="">
-  </figure>
-</a>
+**Key Features:**
 
-### function and characteristic
-The world's first full-stack open-source AI Agentic framework with comprehensive capabilities
-#### Multi: Infinite possibilities
-Universal AI Agent capabilities supporting unlimited task scenarios, including:
-- Deep search & research reports
-- Code generation & data analysis
-- Content creation & document processing
-Supports experience repository for self-learning and extending enterprise-specific customizations.
+- **Full-stack Framework**: Complete agentic AI solution with integrated VM sandbox
+- **Local Privacy**: Supports local LLMs (DeepSeek, Qwen, Llama, Gemma) via Ollama with zero cloud dependency
+- **Secure Execution**: VM sandbox protects your machine's files and operating system
+- **Multi-modal Capabilities**: Deep search, research reports, code generation, data analysis, content creation
+- **Flexible Deployment**: Open source code, Container, Client application, Online subscription
+- **MCP Integration**: Native Model Context Protocol support for external tool integration
 
-**Deployment options:** Open source code, Container, Client application, Online subscription - compatible with cloud/local/all-in-one systems
+## What is XPack.AI?
 
-#### Fast: Rapid Deploy
-One-click deployment for immediate usage with minimal technical requirements:
-- Simplified installation process for all deployment options
-- Quick setup without complex configurations
-- Ready-to-use system within minutes
+[XPack.AI](https://xpack.ai/) is a platform that enables AI agents to connect to a vast ecosystem of global services and tools through a unified Model Context Protocol (MCP). With XPack, you can effortlessly expand your AI agent's functionalities, accessing diverse APIs and services across various domains like finance, logistics, messaging, and more, all in under a minute.
 
-Supporting various deployment environments from personal computers to enterprise servers, with comprehensive documentation for smooth implementation.
+## Lemon AI + XPack: Bridging AI with Global Services
 
-#### Good: Powerful & Flexibility
-Feature-rich framework with extensive capabilities:
-- Virtual machine integration
-- Code generation & execution
-- Browser operations & web search
-- Multi-tool integration
+This project focuses on demonstrating how to configure Lemon AI to utilize XPack as an MCP server. By doing so, your Lemon AI instance gains immediate access to XPack's rich collection of tools, allowing you to:
 
-Highly adaptable architecture allows for custom modifications and extensions to fit specific business requirements and integration with existing systems.
+- **Access a diverse range of services:** From financial data to image processing, integrate capabilities that were previously out of reach
+- **Accelerate development:** Rapidly prototype and build AI-powered solutions by leveraging pre-built tools
+- **Streamline workflows:** Automate complex tasks by combining Lemon AI's intelligence with XPack's external service integrations
+- **Scale effortlessly:** Connect to thousands of global services without writing custom integration code
 
-#### Economic: Same quality，10x cheaper
-Dramatically reduced operational costs:
-- Task execution costs 1/10 - 1/100 of other agent products
-- Open source subscription model
-- Based on open source DeepSeekV3 model
+### Architecture Overview
 
-Significant cost savings without compromising on quality or performance, making advanced AI capabilities accessible to organizations of all sizes.
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   User Input    │    │    Lemon AI      │    │   XPack.AI      │
+│   (Web/API)     │◄──►│                  │◄──►│   Marketplace   │
+└─────────────────┘    │  ┌─────────────┐ │    │                 │
+                       │  │ MCP Client  │ │    │  ┌─────────────┐│
+┌─────────────────┐    │  │             │ │    │  │1000+ Global ││
+│  Local Tools    │◄──►│  │ • XPack     │ │    │  │Services     ││
+│  & VM Sandbox   │    │  │ • Local     │ │    │  │• Finance    ││
+└─────────────────┘    │  │ • Custom    │ │    │  │• Social     ││
+                       │  └─────────────┘ │    │  │• Data       ││
+┌─────────────────┐    │  ┌─────────────┐ │    │  │• AI/ML      ││
+│  Agent Engine   │◄──►│  │   Agent     │ │    │  │• Utilities  ││
+│  & Memory       │    │  │Orchestration│ │    │  └─────────────┘│
+└─────────────────┘    │  └─────────────┘ │    └─────────────────┘
+                       └──────────────────┘
 
-### Using Lemon AI
+```
 
-* Quickly get Lemon AI running in your environment with this starter guide. Use our [documentation](https://document.lemonai.cc/) for further references and more in-depth instructions.
+**Key Components:**
 
-### System Requirements[​](https://docs.all-hands.dev/modules/usage/installation#system-requirements) <a href="#system-requirements" id="system-requirements"></a>
+- **Lemon AI Core**: Full-stack agentic framework with VM sandbox for secure execution
+- **MCP Client**: Standardized interface for connecting to external tool providers
+- **XPack MCP Server**: Gateway to 1000+ global services via unified API
+- **Local Tools**: Built-in capabilities like code execution, file system access, web browsing
+- **Agent Engine**: Advanced planning, action, reflection, and memory functionalities
 
-* MacOS with [Docker Desktop support](https://docs.docker.com/desktop/setup/install/mac-install/#system-requirements)
-* Linux
-* Windows with [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) and [Docker Desktop support](https://docs.docker.com/desktop/setup/install/windows-install/#system-requirements)
+## Quickstart
 
-A system with a modern processor and a minimum of **4GB RAM** is recommended to run Lemon AI.
+### Install Lemon AI
 
-### Prerequisites <a href="#prerequisites" id="prerequisites"></a>
+First, ensure Lemon AI is installed. Please follow the installation steps in the [Installation](#installation) section below if you haven't already.
 
-#### MacOS
-
-**Docker Desktop**
-
-1. [Install Docker Desktop on Mac](https://docs.docker.com/desktop/setup/install/mac-install).
-2. Open Docker Desktop, go to `Settings > Advanced` and ensure `Allow the default Docker socket to be used` is enabled.
-
-#### Linux
-
-Tested with Ubuntu 22.04.
-
-**Docker Desktop**
-
-1. [Install Docker Desktop on Linux](https://docs.docker.com/desktop/setup/install/linux/).
-
-#### Windows
-
-**WSL**
-
-1. [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install).
-2. Run `wsl --version` in powershell and confirm `Default Version: 2`.
-
-**Docker Desktop**
-
-1. [Install Docker Desktop on Windows](https://docs.docker.com/desktop/setup/install/windows-install).
-2. Open Docker Desktop, go to `Settings` and confirm the following:
-
-* General: `Use the WSL 2 based engine` is enabled.
-* Resources > WSL Integration: `Enable integration with my default WSL distro` is enabled.
-
-**note**
-
-The docker command below to start the app must be run inside the WSL terminal.
-
-### Start the App <a href="#start-the-app" id="start-the-app"></a>
-
-The easiest way to run Lemon AI is in Docker.
+**⚡ Quick Start with Docker:**
 
 ```bash
+# Pull and run with Docker
 docker pull hexdolemonai/lemon-runtime-sandbox:latest
 
 docker run -it --rm --pull=always \
@@ -135,35 +95,100 @@ docker run -it --rm --pull=always \
   --interactive \
   --tty \
   hexdolemonai/lemon:latest make run
+
+# Visit http://localhost:5005 to start
 ```
 
-### Contributing
+### Configure XPack MCP
 
-For those who'd like to contribute code, see our [Contribution Guide](https://github.com/hexdocom/lemon/blob/main/CONTRIBUTING.md). At the same time, please consider supporting Lemon AI by sharing it on social media and at events and conferences.
+To connect your Lemon AI to XPack, you need to configure an MCP server. This allows Lemon AI to discover and utilize the tools available through XPack.
 
-#### contributors
+#### 1. Obtain your XPack Auth Key:
 
-<a href="https://github.com/hexdocom/lemonai/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=hexdocom/lemonai" />
-</a>
+- Visit [XPack.AI](https://xpack.ai/) and sign up for an account
+- Generate your Auth key from your XPack dashboard
 
-### Community & contact
+![XPack.ai Dashboard](./docs/assets/xpack/xpack-dashboard.png)
 
-We welcome your contribution to lemon AI to help improve lemon AI. Include: submit code, questions, new ideas, or share interesting and useful AI applications you have created based on lemon AI. We also welcome you to share lemon AI at different events, conferences and social media.
+#### 2. In Lemon AI Configuration
 
-* [GitHub Issues](https://github.com/hexdocom/Lemon/issues).Best for: bugs you encounter using Lemon.AI, and feature proposals. See our [Contribution Guide](https://github.com/hexdocom/lemon/blob/main/CONTRIBUTING.md).
-* [X(Twitter)](https://x.com/LemonAI_cc). Best for: sharing your applications and hanging out with the community.
-* [Discord](https://discord.gg/JgnN3uUX). Best for: sharing your applications and hanging out with the community.
-* commercial license（[service@hexdo.com](mailto:service@hexdo.com)）. Business consulting on commercial use licensing lemon AI.
+Configure MCP through Settings UI:
 
-### Star History
+- Open Lemon AI web interface,and navigate to the [Settings Mcp service](http://localhost:5005/setting/mcp-service) page
+- Click "Import from JSON" and paste the following configuration:
 
-[![Star History Chart](https://api.star-history.com/svg?repos=hexdocom/lemonai&type=Date)](https://www.star-history.com/#hexdocom/lemonai&Date)
+  ```json
+  {
+    "mcpServers": {
+      "xpack-mcp-market": {
+        "type": "sse",
+        "url": "https://api.xpack.ai/v1/mcp?apikey={YOUR_XPACK_AUTH_KEY}"
+      }
+    }
+  }
+  ```
 
-### Security disclosure
+![import mcp config json](./docs/assets/ui-mcp-config-1.png)
 
-To protect your privacy, please avoid posting security issues on GitHub. Instead, send your questions to [service@hexdo.com](mailto:service@hexdo.com) and we will provide you with a more detailed answer.
+⚠️ Replace `YOUR_XPACK_AUTH_KEY` with your actual XPack Auth key from the dashboard.
 
-### License
+**Configuration Details:**
 
-This repository is available under the [Lemon AI Open Source License](https://github.com/hexdocom/lemon/blob/main/LICENSE), which is essentially Apache 2.0 with a few additional restrictions.
+- **Server Name:** `xpack-mcp-market` - This identifies the XPack MCP server
+- **Type:** `sse` - Server-Sent Events connection type for real-time communication
+- **URL:** XPack's MCP endpoint with your authentication key
+- **Capabilities:** Access to 1000+ global services through standardized MCP interface
+
+![import mcp config json](./docs/assets/ui-mcp-config-2.png)
+
+#### 3. Verifying Configuration
+
+If configured correctly, you can verify the setup by:
+
+- Open the Lemon AI chat interface (localhost:5005)
+- Click the "MCP" dropdown option in the chat interface
+- You should see "xpack-mcp-market" as an available option
+
+![import mcp config json](./docs/assets/ui-mcp-config-3.png)
+
+### 4. Run Lemon AI with MCP
+
+Once the configuration is complete, Select "xpack-mcp-market" to enable XPack tools for your conversations. You can then input your ideas and prompts in the web UI, and Lemon AI will leverage the tools from XPack to accomplish the tasks. Simply mention "use XPack" or "use xpack-mcp-market" in your requests to specifically utilize XPack services.
+
+## Popular Tasks
+
+This section provides practical examples of how you can leverage Lemon AI with XPack for various tasks.
+
+### Analyze YouTube comments and provide suggestions to improve video creation
+
+Easily analyze YouTube video comments to understand audience sentiment and get suggestions for improving your content.
+
+```
+Please use xpack to read the comments on this YouTube video: https://www.youtube.com/watch?v=LPZh9BOjkQs, analyze the sentiment of the feedback, and recommend improvements for the video.
+```
+
+![Analyze YouTube comments Image](./docs/assets/xpack/demo-youtube-analysis.png)
+
+### Current Gold Price and Influencing Factors
+
+Quickly check the latest gold price and discover key factors that may affect future trends.
+
+```
+Please use xpack to look up the current real-time price of gold.
+```
+
+![Current Gold Price Image](./docs/assets/xpack/demo-gold-monitor.png)
+
+### Generate a Running Puppy Image
+
+Easily create adorable custom images using AI image generation tools through XPack.
+
+```
+Generate a running puppy image with xpack
+```
+
+![Generated image of a cute puppy running in a park](./docs/assets/xpack/demo-running-puppy.png)
+
+---
+
+**Ready to explore the power of AI agents with global services? This demo showcases how Lemon AI integrates seamlessly with XPack.AI to unlock unlimited possibilities!**

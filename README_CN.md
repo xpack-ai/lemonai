@@ -1,121 +1,85 @@
-# Lemon AI 是首个全栈、开源、基于代理的 AI 框架，为 Manus & Genspark AI 等平台提供了一个完全本地化的替代方案。它具备集成的代码解释器虚拟机沙箱，以实现安全执行。
+<div align="center">
 
-<div align=center>
-  <img src="./public/img/Lemon_logo.png" width="400">
+![Intro](./docs/assets/xpack/intro-bg.png)
+
+[介绍](#介绍) • [快速开始](#快速开始) • [热门任务](#热门任务)
+
 </div>
-<p align="center">
-  <a href="https://lemon-11.gitbook.io/lemonai/lemon-docs">快速了解 Lemon AI</a> ·
-  <a href="https://lemon-11.gitbook.io/lemonai/lemon-docs/kai-fa-bu-shu-zhi-nan/docker-kuai-su-bu-shu">Docker快速部署</a> ·
-  <a href="https://lemon-11.gitbook.io/lemonai/lemon-docs">文档</a> ·
-  <a href="https://www.lemonai.cc">下载macOS 和 Windows 桌面应用程序</a> ·
-  <a href="https://deepwiki.com/hexdocom/lemonai">DeepWiki</a> 
-</p>
 
 <p align="center">
   <a href="./README.md"><img alt="README in English" src="https://img.shields.io/badge/English-d9d9d9"></a>
   <a href="./README_CN.md"><img alt="简体中文版自述文件" src="https://img.shields.io/badge/简体中文-d9d9d9"></a>
 </p>
 
-Lemon AI 是首个全栈、开源、基于代理的 AI 框架，为 Manus & Genspark AI 等平台提供了一个完全本地化的替代方案。它具备集成的代码解释器虚拟机沙箱，以实现安全执行。
+## 介绍
 
-Lemon AI能够进行深度研究、网页浏览、实际编码和数据分析，且完全在本地硬件上运行。它通过Ollama支持规划、行动、反思和记忆功能，所使用的本地LLMs（如DeepSeek、Qwen、Llama、Gemma）确保了完全隐私，且无需依赖云。
+本仓库展示了 **Lemon AI** 与 **XPack.AI** 的强大集成，演示了如何通过连接全球数千个即用型工具来扩展您的 AI 代理能力。基于 [Lemon AI](https://lemonai.cc/) 的强大基础 - 世界首个全栈开源代理式 AI 框架 - 本项目提供了配置其模型上下文协议 (MCP) 服务以利用 XPack 广泛服务市场的实际示例。
 
-为了增强安全性，Lemon AI在本地虚拟机沙盒内运行。该沙盒通过安全处理所有代码编写、执行和编辑任务，来保护您的机器文件和操作系统。
+## 什么是 Lemon AI？
 
-此外，Lemon AI 还提供灵活性，可通过领先的云模型（如 Claude、GPT、Gemini 和 Grok）的 API 来配置增强的结果。
+[Lemon AI](https://lemonai.cc/) 是首个**全栈、开源、代理式 AI 框架**，为 Manus & Genspark AI 等平台提供**完全本地化的替代方案**。它具有集成的代码解释器虚拟机沙箱，可安全执行，支持深度研究、网页浏览、可行编码和数据分析 - 完全在您的本地硬件上运行。
 
-<a href="https://youtu.be/OmU_4rrZUHE?si=iseqOl5TV2n2kovy">
-  <figure>
-    <img src="./public/img/githubvideo.png" alt="">
-  </figure>
-</a>
+**主要特性：**
 
-### 功能与特点
+- **全栈框架**：具有集成虚拟机沙箱的完整代理式 AI 解决方案
+- **本地隐私**：通过 Ollama 支持本地 LLM（DeepSeek、Qwen、Llama、Gemma），零云依赖
+- **安全执行**：虚拟机沙箱保护您机器的文件和操作系统
+- **多模态能力**：深度搜索、研究报告、代码生成、数据分析、内容创作
+- **灵活部署**：开源代码、容器、客户端应用程序、在线订阅
+- **MCP 集成**：原生模型上下文协议支持外部工具集成
 
-**全球第⼀款全栈开源的 AI Agentic 框架，多快好省，满⾜各类需求**
+## 什么是 XPack.AI？
 
-#### 多：无限多可能，无限多场景 
-Lemon AI作为支持无限任务场景的通用 AI Agent 能力，包括：
-- 深度搜索与研究报告  
-- 代码生成与数据分析  
-- 内容创作与文档处理  
-- 支持经验库自学习及扩展企业定制化功能  
+[XPack.AI](https://xpack.ai/) 是一个平台，使 AI 代理能够通过统一的模型上下文协议 (MCP) 连接到庞大的全球服务和工具生态系统。使用 XPack，您可以轻松扩展 AI 代理的功能，访问金融、物流、消息传递等各个领域的多样化 API 和服务，所有这些都可以在一分钟内完成。
 
-**部署方式：** 开源代码、容器、客户端应用、在线订阅 —— 兼容云端/本地/一体化系统  
+## Lemon AI + XPack：连接 AI 与全球服务
 
-#### 快：极速部署，即刻上手  
-一键部署，无需复杂配置即可立即使用：
-- 所有部署方式均简化安装流程  
-- 无需复杂配置即可快速搭建  
-- 5分钟内即可使用的系统  
-- 支持从个人电脑到企业服务器的各种部署环境，配备完整文档以确保顺利实施  
+本项目专注于演示如何配置 Lemon AI 以利用 XPack 作为 MCP 服务器。通过这样做，您的 Lemon AI 实例可以立即访问 XPack 丰富的工具集合，使您能够：
 
-#### 好：功能强大，灵活可定制
-功能强大的框架，具备广泛的能力：
-- 虚拟机集成  
-- 代码生成与执行  
-- 浏览器操作与网页搜索  
-- 多工具集成  
-- 高度可扩展架构，支持根据特定业务需求进行定制修改和扩展，并可与现有系统无缝集成  
+- **访问多样化的服务范围：** 从金融数据到图像处理，集成以前无法触及的功能
+- **加速开发：** 通过利用预构建工具快速原型化和构建 AI 驱动的解决方案
+- **简化工作流程：** 通过结合 Lemon AI 的智能与 XPack 的外部服务集成来自动化复杂任务
+- **轻松扩展：** 连接到数千个全球服务，无需编写自定义集成代码
 
-#### 省：同等质量，成本降低10倍 
-显著降低运营成本：
-- 与其他AI Agent产品相比，Lemon AI的单次任务成本可降低10倍以上  
-- 开源订阅模式  
-- 基于开源 DeepSeekV3 模型  
-- 在不牺牲质量和性能的前提下大幅节省成本，使各类规模组织都能轻松获取先进的 AI 能力
+### 架构概览
 
-### 使用 Lemon AI
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   User Input    │    │    Lemon AI      │    │   XPack.AI      │
+│   (Web/API)     │◄──►│                  │◄──►│   Marketplace   │
+└─────────────────┘    │  ┌─────────────┐ │    │                 │
+                       │  │ MCP Client  │ │    │  ┌─────────────┐│
+┌─────────────────┐    │  │             │ │    │  │1000+ Global ││
+│  Local Tools    │◄──►│  │ • XPack     │ │    │  │Services     ││
+│  & VM Sandbox   │    │  │ • Local     │ │    │  │• Finance    ││
+└─────────────────┘    │  │ • Custom    │ │    │  │• Social     ││
+                       │  └─────────────┘ │    │  │• Data       ││
+┌─────────────────┐    │  ┌─────────────┐ │    │  │• AI/ML      ││
+│  Agent Engine   │◄──►│  │   Agent     │ │    │  │• Utilities  ││
+│  & Memory       │    │  │Orchestration│ │    │  └─────────────┘│
+└─────────────────┘    │  └─────────────┘ │    └─────────────────┘
+                       └──────────────────┘
 
-* 使用这个[入门指南](https://lemon-11.gitbook.io/lemon-docs)快速在您的环境中运行 Lemon AI。更多参考和详细说明请参阅我们的文档。
+```
 
-### 运行 Lemon AI
+**关键组件：**
 
-#### 系统要求 <a href="#system-requirements" id="system-requirements"></a>
+- **Lemon AI 核心**：具有虚拟机沙箱的全栈代理式框架，用于安全执行
+- **MCP 客户端**：连接外部工具提供商的标准化接口
+- **XPack MCP 服务器**：通过统一 API 访问 1000+ 全球服务的网关
+- **本地工具**：内置功能，如代码执行、文件系统访问、网页浏览
+- **代理引擎**：高级规划、行动、反思和记忆功能
 
-* [支持 Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install/#system-requirements)的 MacOS
-* Linux
-* [支持WSL](https://learn.microsoft.com/en-us/windows/wsl/install)和[Docker Desktop 的](https://docs.docker.com/desktop/setup/install/windows-install/#system-requirements)Windows
+## 快速开始
 
-建议使用具有现代处理器和至少**4GB RAM的系统来运行 Lemon AI。**
+### 安装 Lemon AI
 
-#### **MacOS**
+首先，确保已安装 Lemon AI。如果您尚未安装，请按照下面[安装](#安装)部分的安装步骤进行操作。
 
-**Docker 桌面**
-
-1.  [在 Mac 上安装 Docker Desktop](https://docs.docker.com/desktop/setup/install/mac-install)。
-2.  打开 Docker Desktop，转到`Settings > Advanced`并确保`Allow the default Docker socket to be used`已启用。
-
-#### **Linux**
-
-使用 Ubuntu 22.04 测试。
-
-**Docker 桌面**
-
-1.  [在 Linux 上安装 Docker Desktop](https://docs.docker.com/desktop/setup/install/linux/)。
-
-#### **Windows**
-
-**WSL**
-
-1.  [安装 WSL](https://learn.microsoft.com/en-us/windows/wsl/install)。
-2.  `wsl --version`在 powershell 中运行并确认`Default Version: 2`。
-
-**Docker 桌面**
-
-1.  [在 Windows 上安装 Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install)。
-2.  打开Docker Desktop，前往`Settings`并确认以下内容：
-
-    * 常规：`Use the WSL 2 based engine`已启用。
-    * 资源 > WSL 集成：`Enable integration with my default WSL distro`已启用。
-
-必须在 WSL 终端内运行以下用于启动应用程序的 docker 命令。
-
-### 启动应用程序 <a href="#start-the-app" id="start-the-app"></a>
-
-运行Lemon AI最简单的方法是使用 Docker。
+**⚡ Docker 快速开始：**
 
 ```bash
+# 使用 Docker 拉取并运行
 docker pull hexdolemonai/lemon-runtime-sandbox:latest
 
 docker run -it --rm --pull=always \
@@ -131,37 +95,101 @@ docker run -it --rm --pull=always \
   --interactive \
   --tty \
   hexdolemonai/lemon:latest make run
+
+# 访问 http://localhost:5005 开始使用
 ```
 
-### 贡献
+### 配置 XPack MCP
 
-对于那些想要贡献代码的人，请参阅我们的[贡献指南](https://github.com/hexdocom/lemon/blob/main/CONTRIBUTING_CN.md)。同时，请考虑通过社交媒体、活动和会议来支持 Lemon AI 的分享。
+要将您的 Lemon AI 连接到 XPack，您需要配置一个 MCP 服务器。这允许 Lemon AI 发现并利用通过 XPack 提供的工具。
 
-#### 贡献者
+#### 1. 获取您的 XPack 认证密钥：
 
-<a href="https://github.com/hexdocom/lemonai/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=hexdocom/lemonai" />
-</a>
+- 访问 [XPack.AI](https://xpack.ai/) 并注册账户
+- 从您的 XPack 仪表板生成认证密钥
+
+![XPack.ai Dashboard](./docs/assets/xpack/xpack-dashboard.png)
 
 
-### 社区与支持
+#### 2. 在 Lemon AI 配置中
 
-我们欢迎您为 Lemon AI 作出贡献，以帮助改善 Lemon AI。包括：提交代码、问题、新想法，或分享您基于 Lemon AI创建的有趣且有用的 AI 应用程序。同时，我们也欢迎您在不同的活动、会议和社交媒体上分享 Lemon AI。
+通过设置 UI 配置 MCP：
 
-* [GitHub Issues](https://github.com/hexdocom/lemon/issues)。👉：使用 Lemon AI 时遇到的错误和问题，请参阅贡献指南
-* 电子邮件支持👉：关于使用 Lemon的问题。
-* [X(Twitter)](https://x.com/LemonAI_cc)。👉：分享您的应用程序并与社区交流。
-* [Discord](https://discord.gg/JgnN3uUX)。👉：分享您的应用程序并与社区交流。
-* 商业许可。👉：有关商业用途许可 Lemon AI的商业咨询。
+- 打开 Lemon AI 网页界面，导航到 [设置 MCP 服务](http://localhost:5005/setting/mcp-service) 页面
+- 点击"从 JSON 导入"并粘贴以下配置：
 
-### Star History
+  ```json
+  {
+    "mcpServers": {
+      "xpack-mcp-market": {
+        "type": "sse",
+        "url": "https://api.xpack.ai/v1/mcp?apikey={YOUR_XPACK_AUTH_KEY}"
+      }
+    }
+  }
+  ```
 
-[![Star History Chart](https://api.star-history.com/svg?repos=hexdocom/lemonai&type=Date)](https://www.star-history.com/#hexdocom/lemonai&Date)
+![导入 mcp 配置 json](./docs/assets/ui-mcp-config-1.png)
 
-### 安全问题
+⚠️ 将 `YOUR_XPACK_AUTH_KEY` 替换为您从仪表板获得的实际 XPack 认证密钥。
 
-为了保护您的隐私，请避免在 GitHub 上发布安全问题。发送问题至service@hexdo.com我们将为您做更进一步的解答。
+**配置详情：**
 
-### 执照
+- **服务器名称：** `xpack-mcp-market` - 这标识 XPack MCP 服务器
+- **类型：** `sse` - 用于实时通信的服务器发送事件连接类型
+- **URL：** 带有您的认证密钥的 XPack MCP 端点
+- **功能：** 通过标准化 MCP 接口访问 1000+ 全球服务
 
-本仓库遵循Lemon AI Open Source License 协议开源，该许可证本质上是Apache 2.0，但有一些额外的限制。
+![导入 mcp 配置 json](./docs/assets/ui-mcp-config-2.png)
+
+#### 3. 验证配置
+
+如果配置正确，您可以通过以下方式验证设置：
+
+- 打开 Lemon AI 聊天界面 (localhost:5005)
+- 在聊天界面中点击"MCP"下拉选项
+- 您应该看到"xpack-mcp-market"作为可用选项
+
+![导入 mcp 配置 json](./docs/assets/ui-mcp-config-3.png)
+
+### 4. 使用 MCP 运行 Lemon AI
+
+配置完成后，选择"xpack-mcp-market"为您的对话启用 XPack 工具。然后您可以在网页 UI 中输入您的想法和提示，Lemon AI 将利用 XPack 的工具来完成任务。只需在您的请求中提及"使用 XPack"或"使用 xpack-mcp-market"即可专门利用 XPack 服务。
+
+## 热门任务
+
+本节提供了如何利用 Lemon AI 与 XPack 执行各种任务的实际示例。
+
+### 分析 YouTube 评论并提供改进视频创作的建议
+
+轻松分析 YouTube 视频评论以了解观众情绪并获得改进内容的建议。
+
+```
+Please use xpack to read the comments on this YouTube video: https://www.youtube.com/watch?v=LPZh9BOjkQs, analyze the sentiment of the feedback, and recommend improvements for the video.
+```
+
+![分析 YouTube 评论图片](./docs/assets/xpack/demo-youtube-analysis.png)
+
+### 当前黄金价格和影响因素
+
+快速查看最新黄金价格并发现可能影响未来趋势的关键因素。
+
+```
+Please use xpack to look up the current real-time price of gold.
+```
+
+![当前黄金价格图片](./docs/assets/xpack/demo-gold-monitor.png)
+
+### 生成奔跑的小狗图片
+
+通过 XPack 使用 AI 图像生成工具轻松创建可爱的自定义图片。
+
+```
+Generate a running puppy image with xpack
+```
+
+![在公园奔跑的可爱小狗生成图片](./docs/assets/xpack/demo-running-puppy.png)
+
+---
+
+**准备好探索 AI 代理与全球服务的强大功能了吗？这个演示展示了 Lemon AI 如何与 XPack.AI 无缝集成，释放无限可能！**
