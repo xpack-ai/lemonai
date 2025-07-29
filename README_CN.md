@@ -110,7 +110,6 @@ docker run -it --rm --pull=always \
 
 ![XPack.ai Dashboard](./docs/assets/xpack/xpack-dashboard.png)
 
-
 #### 2. 在 Lemon AI 配置中
 
 通过设置 UI 配置 MCP：
@@ -123,7 +122,7 @@ docker run -it --rm --pull=always \
     "mcpServers": {
       "xpack-mcp-market": {
         "type": "sse",
-        "url": "https://api.xpack.ai/v1/mcp?apikey={YOUR_XPACK_AUTH_KEY}"
+        "url": "https://mcp.xpack.ai/v1/mcp?apikey={YOUR_XPACK_AUTH_KEY}"
       }
     }
   }
